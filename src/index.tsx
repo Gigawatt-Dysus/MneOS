@@ -55,7 +55,7 @@ if (container) {
       container = newContainer;
   }
 
-  const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_dG9nZXRoZXItbWFybGluLTk2LmNsZXJrLmFjY291bnRzLmRldiQ";
 
   if (!clerkPubKey) {
     throw new Error("Missing Publishable Key");
