@@ -10,13 +10,24 @@ export const useSovereignSocket = (
     useEffect(() => {
         if (!userId) return;
 
-        // Connect to the local api-dev-server gateway port
-        const socket = io('http://localhost:3000', {
+        // Skip socket connection on public web deployments unless a explicit proxy URL is configured
+        const isLocalHost = typeof window !== 'undefined' && (
+            window.location.hostname === 'localhost' || 
+            window.location.hostname === '127.0.0.1'
+        );
+        const targetUrl = import.meta.env.VITE_ALPHA_PROXY_URL || (isLocalHost ? 'http://localhost:3000' : null);
+
+        if (!targetUrl) {
+            return;
+        }
+
+        // Connect to local gateway
+        const socket = io(targetUrl, {
             withCredentials: true,
             reconnection: true,
-            reconnectionAttempts: Infinity,
-            reconnectionDelay: 1000,
-            reconnectionDelayMax: 5000,
+            reconnectionAttempts: 3,
+            reconnectionDelay: 2000,
+            reconnectionDelayMax: 10000,
         });
 
         socketRef.current = socket;
@@ -36,8 +47,9 @@ export const useSovereignSocket = (
             console.log('[SovereignSocket] 🔴 Disconnected');
         });
 
-        socket.on('connect_error', (err) => {
-            console.warn('[SovereignSocket] ⚠️ Connection Error:', err.message);
+        socket.on('connect_error', () => {
+            // Silently handle connection error to prevent console spam when local node daemon is offline
+            socket.disconnect();
         });
 
         return () => {

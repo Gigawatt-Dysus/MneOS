@@ -19,8 +19,14 @@
 - `git logs`
 
 ### 🧹 HESTIA'S CARETAKER NOTES (Latest Diff):
-- **Subproject Status Flag**: The `-dirty` suffix indicates uncommitted changes in the submodule, which could lead to inconsistent builds or runtime behaviors if not addressed.  
-- **Token Usage Update**: Token consumption increment (212,503 → 214,678) appears normal, but without version control metadata, it’s unclear if the pattern is strictly logical or expected.  
-- **No Syntax/Logical Errors**: No code changes or syntax issues detected in the diff; updates are purely metadata-related.  
-- **Version Control Hygiene**: The submodule’s dirty state needs investigation to ensure intentional changes are tracked and committed.  
-- **No Memory/Type Risks**: Changes are administrative; no runtime memory leaks or type-safety concerns are introduced.
+Here's the audit of the git diff:
+
+- **Memory Leak Risk**: The socket cleanup in `useSovereignSocket` correctly removes listeners but doesn't explicitly check if `socketRef.current` exists before disconnecting (minor edge case if cleanup runs twice).
+
+- **Behavior Change**: Reduced reconnection attempts from `Infinity` to `3` may cause premature disconnections in unstable networks, though intentional.
+
+- **Environment Handling**: The `isLocalHost` check doesn't account for IPv6 localhost (`::1`), which could affect some development environments.
+
+- **Error Handling**: Silent handling of `connect_error` could mask legitimate connection issues in production if `VITE_ALPHA_PROXY_URL` is misconfigured.
+
+- **Submodule State**: The `-dirty` flag in `GooglePhotosTakeoutHelper` submodule suggests uncommitted changes that should be addressed.
