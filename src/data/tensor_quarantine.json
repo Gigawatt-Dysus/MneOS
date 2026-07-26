@@ -1,0 +1,104 @@
+[
+  {
+    "id": "q_1783310928276_v_ecstasy",
+    "valence": "Ecstasy (O-Face)",
+    "status": "HELD_FOR_REVIEW",
+    "timestamp": "2026-07-06T04:08:48.276Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "CENSORED_FALLTHROUGH_SEEDANCE",
+    "originalPrompt": "Generate an expression of Ecstasy (O-Face) from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png"
+    ],
+    "reason": "Grok API Safety Refusal. Requires Surgeon intervention or Seedance bypass."
+  },
+  {
+    "id": "q_1783311095451_v_joy",
+    "valence": "Joy",
+    "status": "PENDING_APPROVAL",
+    "timestamp": "2026-07-06T04:11:35.451Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "PRIMARY_GROK_PASS",
+    "originalPrompt": "Generate an expression of Joy from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_joy_peak.png",
+      "/quarantine/v_joy_peak.png",
+      "/quarantine/v_joy_peak.png",
+      "/quarantine/v_joy_peak.png",
+      "/quarantine/v_joy_peak.png"
+    ],
+    "reason": "Automated extraction passed structural Critic loop."
+  },
+  {
+    "id": "q_1783311097960_v_anger",
+    "valence": "Anger",
+    "status": "PENDING_APPROVAL",
+    "timestamp": "2026-07-06T04:11:37.960Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "PRIMARY_GROK_PASS",
+    "originalPrompt": "Generate an expression of Anger from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_rage_apex.png",
+      "/quarantine/v_rage_apex.png",
+      "/quarantine/v_rage_apex.png",
+      "/quarantine/v_rage_apex.png",
+      "/quarantine/v_rage_apex.png"
+    ],
+    "reason": "Automated extraction passed structural Critic loop."
+  },
+  {
+    "id": "q_1783311100468_v_fear",
+    "valence": "Fear",
+    "status": "PENDING_APPROVAL",
+    "timestamp": "2026-07-06T04:11:40.468Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "PRIMARY_GROK_PASS",
+    "originalPrompt": "Generate an expression of Fear from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_surprise_gas.png",
+      "/quarantine/v_surprise_gas.png",
+      "/quarantine/v_surprise_gas.png",
+      "/quarantine/v_surprise_gas.png",
+      "/quarantine/v_surprise_gas.png"
+    ],
+    "reason": "Automated extraction passed structural Critic loop."
+  },
+  {
+    "id": "q_1783311102974_v_sadness",
+    "valence": "Sadness",
+    "status": "PENDING_APPROVAL",
+    "timestamp": "2026-07-06T04:11:42.974Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "PRIMARY_GROK_PASS",
+    "originalPrompt": "Generate an expression of Sadness from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_sorrow_deep.png",
+      "/quarantine/v_sorrow_deep.png",
+      "/quarantine/v_sorrow_deep.png",
+      "/quarantine/v_sorrow_deep.png",
+      "/quarantine/v_sorrow_deep.png"
+    ],
+    "reason": "Automated extraction passed structural Critic loop."
+  },
+  {
+    "id": "q_1783311104479_v_ecstasy",
+    "valence": "Ecstasy (O-Face)",
+    "status": "HELD_FOR_REVIEW",
+    "timestamp": "2026-07-06T04:11:44.479Z",
+    "baseAnchorId": "AU0_Neutral_Ref",
+    "pipelineTrace": "CENSORED_FALLTHROUGH_SEEDANCE",
+    "originalPrompt": "Generate an expression of Ecstasy (O-Face) from base AU0 with natural skin texture.",
+    "candidateFrames": [
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png",
+      "/quarantine/v_o_face_spicy.png"
+    ],
+    "reason": "Grok API Safety Refusal. Requires Surgeon intervention or Seedance bypass."
+  }
+]

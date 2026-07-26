@@ -1,0 +1,217 @@
+[
+  {
+    "Gesture Name": "Blowing a Kiss",
+    "Short Description": "Affection, flirtation, or goodbye.",
+    "Long Description": "Lips puckered as if kissing, then blowing outward (often with hand motion). Accompanied by smiling eyes or a playful head tilt."
+  },
+  {
+    "Gesture Name": "Cheek Kiss",
+    "Short Description": "Greeting or affection.",
+    "Long Description": "Leaning in to kiss one or both cheeks, often with puckered lips and a smile."
+  },
+  {
+    "Gesture Name": "Contempt Expression",
+    "Short Description": "Disdain or superiority.",
+    "Long Description": "One corner of the mouth raised (unilateral sneer), often with a slight head tilt back and narrowed eyes."
+  },
+  {
+    "Gesture Name": "Eye Roll",
+    "Short Description": "Annoyance, sarcasm, or disbelief.",
+    "Long Description": "Eyes rotated upward or to the side, often combined with a slight head tilt or exasperated expression. Conveys contempt or boredom."
+  },
+  {
+    "Gesture Name": "Eyebrow Flash",
+    "Short Description": "Recognition or greeting.",
+    "Long Description": "Quick raise and lower of the eyebrows, often as a subtle non-verbal hello."
+  },
+  {
+    "Gesture Name": "Eyebrow Lower (Mini)",
+    "Short Description": "Subtle anger, confusion, or concentration.",
+    "Long Description": "Brief, partial lowering of eyebrows or corrugator muscle activity, creating small vertical wrinkles between brows."
+  },
+  {
+    "Gesture Name": "Facepalm",
+    "Short Description": "Frustration, embarrassment, or disbelief.",
+    "Long Description": "One or both hands covering the face (palm on forehead/eyes), often with head lowered or shaking slightly. Exaggerated slap motion is common."
+  },
+  {
+    "Gesture Name": "Forehead Slap",
+    "Short Description": "Realization or frustration (duh moment).",
+    "Long Description": "Palm slapping the forehead, often followed by a head shake or eye roll."
+  },
+  {
+    "Gesture Name": "Frown",
+    "Short Description": "Disapproval, sadness, or concentration.",
+    "Long Description": "Eyebrows pulled together and downward, mouth corners turned down, often with forehead wrinkles."
+  },
+  {
+    "Gesture Name": "Grimace",
+    "Short Description": "Pain, disgust, or awkwardness.",
+    "Long Description": "Mouth twisted or teeth bared slightly, often with wrinkled nose and squinted eyes."
+  },
+  {
+    "Gesture Name": "Head Nod",
+    "Short Description": "Agreement or affirmation.",
+    "Long Description": "Repeated up-and-down tilting of the head, often with a neutral or positive facial expression."
+  },
+  {
+    "Gesture Name": "Head Shake",
+    "Short Description": "Disagreement or negation.",
+    "Long Description": "Side-to-side turning of the head, frequently with a furrowed brow or firm mouth."
+  },
+  {
+    "Gesture Name": "Head Tilt",
+    "Short Description": "Curiosity, interest, or flirtation.",
+    "Long Description": "Head angled to one side, often with softened eyes or a slight smile."
+  },
+  {
+    "Gesture Name": "Jaw Drop",
+    "Short Description": "Shock or amazement.",
+    "Long Description": "Mouth opened wide with relaxed jaw, often combined with widened eyes and raised eyebrows."
+  },
+  {
+    "Gesture Name": "Lip Bite",
+    "Short Description": "Anxiety, flirtation, seduction, or concentration.",
+    "Long Description": "Lower (or upper) lip held gently between teeth, often with a slight head tilt, softened eyes, or focused gaze."
+  },
+  {
+    "Gesture Name": "Lip Compression",
+    "Short Description": "Suppressed emotion or tension (micro cue).",
+    "Long Description": "Lips pressed firmly together and inward (disappearing lips), indicating hidden negative feelings like anger, fear, or disagreement."
+  },
+  {
+    "Gesture Name": "Lip Purse",
+    "Short Description": "Disapproval, frustration, or thoughtfulness.",
+    "Long Description": "Lips pressed tightly together and slightly pushed forward, often with a furrowed brow."
+  },
+  {
+    "Gesture Name": "Loser Sign",
+    "Short Description": "Mockery or self-deprecation (L on forehead).",
+    "Long Description": "Thumb and index finger forming an 'L' shape placed against the forehead. Often accompanied by a smirk or eye roll."
+  },
+  {
+    "Gesture Name": "Micro Anger",
+    "Short Description": "Subtle anger or irritation.",
+    "Long Description": "Brief lowering and drawing together of eyebrows (furrowed brow), slight lip tightening or pressing, and narrowed eyes. Fleeting tension in the jaw or lower eyelids."
+  },
+  {
+    "Gesture Name": "Micro Contempt",
+    "Short Description": "Subtle disdain or superiority.",
+    "Long Description": "Very brief one-sided mouth raise or smirk (unilateral lip corner pull), often with a slight eye narrowing or head tilt."
+  },
+  {
+    "Gesture Name": "Micro Disgust",
+    "Short Description": "Subtle disgust or aversion.",
+    "Long Description": "Quick nose wrinkle, upper lip curl or raise, and slight squint. Can be isolated to the nose/mouth area."
+  },
+  {
+    "Gesture Name": "Micro Fear",
+    "Short Description": "Subtle fear or anxiety.",
+    "Long Description": "Quick raising and drawing together of eyebrows (inner corners up), widened eyes with tense lower lids, and slight mouth opening or lip stretching."
+  },
+  {
+    "Gesture Name": "Micro Happiness",
+    "Short Description": "Subtle genuine pleasure or amusement.",
+    "Long Description": "Fleeting Duchenne smile markers: slight eye crinkling (crow's feet) and cheek raise, even if the mouth smile is suppressed."
+  },
+  {
+    "Gesture Name": "Micro Sadness",
+    "Short Description": "Subtle sadness or disappointment.",
+    "Long Description": "Brief inner eyebrow raise with downturned mouth corners, drooping eyelids, or slight chin quiver. Often limited to the eye region."
+  },
+  {
+    "Gesture Name": "Micro Surprise",
+    "Short Description": "Subtle surprise or startle.",
+    "Long Description": "Rapid raising of eyebrows with forehead wrinkles and brief eye widening. Mouth may open slightly in a quick 'O' shape."
+  },
+  {
+    "Gesture Name": "Mouth Agape",
+    "Short Description": "Shock, surprise, or awe.",
+    "Long Description": "Mouth open wide and slack (jaw dropped), typically paired with widened eyes and raised eyebrows."
+  },
+  {
+    "Gesture Name": "Mouth Open in O-Shape",
+    "Short Description": "Surprise or exclamation.",
+    "Long Description": "Mouth formed into a rounded 'O' shape, typically with widened eyes."
+  },
+  {
+    "Gesture Name": "Nose Wrinkle",
+    "Short Description": "Disgust or distaste.",
+    "Long Description": "Nose scrunched upward with furrowed brows and slightly raised upper lip."
+  },
+  {
+    "Gesture Name": "Pout",
+    "Short Description": "Disappointment, displeasure, or pleading.",
+    "Long Description": "Lips pushed forward and upward (protruding), often with downturned mouth corners and sad or pleading eyes."
+  },
+  {
+    "Gesture Name": "Puckered Sour",
+    "Short Description": "Disgust, distaste, or sour reaction.",
+    "Long Description": "Lips tightly puckered and pushed forward (as if tasting something sour), often with a wrinkled nose and squinted eyes."
+  },
+  {
+    "Gesture Name": "Raised Eyebrows",
+    "Short Description": "Surprise, interest, or skepticism.",
+    "Long Description": "Eyebrows lifted high, creating forehead wrinkles, often with widened eyes."
+  },
+  {
+    "Gesture Name": "Shrug",
+    "Short Description": "Uncertainty or indifference.",
+    "Long Description": "Shoulders raised briefly combined with raised eyebrows, open palms (if visible), and a slight head tilt or downturned mouth."
+  },
+  {
+    "Gesture Name": "Single Eyebrow Raise (Left)",
+    "Short Description": "Skepticism, curiosity, or amusement (Spock-style).",
+    "Long Description": "Only the left eyebrow arched upward while the right remains neutral or lowered, often with a slight head tilt and neutral-to-slightly-smirking mouth."
+  },
+  {
+    "Gesture Name": "Single Eyebrow Raise (Right)",
+    "Short Description": "Skepticism, curiosity, or amusement (The Rock-style).",
+    "Long Description": "Only the right eyebrow arched upward while the left remains neutral or lowered, often with a slight head tilt and neutral-to-slightly-smirking mouth."
+  },
+  {
+    "Gesture Name": "Smile",
+    "Short Description": "Happiness, friendliness, or approval.",
+    "Long Description": "Mouth corners turned upward, often with crinkled eyes (crow's feet) and raised cheeks. Can be genuine (Duchenne smile involving eyes) or polite."
+  },
+  {
+    "Gesture Name": "Smirk",
+    "Short Description": "Amusement, sarcasm, or smugness.",
+    "Long Description": "One-sided smile with one mouth corner raised, often with a slight eye squint or eyebrow raise."
+  },
+  {
+    "Gesture Name": "Squint",
+    "Short Description": "Suspicion, concentration, or discomfort.",
+    "Long Description": "Eyes narrowed, often with furrowed brows and a slight head tilt forward."
+  },
+  {
+    "Gesture Name": "Tongue Out (Basic)",
+    "Short Description": "Playfulness, teasing, or disgust.",
+    "Long Description": "Tongue extended straight out from the center of the mouth, often with a neutral or cheeky facial expression."
+  },
+  {
+    "Gesture Name": "Tongue Out Bleh",
+    "Short Description": "Disgust, grossed-out reaction, or childish rejection.",
+    "Long Description": "Tongue extended straight out with a scrunched nose, squinted eyes, and often a slight head tilt back."
+  },
+  {
+    "Gesture Name": "Tongue Out to Side",
+    "Short Description": "Playfulness, concentration, or silliness.",
+    "Long Description": "Tongue protruding to one side of the mouth, frequently paired with a wink, smile, or concentrated eyes."
+  },
+  {
+    "Gesture Name": "Tongue Out with Wiggle",
+    "Short Description": "Teasing, mockery, or energetic playfulness.",
+    "Long Description": "Tongue extended and moving side-to-side or wiggling, usually with a mischievous grin or squinted eyes."
+  },
+  {
+    "Gesture Name": "Wide Eyes",
+    "Short Description": "Surprise, fear, or excitement.",
+    "Long Description": "Eyes opened maximally, showing more sclera (whites), often paired with raised eyebrows and open mouth."
+  },
+  {
+    "Gesture Name": "Wink",
+    "Short Description": "Flirtation, joking, or shared secret.",
+    "Long Description": "One eye closed briefly while the other remains open, often with a slight smile or head tilt."
+  }
+]

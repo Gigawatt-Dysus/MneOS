@@ -1,0 +1,12 @@
+{
+  "module_name": "female_arousal_realism_module",
+  "description": "Modular blocks for anatomically accurate female arousal, wetness, nipples, and genital details. Optimized for realism LoRAs.",
+  "anatomy_block": "Anatomically correct vulva with detailed labia majora and labia minora, visible clitoral hood and clitoris, natural vaginal opening properly positioned below the pubic mound, realistic perineum and anus with natural skin folds and texture.",
+  "wetness_block": "Natural translucent creamy vaginal arousal fluids with realistic viscosity, glistening on inner labia, beading and slow stringing, subtle dripping from vaginal entrance, mixing organically with light sweat on skin and vellus hairs.",
+  "nipple_block": "Realistic nipples with natural areola texture, subtle Montgomery glands, and state-appropriate erectness or softness matching arousal level.",
+  "volume_levels": {
+    "subtle": "light glistening and minimal beading",
+    "moderate": "visible creamy fluids with slow dripping and stringing",
+    "heavy": "copious viscous arousal fluids, heavy beading, noticeable dripping"
+  }
+}

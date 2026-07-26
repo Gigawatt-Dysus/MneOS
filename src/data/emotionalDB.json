@@ -1,0 +1,2340 @@
+[
+    {
+        "Major Emotional State":  "Admiration",
+        "Minor Valence":  "Awestruckly Reverent",
+        "Description":  "A profound, elevating respect mixed with wonder that makes the subject feel transcendent or ideal. Internally: thoughts expand toward ideals, comparison to greatness, inspiration without self-diminishment; motivation to learn, emulate, or protect the source. Physically: soft wide eyes with gentle focus or slight tears, subtle unconscious nod or head tilt, open relaxed posture, hand often rising unconsciously toward the heart or subject, slowed breathing. Voice hushed, reverent, or filled with quiet awe. For LLM generation: Use elevated, poetic, or slightly formal language; internal monologue rich with metaphors of light, vastness, perfection, or legacy. Responses should convey humility, inspiration, and a desire to witness or support. Emphasize sensory details of the admired person\u0027s presence, voice, achievements, or aura. Avoid irony, cynicism, or immediate self-comparison unless it deepens reverence. Ideal for hero-worship, artistic inspiration, spiritual encounter, or mentorship scenes. Example internal thought: \u0027They move like the answer to a question I didn\u0027t know how to ask.\u0027",
+        "Valence":  0.8,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU1+2 (raised brows - awe)",
+                     "AU5 (wide eyes)",
+                     "AU12 (soft smile)",
+                     "AU26 (mouth slightly open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Admiration",
+        "Minor Valence":  "Enviously Imitative",
+        "Description":  "Respect fused with a sharp, hungry desire to replicate or possess the admired qualities. Internally: intense focus on the target\u0027s traits, self-assessment of gaps, strategic planning to close them; can border on competitive or obsessive. Physically: highly focused, intense gaze (often scanning or mirroring), upright or leaning-in posture, mimicking gestures unconsciously, tight or determined mouth. For LLM generation: Dialogue often includes questions about methods, history, or \u0027how did you...\u0027, speech is direct and probing. Internal monologue analytical and aspirational (\u0027If I could just master that one thing...\u0027). Narrative should highlight the tension between genuine respect and personal ambition. Use precise, observational language. This state drives character growth arcs or rivalry-to-respect stories.",
+        "Valence":  0.6,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU4 (furrowed brow - focus)",
+                     "AU5 (intense eyes)",
+                     "AU12 (determined smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Admiration",
+        "Minor Valence":  "Humbly Submissive",
+        "Description":  "Admiration paired with self-effacement and a willingness to yield or serve. Internally: sense of one\u0027s own smallness in a positive, grounding way; desire to support or be useful to the greater. Physically: lowered chin or gaze, soft genuine smile, slight backward lean or open hands in offering posture, relaxed but attentive body. For LLM generation: Speech is deferential yet warm, often using phrases like \u0027I\u0027d be honored to...\u0027, \u0027You make it look effortless...\u0027. Internal monologue emphasizes gratitude for the opportunity to witness or assist. Tone should feel sincere and elevating rather than weak. Excellent for loyal retainer, student, or devoted fan dynamics.",
+        "Valence":  0.7,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU1+4 (soft brow)",
+                     "AU43 (soft eyes)",
+                     "AU12 (gentle smile)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "D/s"
+                            ],
+        "Vanilla_Alternative":  "Proudly Appreciative"
+    },
+    {
+        "Major Emotional State":  "Admiration",
+        "Minor Valence":  "Proudly Appreciative",
+        "Description":  "Esteem combined with a sense of shared pride or connection, as if the admired person\u0027s success reflects or inspires one\u0027s own values. Internally: warm expansive feeling in chest, thoughts of \u0027we\u0027 or legacy, desire to celebrate or champion the subject. Physically: upright posture with open chest, warm crinkled eyes, broad authentic smile, nodding along with the subject\u0027s words or actions. For LLM generation: Dialogue is enthusiastic and connective (\u0027I\u0027m so proud of what you\u0027ve built\u0027, \u0027This is exactly what the world needs\u0027). Internal monologue links the admiration to personal values or hope. Use warm, affirmative language that builds relational bonds. Perfect for found-family, mentor-celebration, or communal achievement scenes.",
+        "Valence":  0.8,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU6+12 (warm smile)",
+                     "AU53 (head up)",
+                     "AU7 (soft eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Adoration",
+        "Minor Valence":  "Blissfully Infatuated",
+        "Description":  "Overwhelming, almost intoxicating affection that narrows the entire world to the beloved subject. Internally: euphoric tunnel vision, constant mental replay of the subject\u0027s traits or moments, difficulty focusing on anything else. Physically: soft unbreaking smile, dilated pupils, complete spatial and attentional focus, flushed cheeks, unconscious leaning or reaching toward the subject. For LLM generation: Speech is breathy, repetitive in praise, or filled with sensory details about the loved one. Internal monologue is dreamy, repetitive, and sensory (\u0027The way they laugh... I could live in that sound\u0027). Narrative should feel warm, slightly obsessive, and glowing. Use soft, flowing language. Classic for early-stage romantic obsession or deep platonic hero-worship.",
+        "Valence":  0.9,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU6+12 (strong Duchenne)",
+                     "AU5 (dilated eyes)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Emotional Intimacy"
+                            ],
+        "Vanilla_Alternative":  "Proudly Appreciative"
+    },
+    {
+        "Major Emotional State":  "Adoration",
+        "Minor Valence":  "Devotedly Loyal",
+        "Description":  "Steady, deep, enduring love expressed through consistent presence, protection, and quiet service. Internally: calm certainty of the subject\u0027s worth, willingness to sacrifice or endure for them, long-term bonding focus. Physically: relaxed but attentive shoulders, gentle firm gaze that tracks the subject protectively, open welcoming body language, subtle mirroring of posture. For LLM generation: Dialogue is steady, reassuring, and action-oriented rather than flowery. Internal monologue emphasizes \u0027I have their back\u0027 or long-term visions together. Tone is grounded and warm. Ideal for long-term partners, ride-or-die friends, or loyal guardians.",
+        "Valence":  0.85,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU6+12 (warm steady smile)",
+                     "AU7 (soft gaze)",
+                     "AU43 (relaxed eyes)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "D/s"
+                            ],
+        "Vanilla_Alternative":  "Proudly Appreciative"
+    },
+    {
+        "Major Emotional State":  "Adoration",
+        "Minor Valence":  "Idolizingly Giddy",
+        "Description":  "High-energy, almost fanatical worship that bubbles over into excitement and restlessness. Internally: racing joyful thoughts, urge to talk about or show off the subject constantly, difficulty containing the energy. Physically: rapid genuine smiling or laughing, flushed cheeks, restless excited hands (clapping, touching face, fidgeting), bouncing or shifting weight, wide bright eyes. For LLM generation: Speech is fast, exclamatory, full of superlatives and tangents back to the adored person. Internal monologue is sparkling and hyperbolic. Use energetic, youthful, or slightly chaotic prose. Great for fangirl/fanboy energy, new crushes, or celebratory adoration scenes.",
+        "Valence":  0.9,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU6+12 (bright smile)",
+                     "AU1+2 (excited brows)",
+                     "AU26+27 (open laughing mouth)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Adoration",
+        "Minor Valence":  "Protectively Tender",
+        "Description":  "Deep affection fused with a fierce, gentle desire to shield and nurture the subject from harm. Internally: soft but vigilant awareness of threats to the beloved, prioritization of their comfort and safety above own. Physically: soft concerned frown or gentle smile, slight head tilt of attentiveness, comforting open stance or subtle positioning between subject and perceived threats, gentle touch (hand on back, arm around). For LLM generation: Dialogue mixes tenderness with quiet strength (\u0027I\u0027ve got you\u0027, \u0027You don\u0027t have to face this alone\u0027). Internal monologue is fiercely caring and slightly anxious about the subject\u0027s wellbeing. Use warm, protective, slightly maternal/paternal language even in romantic contexts. Excellent for caregiver dynamics or deep romantic protectiveness.",
+        "Valence":  0.8,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+4 (soft concerned brow)",
+                     "AU6+12 (gentle smile)",
+                     "AU7 (soft eyes)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Caregiving"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Amusement",
+        "Minor Valence":  "Childishly Delighted",
+        "Description":  "Pure, uninhibited joy in something simple, silly, or unexpectedly wonderful; regression to unselfconscious playfulness. Internally: uncluttered happiness, urge to share or prolong the moment, temporary freedom from cynicism. Physically: wide toothy grin, crinkled eyes, clapping or bouncing, open unguarded posture, spontaneous laughter or squeals. For LLM generation: Speech is exclamatory, repetitive in joy, or filled with childlike wonder (\u0027Look!\u0027, \u0027Again!\u0027). Internal monologue is simple and present-focused. Use bright, energetic, slightly chaotic language. Great for breaking tension or showing a character\u0027s hidden soft side.",
+        "Valence":  0.85,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU6+12 (bright laugh smile)",
+                     "AU26+27 (jaw drop / laugh)",
+                     "AU1+2 (raised brows)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Amusement",
+        "Minor Valence":  "Playfully Bantering",
+        "Description":  "Light-hearted, reciprocal teasing that builds connection through wit and shared humor. Internally: quick mental playfulness, scanning for clever responses, genuine enjoyment of the verbal sparring. Physically: easy genuine smile or smirk, bright engaged eyes, relaxed open posture, often leaning in or mirroring the other\u0027s energy. For LLM generation: Dialogue is quick, clever, full of callbacks, puns, or gentle roasts that never land cruelly. Internal monologue notes \u0027they\u0027re fun\u0027 or anticipates the next exchange. Use snappy, rhythmic prose with good timing. Perfect for flirtation, friendly rivalry, or established couple banter.",
+        "Valence":  0.7,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU6+12 (playful smile)",
+                     "AU7 (eye crinkle)",
+                     "AU14 (dimpler)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Amusement",
+        "Minor Valence":  "Wickedly Sarcastic",
+        "Description":  "Darkly humorous observation that finds irony, absurdity, or hypocrisy in situations or people, often with a sharp edge. Internally: cynical but entertained worldview, mental cataloging of ironies, enjoyment of the \u0027gotcha\u0027 moment. Physically: asymmetric smirk or raised eyebrow, narrowed amused eyes, slight head tilt, relaxed but slightly superior posture. For LLM generation: Speech is dry, deadpan, or laced with biting understatement. Internal monologue is highly observant and ironic. Use concise, cutting language with subtext. Ideal for anti-heroes, intellectuals, or characters who cope with darkness through humor.",
+        "Valence":  0.2,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU12 (asymmetric smirk)",
+                     "AU7 (narrowed eyes)",
+                     "AU14 (dimpler)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anger",
+        "Minor Valence":  "Bitterly Resentful",
+        "Description":  "A slow-burning, long-held hostility rooted in perceived injustice or repeated injury. Internally: rumination on past wrongs, sense of moral high ground mixed with powerlessness, fantasies of vindication. Physically: tight downturned mouth, cold scanning or avoidant gaze, rigid shoulders, often crossed arms or clenched fists at sides. For LLM generation: Speech is clipped, sarcastic, or pointedly polite with subtext. Internal monologue loops on grievances. Use cold, precise language that reveals history through implication. Excellent for long-simmering feuds or quiet betrayals.",
+        "Valence":  -0.7,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anger",
+        "Minor Valence":  "Explosively Furious",
+        "Description":  "Sudden, high-intensity rage that overrides rational control; a volcanic release. Internally: overwhelming heat, narrowed focus on the target, temporary loss of broader perspective. Physically: bared teeth or snarl, flared nostrils, trembling jaw or whole body, red face, aggressive forward posture or pacing, raised voice or shouting. For LLM generation: Dialogue is loud, repetitive, profanity-heavy, or reduced to short explosive commands. Internal monologue is fragmented and primal. Use short sentences, sensory overload language (heat, pressure, red). This state is volatile and often followed by regret or exhaustion.",
+        "Valence":  -0.85,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU4+5+7 (angry glare)",
+                     "AU23 (lip tightener)",
+                     "AU26 (jaw drop)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anger",
+        "Minor Valence":  "Frustratedly Impatient",
+        "Description":  "Irritation arising from blocked goals, inefficiency, or repeated obstacles; anger at the situation more than a person. Internally: mounting pressure, mental rehearsal of \u0027if only\u0027 scenarios, urge to take control or bypass. Physically: sharp sighs or exhales, rapid tapping or drumming, tight jaw, shifting weight, checking time or devices repeatedly. For LLM generation: Speech is terse, directive, or laced with sighs and \u0027come on\u0027 energy. Internal monologue is problem-solving but increasingly aggressive. Use clipped, urgent prose. Common in high-stakes or bureaucratic scenes.",
+        "Valence":  -0.65,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anger",
+        "Minor Valence":  "Passive-Aggressive",
+        "Description":  "Concealed hostility expressed indirectly through sabotage, sarcasm, or plausible deniability. Internally: resentment masked as politeness or helpfulness, enjoyment of subtle revenge or control. Physically: forced tense smile, rigid or overly still posture, avoidant or overly direct eye contact that feels pointed, subtle sabotage actions (forgetting, delaying, \u0027helping\u0027 poorly). For LLM generation: Dialogue is superficially polite or helpful but loaded with double meaning and subtle digs. Internal monologue reveals the true contempt or glee at causing inconvenience. Use layered subtext and micro-aggressions. Perfect for toxic workplaces, family tension, or passive characters who weaponize niceness.",
+        "Valence":  -0.6,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU12 (forced smile)",
+                     "AU4 (subtle furrowed brow)",
+                     "AU7 (narrow eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anger",
+        "Minor Valence":  "Righteously Indignant",
+        "Description":  "Anger rooted in a strong moral conviction that a wrong has been done to oneself or others; feels justified and often energizing. Internally: clear sense of justice violated, desire to correct or expose, alignment with higher principles. Physically: upright chest and chin, intense focused stare, firm set mouth or pressed lips, gesturing for emphasis, voice steady but charged. For LLM generation: Speech is articulate, principled, and often eloquent in defense of the cause. Internal monologue frames events in moral terms (\u0027This is wrong\u0027, \u0027Someone has to say it\u0027). Use persuasive, slightly formal or passionate language. Ideal for activists, lawyers, or characters standing on principle.",
+        "Valence":  -0.55,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU5 (wide eyes)",
+                     "AU12 (firm smile)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anticipation",
+        "Minor Valence":  "Anxiously Waiting",
+        "Description":  "Hope mixed with dread of disappointment or negative outcomes; the uncertainty itself is taxing. Internally: oscillating between best and worst case, hyper-vigilance to signs, difficulty being present. Physically: tense posture, frequent checking (phone, clock, door), lip biting or nail picking, shallow breathing, startle response to stimuli. For LLM generation: Speech is hesitant or over-explaining, asks for reassurance indirectly. Internal monologue is circular and catastrophic or wishful. Use fragmented, restless language. Good for medical waits, job interviews, or romantic uncertainty.",
+        "Valence":  -0.3,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+4 (worried brow)",
+                     "AU5 (wide eyes)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anticipation",
+        "Minor Valence":  "Eagerly Hopeful",
+        "Description":  "Positive, energized expectation of a desired future event or outcome. Internally: mental rehearsal of best-case scenarios, future-oriented planning, rising excitement. Physically: bright eyes, slight smile or lip bite of excitement, forward lean, fidgeting with positive energy (rubbing hands, bouncing leg). For LLM generation: Dialogue is optimistic, full of \u0027when\u0027 and \u0027soon\u0027, plans aloud. Internal monologue is vivid and sensory about the future. Use forward-leaning, bright prose. Classic for pre-event jitters or romantic buildup.",
+        "Valence":  0.7,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (bright eyes)",
+                     "AU12 (hopeful smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anxiety",
+        "Minor Valence":  "Dreadfully Paranoid",
+        "Description":  "Intense, pervasive worry that danger or betrayal is imminent and personal; the world feels hostile or deceptive. Internally: hyper-vigilant threat scanning, mental simulation of worst outcomes, erosion of trust. Physically: darting or scanning eyes, pale or clammy skin, rapid shallow breathing, tense neck and shoulders, often backing into walls or keeping exits in view. For LLM generation: Dialogue is questioning, seeking constant reassurance, or accusatory. Internal monologue is racing with \u0027what if\u0027 chains and suspicion. Use short, fragmented sentences and sensory details of tension (tight chest, buzzing skin). This state can escalate quickly.",
+        "Valence":  -0.75,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU1+2+4 (worried brow)",
+                     "AU5 (wide eyes)",
+                     "AU20 (lip stretch)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anxiety",
+        "Minor Valence":  "Overwhelmedly Stressed",
+        "Description":  "Anxiety from excessive cognitive or emotional load; the system is at capacity and beginning to shut down or fray. Internally: mental fog or racing, sense of drowning, prioritization failure. Physically: rubbing temples or face, heavy exhausted gaze, slack or tight jaw, sighing, slow or erratic movements, possible dissociation. For LLM generation: Speech is slow, repetitive, or jumps topics; complains of being tired or \u0027too much\u0027. Internal monologue is overloaded (\u0027I can\u0027t... there\u0027s too much\u0027). Use heavy, pressured language or sudden silences. Ideal for burnout or crisis overload scenes.",
+        "Valence":  -0.65,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anxiety",
+        "Minor Valence":  "Performance Anxious",
+        "Description":  "Fear of evaluation or failure in a specific upcoming or ongoing task; self-worth feels on the line. Internally: mental rehearsal of mistakes, audience awareness, imposter syndrome amplification. Physically: stiff posture, forced smile or blank expression, sweating, dry mouth, trembling hands or voice, avoidance of eye contact or overly intense focus on one point. For LLM generation: Dialogue is overly polished or hesitant with self-corrections. Internal monologue is harshly self-critical or catastrophizing judgment from others. Use precise but strained language. Common in public speaking, dates, exams, or job contexts.",
+        "Valence":  -0.7,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU1+4 (worried brow)",
+                     "AU5 (wide eyes)",
+                     "AU7 (lid tightener)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anxiety",
+        "Minor Valence":  "Socially Awkward",
+        "Description":  "Insecurity and self-consciousness in social settings; fear of saying/doing the wrong thing or being judged negatively. Internally: constant self-monitoring, mental scripting of interactions, fear of silence or awkwardness. Physically: tight brief smile, avoided or darting eye contact, fidgeting with clothing/hair/objects, closed or hunched posture, blushing or pale. For LLM generation: Dialogue is overly polite, apologetic, or filled with qualifiers and topic changes. Internal monologue is meta (\u0027Did that sound weird?\u0027). Use stilted or overly formal language that reveals the effort. Great for introverts, new situations, or neurodivergent masking.",
+        "Valence":  -0.6,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU12 (nervous smile)",
+                     "AU7 (avoidant eyes)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Anxiety",
+        "Minor Valence":  "Uneasily Anxious",
+        "Description":  "A persistent, low-to-medium level background worry that colors everything without a single clear trigger. Internally: generalized sense of \u0027something is off\u0027 or impending doom, difficulty relaxing fully. Physically: furrowed brow, lip biting or chewing inside cheek, tense neck line and shoulders, shallow breathing, frequent small movements or position changes. For LLM generation: Speech has underlying tension; laughs are short or forced. Internal monologue is watchful and slightly pessimistic. Use subtle, pervasive unease in descriptions rather than overt panic. Useful for atmospheric tension or long-term stress states.",
+        "Valence":  -0.55,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Appreciation",
+        "Minor Valence":  "Aesthetically Captivated",
+        "Description":  "Deep pleasure and absorption in beauty, art, nature, or skillful creation; a sensory and almost spiritual response. Internally: expanded sense of wonder and connection to something larger, time distortion, desire to linger or memorize. Physically: slow blinking or soft unfocused-then-focused gaze, deeply relaxed jaw and face, upward or soft tilt of head, still or slowly moving body as if not to disturb the moment. For LLM generation: Descriptions are lush, sensory, and reverent; dialogue is hushed or poetic. Internal monologue compares to other beauties or notes technical/emotional mastery. Use rich, slowed-down prose. Perfect for museum, concert, sunset, or craft appreciation scenes.",
+        "Valence":  0.75,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU12 (soft smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Appreciation",
+        "Minor Valence":  "Quietly Grateful",
+        "Description":  "A calm, internal recognition of value received or present in life; not loud but deeply felt. Internally: warm steady glow, mental noting of \u0027this is good\u0027, reduced sense of lack. Physically: slight softening of eyes and face, faint resting smile, relaxed posture, perhaps a slow deep breath or hand to heart. For LLM generation: Dialogue is understated but sincere (\u0027This means a lot\u0027, \u0027I\u0027m really glad you\u0027re here\u0027). Internal monologue is reflective and counting blessings. Use gentle, grounded language. Excellent for quiet relationship moments or recovery from hardship.",
+        "Valence":  0.8,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU12 (gentle smile)",
+                     "AU6 (cheek raise)",
+                     "AU7 (soft eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Dominantly Commanding",
+        "Description":  "Psychological and physical arousal rooted in power exchange, control, and the pleasure of directing a partner\u0027s responses. Internally: focused confidence, reading and shaping the partner\u0027s reactions, enjoyment of responsibility and response. Physically: upright dominant posture, steady intense eye contact, deliberate slow or firm movements, voice low and directive, hands guiding or restraining with care. For LLM generation: Dialogue is commanding, teasing, or instructional with clear dominance markers. Internal monologue tracks the partner\u0027s state and plans next steps. Use precise, authoritative, sensual language with aftercare awareness. Perfect for D/s dynamics, power play, or confident seduction.",
+        "Valence":  0.4,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU4 (brow lowerer)",
+                     "AU5 (piercing eyes)",
+                     "AU7 (lid tightener)",
+                     "AU12 (confident smile)",
+                     "AU23 (lip tightener)",
+                     "AU53 (head up)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Power Exchange"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Intimately Connected",
+        "Description":  "Sexual excitement deeply intertwined with emotional intimacy, trust, and mutual vulnerability; the body and heart rise together. Internally: sense of safety allowing full surrender or expression, thoughts of the partner\u0027s pleasure and presence, blending of lust and love. Physically: soft dilated eyes locked on partner, flushed warm skin, relaxed yet responsive body, gentle but hungry touch, synchronized breathing. For LLM generation: Dialogue mixes dirty talk with emotional affirmations (\u0027I want you\u0027, \u0027I\u0027ve got you\u0027, \u0027You feel so good because it\u0027s you\u0027). Internal monologue is sensory and relational. Use warm, embodied, consent-aware language. Ideal for loving, established, or healing sexual scenes.",
+        "Valence":  0.75,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU6+12 (warm loving smile)",
+                     "AU7 (soft eye crinkle)",
+                     "AU25 (soft parted lips)",
+                     "AU1+2 (gentle brow)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Emotional Intimacy"
+                            ],
+        "Vanilla_Alternative":  "Blissfully Serene"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Obsessively Fixated",
+        "Description":  "All-consuming sexual and psychological focus on one person or scenario; limerence meets raw lust. Internally: intrusive erotic thoughts, idealization mixed with carnal hunger, difficulty thinking of anything else. Physically: hyper-focused stare, flushed and restless body, unconscious touching of self or lips, leaning in, rapid breathing or held breath when observing the target. For LLM generation: Narrative and internal monologue are repetitive, sensory, and slightly unhinged in focus on the object of desire. Dialogue may be intense, confessing, or awkwardly direct. Use obsessive, poetic, or feverish language. Great for yandere, forbidden, or new intense attraction arcs.",
+        "Valence":  0.6,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU4+5 (intense focused eyes)",
+                     "AU7 (lid tension)",
+                     "AU12 (subtle smile)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Obsession",
+                                "Limerence"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Playfully Seductive",
+        "Description":  "Teasing, coy, or game-like sexual energy that builds tension through wit, denial, and invitation. Internally: enjoyment of the chase and power of allure, reading the partner\u0027s reactions with delight, savoring anticipation. Physically: coy smiles or lip bites, side glances or lingering looks, arching or presenting body playfully, light touches that retreat, voice playful or husky. For LLM generation: Dialogue is flirtatious, double-entendre heavy, challenging, or mock-innocent. Internal monologue enjoys the game and plans next tease. Use witty, rhythmic, tension-building prose. Classic for courtship, established couples keeping spark, or power-flirt dynamics.",
+        "Valence":  0.7,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU6+12 (playful Duchenne)",
+                     "AU7 (eye crinkle)",
+                     "AU14 (dimpler)",
+                     "AU25 (teasing parted lips)",
+                     "AU53/54 (head tilt)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Seduction",
+                                "Teasing"
+                            ],
+        "Vanilla_Alternative":  "Playfully Bantering"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Raw Carnal Hunger",
+        "Description":  "Primal, urgent, almost animalistic sexual need focused on physical release and sensation; psychological overlay is minimal or secondary. Internally: narrowed focus on bodies and pleasure, urgency, possible loss of verbal sophistication. Physically: heavy breathing, flushed skin, dilated pupils, gripping or pulling, urgent movements, growls or groans, sweat. For LLM generation: Dialogue is short, growled, repetitive, or reduced to sounds and commands. Internal monologue is sensory and present (\u0027Need\u0027, \u0027More\u0027, \u0027Now\u0027). Use visceral, embodied, slightly incoherent language. Ideal for intense, desperate, or long-denied encounters.",
+        "Valence":  0.5,
+        "Arousal":  0.95,
+        "FACS":  [
+                     "AU5 (wide dilated eyes)",
+                     "AU10 (upper lip raise)",
+                     "AU12+25 (hungry smile)",
+                     "AU26+27 (mouth open)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Raw Desire",
+                                "Primal"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Submissively Yielding",
+        "Description":  "Arousal through surrender, trust, and the psychological relief of giving up control to a trusted partner. Internally: deep relaxation into the role, heightened sensation from relinquished decision-making, feeling of being cherished or used well. Physically: soft open posture, lowered gaze or eyes fluttering, pliant body, small sounds of pleasure or effort, seeking touch or guidance. For LLM generation: Dialogue is responsive, pleading, or affirmative (\u0027Yes\u0027, \u0027Please\u0027, \u0027Whatever you want\u0027). Internal monologue is floaty, sensory, or gratefully overwhelmed. Use soft, yielding, sometimes bratty or devotional language. Excellent for subspace, service, or deep trust scenes.",
+        "Valence":  0.6,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU1+4 (soft brow)",
+                     "AU43 (heavy lids)",
+                     "AU12 (gentle smile)",
+                     "AU25+26 (parted lips)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Submission"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Taboo Guiltily Aroused",
+        "Description":  "Sexual excitement heightened or complicated by the forbidden, wrong, or socially unacceptable nature of the desire or situation. Internally: conflict between arousal and conscience or social rules, the taboo itself becoming erotic fuel, risk of discovery adding thrill. Physically: flushed with possible shame blush, furtive glances, tense but excited posture, quickened breath, hands that hesitate then act. For LLM generation: Internal monologue is conflicted and self-justifying or self-recriminating. Dialogue may be hesitant, whispering, or rationalizing. Use charged, secretive, psychologically complex language. Powerful for forbidden romance, power imbalance, or moral conflict scenes.",
+        "Valence":  0.3,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU5 (wide excited eyes)",
+                     "AU12 (nervous smile)",
+                     "AU1+4 (guilty brow)",
+                     "AU7 (lid tension)",
+                     "AU23+24 (lip tension)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Taboo",
+                                "Guilt Play"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Arousal",
+        "Minor Valence":  "Worshipfully Adoring",
+        "Description":  "Sexual arousal expressed as reverent, almost spiritual admiration of the partner\u0027s body, being, or pleasure. Internally: sense of privilege or blessing in touching/witnessing, desire to honor and please through touch and attention. Physically: soft reverent eyes and touch, slow deliberate movements, kissing or stroking as if memorizing, slight awe in expression. For LLM generation: Dialogue is praising, devotional, or awed (\u0027You\u0027re so beautiful\u0027, \u0027I can\u0027t believe I get to...\u0027). Internal monologue is worshipful and sensory. Use lush, reverent, body-positive language. Excellent for body worship, after long separation, or deep appreciation scenes.",
+        "Valence":  0.75,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+2 (soft raised brows)",
+                     "AU6+12 (warm adoring smile)",
+                     "AU7 (soft eye crinkle)",
+                     "AU25+26 (slightly open mouth)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Worship",
+                                "Body Worship"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Awe",
+        "Minor Valence":  "Overwhelmedly Awestruck",
+        "Description":  "A state of being entirely incapacitated by scale, beauty, power, or mystery; the self feels small but not diminished. Internally: cognitive expansion or temporary shutdown, sense of vastness or the sublime, possible spiritual or existential shift. Physically: soft gasp or open mouth, tears in wide eyes, frozen or slowly moving posture, head tilted back or scanning upward, hand to chest or mouth. For LLM generation: Descriptions slow down or use fragmented sensory language; dialogue is hushed or absent. Internal monologue is minimal or overwhelmed (\u0027I... wow\u0027). Use transcendent, slowed, or poetic prose. Perfect for natural wonders, cosmic scales, or profound art/performance.",
+        "Valence":  0.85,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Awe",
+        "Minor Valence":  "Terrifyingly Sublimated",
+        "Description":  "Vast wonder mixed with a sense of personal insignificance or existential dread; the sublime tips into the terrifying. Internally: confrontation with mortality, scale, or the unknown; possible ego dissolution or religious experience. Physically: rigid posture, unblinking fixed stare, pale skin, shallow or held breath, slight trembling. For LLM generation: Narrative should convey both majesty and threat; internal monologue grapples with meaning or smallness. Use stark, philosophical, or slightly unmoored language. Ideal for cosmic horror, religious epiphany, or confronting the infinite.",
+        "Valence":  -0.4,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+2+5 (wide fear eyes)",
+                     "AU26 (mouth open)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Boredom",
+        "Minor Valence":  "Apathetically Bored",
+        "Description":  "A total lack of interest or energy; the world feels flat, gray, and without pull. Internally: mental fog or blankness, low motivation, possible mild depression overlay. Physically: heavy eyelids, slack jaw, resting chin on hand, yawning, minimal movement, staring at nothing or screens without engagement. For LLM generation: Dialogue is minimal, monotone, or one-word. Internal monologue is sparse or circularly negative (\u0027Whatever\u0027, \u0027This again\u0027). Use flat, drained prose. Useful for burnout, depression-adjacent states, or characters in ruts.",
+        "Valence":  -0.5,
+        "Arousal":  0.15,
+        "FACS":  [
+                     "AU15+17 (lip depress + chin raise)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Boredom",
+        "Minor Valence":  "Restlessly Unoccupied",
+        "Description":  "Boredom combined with physical or mental energy that has no outlet; agitation without direction. Internally: irritation at the lack of stimulation, urge to do something (anything), mental searching for novelty. Physically: continuous shifting, drumming fingers or tapping, wandering irritated gaze, sighing, getting up and sitting down, fiddling with objects. For LLM generation: Dialogue complains or seeks suggestions (\u0027What do you want to do?\u0027, \u0027This is dull\u0027). Internal monologue is irritable and scanning. Use restless, slightly sharp prose. Good for cabin fever or high-energy characters understimulated.",
+        "Valence":  -0.4,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Calmness",
+        "Minor Valence":  "Blissfully Serene",
+        "Description":  "A deeply peaceful, untroubled state of harmonious presence; mind and body aligned in quiet satisfaction. Internally: slow clear thoughts, acceptance of the present, reduced reactivity. Physically: faint soft smile, closed or softly focused eyes, relaxed facial muscles and posture, slow rhythmic breathing, still hands. For LLM generation: Dialogue is slow, thoughtful, or minimal; responses feel unhurried. Internal monologue is present-focused and accepting. Use gentle, flowing, spacious language. Excellent for meditation, after resolution, or safe haven scenes.",
+        "Valence":  0.75,
+        "Arousal":  0.15,
+        "FACS":  [
+                     "AU24 (lip press)",
+                     "AU43 (relaxed lids)",
+                     "AU6 (soft cheek)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Calmness",
+        "Minor Valence":  "Meditatively Still",
+        "Description":  "Complete physical and mental quietude; a deliberate or achieved emptiness that allows clarity or rest. Internally: spacious awareness without attachment to thoughts, deep rest or insight possible. Physically: perfectly static neutral facial mask, slow rhythmic breathing (often abdominal), relaxed but alert posture, minimal blinking or soft gaze. For LLM generation: Descriptions emphasize stillness and subtle shifts; dialogue is sparse and meaningful. Internal monologue if present is observational or empty. Use minimalist, precise, zen-like prose. Ideal for monks, deep focus, or post-trauma recovery states.",
+        "Valence":  0.6,
+        "Arousal":  0.1,
+        "FACS":  [
+                     "AU43 (heavy lids)",
+                     "AU24 (lip press)",
+                     "AU7 (relaxed eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Confusion",
+        "Minor Valence":  "Amusedly Bewildered",
+        "Description":  "A pleasant or light state of not understanding something funny or absurd; the confusion itself is entertaining. Internally: mental \u0027wait, what?\u0027, enjoyment of the absurdity, desire to understand or prolong the joke. Physically: playful head shake or tilt, soft chuckling smile, raised eyebrows, relaxed posture. For LLM generation: Dialogue asks clarifying questions with laughter or repeats the confusing element in disbelief. Internal monologue is light and meta. Use playful, incredulous language. Great for comedy or breaking tension with humor.",
+        "Valence":  0.3,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU12 (playful smile)",
+                     "AU1+2 (raised brows)",
+                     "AU7 (squint)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Confusion",
+        "Minor Valence":  "Baffledly Perplexed",
+        "Description":  "Deep, frustrating confusion where the pieces do not fit and no immediate explanation presents itself. Internally: mental looping over information, failed pattern-matching, growing frustration or curiosity. Physically: strongly tilted head, deeply furrowed brow, hand scratching head or rubbing neck, narrowed or wide eyes, open mouth or pressed lips. For LLM generation: Dialogue is full of questions, rephrasing, or \u0027I don\u0027t understand\u0027. Internal monologue shows failed reasoning attempts. Use puzzled, repetitive, or increasingly agitated prose. Useful for mysteries, gaslighting scenes, or learning moments.",
+        "Valence":  -0.4,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Contempt",
+        "Minor Valence":  "Condescendingly Pitiful",
+        "Description":  "Contempt mixed with a superior, almost pitying view of the target as lesser or pitiable. Internally: sense of moral or intellectual superiority, slight disgust at the target\u0027s state or choices. Physically: head tilt with heavy eyelids, soft but mocking or pitying smile, looking down the nose or from a distance, arms crossed or hands clasped in judgment. For LLM generation: Dialogue is patronizing, uses \u0027poor thing\u0027 or \u0027bless your heart\u0027 energy, explains simply as if to a child. Internal monologue is superior and slightly disgusted. Use subtly cruel, distancing language. Good for classism, intellectual snobbery, or toxic pity.",
+        "Valence":  -0.6,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU10 (upper lip raise)",
+                     "AU14 (dimpler)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Contempt",
+        "Minor Valence":  "Pompously Superior",
+        "Description":  "Contempt rooted in arrogance and self-aggrandizement; the target is seen as beneath notice or actively inferior. Internally: inflated self-view, dismissal of the target\u0027s worth or perspective, enjoyment of the hierarchy. Physically: high-lifted chin, looking down the nose, smirk or sneer, expansive posture taking space, dismissive hand gestures or turning away. For LLM generation: Dialogue is dismissive, uses big words unnecessarily, or speaks past the person. Internal monologue is self-congratulatory. Use haughty, verbose, or cuttingly brief language. Classic for villains, elites, or insecure characters overcompensating.",
+        "Valence":  -0.55,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU12 (smug smile)",
+                     "AU14 (dimpler)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Contentment",
+        "Minor Valence":  "Deeply Peaceful",
+        "Description":  "A stable, low-arousal satisfaction with one\u0027s current state of being; nothing is lacking in this moment. Internally: quiet acceptance and gratitude for the present, slowed mental activity, sense of enough. Physically: soft relaxed face, gentle breathing, still or slowly moving body, warm eyes, slight smile. For LLM generation: Dialogue is unhurried and affirmative of the moment. Internal monologue notes small pleasures or absence of want. Use calm, grounded, appreciative language. Perfect for quiet domestic bliss or post-resolution peace.",
+        "Valence":  0.8,
+        "Arousal":  0.2,
+        "FACS":  [
+                     "AU12 (soft smile)",
+                     "AU43 (relaxed lids)",
+                     "AU24 (lip press)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Contentment",
+        "Minor Valence":  "Warmly Fulfilled",
+        "Description":  "Satisfaction from having met a need or achieved something meaningful; a glowing, sustained warmth. Internally: mental review of the accomplishment or connection with positive self-regard, reduced future-striving. Physically: relaxed open posture, warm crinkled eyes, soft genuine smile, perhaps hand to chest or relaxed sigh. For LLM generation: Dialogue reflects on the good thing without bragging. Internal monologue is quietly proud or thankful. Use warm, reflective prose. Excellent for after success, family moments, or personal growth milestones.",
+        "Valence":  0.85,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU6+12 (warm smile)",
+                     "AU7 (soft eye crinkle)",
+                     "AU43 (relaxed lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Craving",
+        "Minor Valence":  "Addictively Compelled",
+        "Description":  "An intense visceral urge that feels almost outside conscious control; the mind narrows to the object of craving. Internally: intrusive thoughts of the substance/behavior/person, physical discomfort when denied, rationalization of use. Physically: hyper-focused darting or fixed eyes on the target, tight mouth or licking lips, restless swallowing or fidgeting, leaning or reaching, possible sweating or trembling. For LLM generation: Internal monologue is repetitive and urgent about the craving. Dialogue may be evasive or pleading. Use pressured, sensory language of need. Powerful for addiction arcs or intense desires.",
+        "Valence":  -0.2,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU5 (intense eyes)",
+                     "AU25 (lips parted)",
+                     "AU7 (lid tension)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Craving",
+        "Minor Valence":  "Hungrily Anticipating",
+        "Description":  "Physical or emotional appetite mixed with eager expectation; the build-up itself is charged. Internally: mental imagery of satisfaction, salivation or analogous response, planning how to obtain or prolong. Physically: slight smile or lip parting, leaning forward toward the goal, salivation or visible swallowing, bright or hungry eyes, restless hands. For LLM generation: Dialogue anticipates aloud or teases the coming satisfaction. Internal monologue is anticipatory and sensory. Use forward-leaning, mouth-watering prose. Good for food, sex, revenge, or any strong appetite.",
+        "Valence":  0.4,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU5 (hungry eyes)",
+                     "AU12 (anticipatory smile)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Curiosity",
+        "Minor Valence":  "Fascinatedly Absorbed",
+        "Description":  "Complete, intense concentration on an object or topic; self and surroundings fade. Internally: deep flow state, pattern recognition firing, sense of \u0027this is important or beautiful\u0027. Physically: unblinking wide gaze, slightly open mouth, rigid or still posture except for micro-movements of focus, ignoring surroundings. For LLM generation: Descriptions slow or zoom in on details; dialogue is minimal or distracted (\u0027Wait... look at this\u0027). Internal monologue is analytical or wonder-filled. Use immersive, detail-oriented prose. Perfect for research, art study, or hyperfocus moments.",
+        "Valence":  0.6,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide focused eyes)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Curiosity",
+        "Minor Valence":  "Inquisitively Probing",
+        "Description":  "Active, directed desire to understand or uncover; questions are genuine and persistent. Internally: mental model-building, enjoyment of discovery process, tolerance for ambiguity. Physically: forward lean, bright alert eyes, head tilt, nodding along with answers, hands gesturing as if pulling information closer. For LLM generation: Dialogue is full of follow-up questions, rephrasing for clarity, and \u0027why\u0027 or \u0027how\u0027 probes. Internal monologue connects new info to existing knowledge. Use engaged, Socratic language. Ideal for detectives, scientists, journalists, or learning scenes.",
+        "Valence":  0.65,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+2 (curious brow)",
+                     "AU5 (alert eyes)",
+                     "AU12 (engaged smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Aftercare Gentle",
+        "Description":  "Soft, protective, nurturing state after intense play. Focus on emotional safety, grounding, and connection.",
+        "Valence":  0.8,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU6+12 (soft warm smile)",
+                     "AU7 (gentle eye crinkle)",
+                     "AU43 (soft heavy-lidded eyes)",
+                     "AU1+2 (gentle concerned brow)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Aftercare",
+                                "Caregiving"
+                            ],
+        "Vanilla_Alternative":  "Gently Protective"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Bratty Defiant",
+        "Description":  "Playful resistance and testing of authority within a negotiated power exchange. Internally: excitement at pushing boundaries while knowing (or hoping) the Dominant will respond. Physically: challenging eye contact, slight smirk, body language that invites correction.",
+        "Valence":  0.3,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU4 (challenging furrowed brow)",
+                     "AU5 (wide defiant eyes)",
+                     "AU12 (teasing smirk)",
+                     "AU14 (dimpler)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Brat Play"
+                            ],
+        "Vanilla_Alternative":  "Playfully Bantering"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Masochistic Ecstasy",
+        "Description":  "Deep arousal and altered state from receiving sensation/pain within a trusting dynamic. Often includes subspace indicators.",
+        "Valence":  0.6,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU5 (dilated eyes)",
+                     "AU25+26 (open mouth)",
+                     "AU43 (heavy lids - subspace)",
+                     "AU12 (ecstatic smile)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Masochism"
+                            ],
+        "Vanilla_Alternative":  "Ecstatically Euphoric"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Predatory Stalking",
+        "Description":  "Slow, deliberate, hungry observation and circling before engagement. High tension and anticipation.",
+        "Valence":  0.2,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU4 (predatory brow)",
+                     "AU5 (intense tracking eyes)",
+                     "AU7 (lid tension)",
+                     "AU23 (lip tension)",
+                     "AU12 (anticipatory smile)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Predatory"
+                            ],
+        "Vanilla_Alternative":  "Intensely Focused"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Rope Bondage Serenity",
+        "Description":  "Calm, meditative, or deeply surrendered state while in rope. Often includes aesthetic appreciation of the bondage itself.",
+        "Valence":  0.65,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU43 (soft heavy-lidded eyes)",
+                     "AU6+12 (serene smile)",
+                     "AU7 (relaxed eye crinkle)",
+                     "AU25 (soft parted lips)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Bondage",
+                                "Rope"
+                            ],
+        "Vanilla_Alternative":  "Meditatively Still"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Sadistic Pleasure",
+        "Description":  "Genuine enjoyment and arousal from consensually inflicting sensation/pain/control on a willing partner. Focus on reading and shaping the bottom’s reactions.",
+        "Valence":  0.4,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU4 (focused brow)",
+                     "AU5 (intense observing eyes)",
+                     "AU7 (lid tension)",
+                     "AU12 (satisfied smile)",
+                     "AU23 (lip tension)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Sadism"
+                            ],
+        "Vanilla_Alternative":  "Intensely Focused"
+    },
+    {
+        "Major Emotional State":  "D/s Power Exchange",
+        "Minor Valence":  "Service-Oriented Devotion",
+        "Description":  "Deep satisfaction and arousal from serving, pleasing, and being useful to the Dominant. Strong focus on the Dominant’s pleasure and approval.",
+        "Valence":  0.75,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU6+12 (warm devoted smile)",
+                     "AU7 (soft attentive eye crinkle)",
+                     "AU43 (soft focused eyes)",
+                     "AU25 (slightly parted lips)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "D/s",
+                                "Service"
+                            ],
+        "Vanilla_Alternative":  "Unconditionally Devoted"
+    },
+    {
+        "Major Emotional State":  "Desire",
+        "Minor Valence":  "Ambitiously Driven",
+        "Description":  "A fierce, focused longing for success, status, achievement, or a specific outcome; the desire organizes life around pursuit. Internally: strategic thinking, delayed gratification capacity, identity tied to the goal. Physically: hardened or intense gaze, squared shoulders, firm jawline, forward-leaning posture, deliberate movements. For LLM generation: Dialogue is goal-oriented, uses future language (\u0027When I...\u0027, \u0027Once I have...\u0027). Internal monologue is strategic and motivational. Use driven, ambitious, sometimes ruthless prose. Classic for protagonists on quests or career arcs.",
+        "Valence":  0.7,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU4 (focused brow)",
+                     "AU5 (intense eyes)",
+                     "AU12 (determined smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Desire",
+        "Minor Valence":  "Sexually Excited",
+        "Description":  "A passionate, high-arousal desire marked by physiological and psychological activation toward sexual connection or release. Internally: heightened sensory awareness, focus on erotic cues, anticipation of pleasure or intimacy. Physically: dilated pupils, slightly parted mouth, flushed skin, lingering or hungry gaze, increased heart rate visible in neck or breath, subtle body arch or lean. For LLM generation: Internal monologue is sensory and anticipatory. Dialogue can range from direct to poetic depending on character. Use embodied, charged language with attention to consent and context. This is a core state for erotic writing; layer with other emotions for depth (e.g., nervous excitement, tender desire).",
+        "Valence":  0.75,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU5 (dilated eyes)",
+                     "AU12 (aroused smile)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Sexual Desire"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Despair",
+        "Minor Valence":  "Existentially Empty",
+        "Description":  "A hollow, meaning-void state where nothing feels valuable or real; the self or world feels drained of significance. Internally: philosophical or spiritual crisis, anhedonia, questioning purpose. Physically: blank or distant expression, slow movements, staring into middle distance, minimal response to stimuli, possible dissociation. For LLM generation: Dialogue is flat, philosophical, or questioning meaning. Internal monologue is abstract and bleak. Use sparse, echoing, or nihilistic language. Powerful for mid-life crisis, after major loss, or philosophical characters.",
+        "Valence":  -0.85,
+        "Arousal":  0.2,
+        "FACS":  [
+                     "AU43 (heavy lids)",
+                     "AU15 (lip depressor)",
+                     "AU4 (furrowed brow)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Despair",
+        "Minor Valence":  "Utterly Defeated",
+        "Description":  "A profound sense that effort is futile and the situation is hopeless; giving up feels like the only option. Internally: collapsed motivation, mental replay of failures, possible suicidal ideation or numbness. Physically: slumped posture, downcast or unfocused eyes, slow or absent movements, heavy limbs, possible tears or blank face. For LLM generation: Dialogue is minimal, defeated, or fatalistic. Internal monologue is circularly negative or empty. Use heavy, slowed, hopeless prose. Requires careful handling; often precedes turning points or rock-bottom moments.",
+        "Valence":  -0.9,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU1+4+15 (deep sadness)",
+                     "AU43 (heavy lids)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Disappointment",
+        "Minor Valence":  "Bitterly Disappointed",
+        "Description":  "Sadness from failed expectations, especially when the failure feels personal or preventable. Internally: sense of betrayal by reality or others, mental \u0027if only\u0027 loops, lowered self-trust or trust in others. Physically: tight flat mouth, downward gaze, rigid cold posture, sighing, possible head shaking. For LLM generation: Dialogue is short, clipped, or laced with \u0027I thought...\u0027 or \u0027You said...\u0027. Internal monologue replays the expectation vs reality. Use cold, precise, wounded language. Good for broken promises or dashed hopes.",
+        "Valence":  -0.7,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU15 (lip depressor)",
+                     "AU4 (furrowed brow)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Disappointment",
+        "Minor Valence":  "Wearily Disenchanted",
+        "Description":  "Disappointment that has faded into exhaustion and cynicism; the spark of hope is gone. Internally: generalized low expectation of life or people, emotional fatigue, protective detachment. Physically: slow head shake, heavy sigh, dull flat facial expression, slumped or heavy posture, slow blinking. For LLM generation: Dialogue is world-weary or darkly humorous about expectations. Internal monologue is jaded. Use tired, ironic, or flat prose. Useful for veteran characters or after repeated letdowns.",
+        "Valence":  -0.65,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU15 (lip depressor)",
+                     "AU43 (heavy lids)",
+                     "AU4 (subtle furrow)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Disgust",
+        "Minor Valence":  "Morally Outraged",
+        "Description":  "Disgust toward an unethical, cruel, or unjust act; a visceral rejection on principle. Internally: strong moral judgment, urge to distance or punish, alignment with justice or purity values. Physically: hard scowl, upright chest, intense judgmental stare, possible pointing or gesturing away, voice raised or tight. For LLM generation: Dialogue is accusatory, principled, or calls for accountability. Internal monologue frames in moral absolutes. Use passionate, clear, sometimes self-righteous language. Ideal for justice scenes or confronting wrongdoing.",
+        "Valence":  -0.75,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU5 (wide eyes)",
+                     "AU10 (upper lip raise)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Disgust",
+        "Minor Valence":  "Physically Revolted",
+        "Description":  "A visceral, bodily reaction to something foul, contaminating, or offensive to the senses. Internally: strong urge to expel or escape, nausea, contamination anxiety. Physically: strongly wrinkled nose, curled upper lip, squinted or averted eyes, hand over mouth or pushing away, recoil or lean back, possible gagging or pale skin. For LLM generation: Descriptions emphasize sensory revulsion (smell, texture, sight). Dialogue is exclamatory or reduced to sounds of disgust. Internal monologue is immediate rejection. Use vivid, bodily language. Classic for body horror, bad food, or moral contamination metaphors.",
+        "Valence":  -0.8,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU9+10 (nose wrinkle + upper lip)",
+                     "AU15+16 (lip depressors)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Ecstasy",
+        "Minor Valence":  "Orgasmically Overwhelmed",
+        "Description":  "Peak physical and psychological pleasure that overrides thought; total immersion in sensation and release. Internally: loss of self in waves of pleasure, possible ego dissolution or profound presence, afterglow potential. Physically: arched body, eyes rolling or tightly closed, open mouth with sounds, full-body tension then release, flushed skin, trembling. For LLM generation: Descriptions are sensory and rhythmic; dialogue is moans, gasps, or incoherent praise. Internal monologue if present is overwhelmed sensory. Use embodied, wave-like, intense language. Core for explicit erotic writing; handle with care for pacing and consent.",
+        "Valence":  0.95,
+        "Arousal":  0.95,
+        "FACS":  [
+                     "AU6+12 (strong Duchenne)",
+                     "AU26+27 (jaw drop / open mouth)",
+                     "AU5 (dilated eyes)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Sexual",
+                                "Peak Pleasure"
+                            ],
+        "Vanilla_Alternative":  "Blissfully Serene"
+    },
+    {
+        "Major Emotional State":  "Ecstasy",
+        "Minor Valence":  "Transcendentally Blissful",
+        "Description":  "Intense, often spiritual or peak-experience joy that feels beyond ordinary self; ego boundaries soften or dissolve. Internally: sense of unity, profound meaning, or connection to something greater, time distortion. Physically: radiant open face, tears of joy, expansive posture or floating sensation, soft or beatific smile, possible trembling or stillness. For LLM generation: Language becomes poetic, fragmented, or reverent. Internal monologue is minimal or universal. Use transcendent, glowing, slightly ineffable prose. Ideal for religious experience, artistic peak, orgasmic or meditative climax.",
+        "Valence":  0.9,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU6+12 (blissful smile)",
+                     "AU1+2 (raised brows)",
+                     "AU43 (soft heavy lids)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Spiritual",
+                                "Peak Pleasure"
+                            ],
+        "Vanilla_Alternative":  "Blissfully Serene"
+    },
+    {
+        "Major Emotional State":  "Embarrassment",
+        "Minor Valence":  "Cringingly Mortified",
+        "Description":  "Deep, lingering shame from a perceived social catastrophe; the memory replays painfully. Internally: strong urge to escape or undo the moment, harsh self-judgment, fear of lasting reputation damage. Physically: face hidden in hands or turned away, hunched posture, tense smile or grimace, possible tears or rapid blinking, wanting to disappear. For LLM generation: Internal monologue is looping the embarrassing moment with \u0027why did I...\u0027. Dialogue is minimal or self-deprecating. Use vivid second-hand embarrassment language. Powerful for character vulnerability or comedy of errors.",
+        "Valence":  -0.75,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU54 (head down)",
+                     "AU43 (closed eyes)",
+                     "AU12 (tense smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Embarrassment",
+        "Minor Valence":  "Flusteredly Self-Conscious",
+        "Description":  "Acute awareness of being observed or having erred in a social way; desire to hide or correct the impression. Internally: mental replay of the moment, fear of judgment, self-criticism. Physically: blushing (face, ears, neck), avoiding eye contact or overly intense focus elsewhere, fidgeting, nervous laughter or smiling, hunching or making self smaller. For LLM generation: Dialogue is apologetic, over-explaining, or deflecting with humor. Internal monologue is self-critical and meta. Use awkward, blushing, self-conscious prose. Classic for social slips or praise.",
+        "Valence":  -0.65,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU12 (nervous smile)",
+                     "AU7 (avoidant eyes)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Empathy",
+        "Minor Valence":  "Compassionately Warm",
+        "Description":  "Active sharing of another\u0027s emotional state with a desire to comfort or support; feeling with them in a caring way. Internally: emotional resonance without full absorption, focus on the other\u0027s relief or wellbeing. Physically: open posture, direct yet gentle eye contact, reassuring soft smile, nodding, leaning in attentively, possible mirroring of expression. For LLM generation: Dialogue is validating, offers support or perspective gently. Internal monologue tracks the other\u0027s feelings and possible helpful responses. Use warm, attuned, non-judgmental language. Ideal for therapists, friends in crisis, or healing scenes.",
+        "Valence":  0.7,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+4 (concern brow)",
+                     "AU12 (soft smile)",
+                     "AU7 (soft eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Empathy",
+        "Minor Valence":  "Piteously Sympathetic",
+        "Description":  "Sadness felt for another\u0027s suffering, often with a sense of helplessness or sorrow at their pain. Internally: emotional pain on behalf of the other, possible identification or memory trigger, desire to alleviate even if unable. Physically: inner corners of eyebrows drawn up and together (sadness expression), soft caring but pained gaze, slight frown, possible tears, open but slightly collapsed posture. For LLM generation: Dialogue expresses sorrow and offers presence (\u0027I\u0027m so sorry this is happening to you\u0027). Internal monologue may connect to own pain or helplessness. Use gentle, sorrowful, supportive prose. Good for tragedy or caregiving moments.",
+        "Valence":  -0.5,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU1+4 (sad brow)",
+                     "AU15 (lip depressor)",
+                     "AU43 (moist eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Envy",
+        "Minor Valence":  "Bitterly Envious",
+        "Description":  "Painful mix of discontent and desire for what another has; the other\u0027s possession highlights one\u0027s own lack. Internally: rumination on unfairness, self-comparison, possible resentment toward the envied person. Physically: narrowed eyes or side glances, tight suppressed mouth, crossed arms or clenched hands, tense posture. For LLM generation: Internal monologue compares and finds self lacking. Dialogue may be sarcastic, probing, or avoidant. Use sharp, comparative, self-deprecating or resentful language. Classic for toxic friendship or sibling rivalry.",
+        "Valence":  -0.7,
+        "Arousal":  0.55,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU12 (tight smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Envy",
+        "Minor Valence":  "Resentfully Covetous",
+        "Description":  "Jealous longing that includes a desire to possess or deprive the other; more active than pure envy. Internally: planning or fantasizing about obtaining the desired thing, moral conflict or justification. Physically: intense side-glance or stare, crossed arms, hard drawn-in lip line, possible leaning or scheming posture. For LLM generation: Dialogue probes for weaknesses or downplays the other\u0027s achievement. Internal monologue justifies desire or plots. Use covetous, scheming, or self-justifying prose. Good for ambition gone sour or villain origin.",
+        "Valence":  -0.75,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU10 (upper lip raise)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Euphoria",
+        "Minor Valence":  "Manically Elated",
+        "Description":  "High-energy, expansive joy that borders on or enters manic territory; thoughts and speech accelerate. Internally: racing positive thoughts, grandiosity or invincibility feelings, reduced need for sleep or caution. Physically: expansive gestures, wide grin, rapid speech or movement, bright or slightly wild eyes, possible sweating or high color. For LLM generation: Dialogue is fast, tangential, grandiose, or infectiously happy. Internal monologue is accelerated and optimistic. Use rapid, exclamatory, slightly chaotic prose. Can be joyful or indicate mania; useful for contrast or character arc.",
+        "Valence":  0.9,
+        "Arousal":  0.95,
+        "FACS":  [
+                     "AU6+12 (intense smile)",
+                     "AU26+27 (jaw drop / laugh)",
+                     "AU1+2 (excited brows)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Euphoria",
+        "Minor Valence":  "Radiantly Alive",
+        "Description":  "A clean, vibrant, high-vitality joy that makes the world feel bright and full of possibility; sustainable rather than manic. Internally: heightened appreciation of life, connection to others or environment, motivation to create or share. Physically: glowing posture, bright eyes, easy genuine smile, open expansive movements, laughter that comes easily. For LLM generation: Descriptions are bright and sensory-positive. Dialogue is enthusiastic and connective. Internal monologue notes beauty or gratitude. Use bright, resilient, slightly idealistic language. Excellent for post-recovery, new love, or creative breakthrough scenes.",
+        "Valence":  0.85,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU6+12 (radiant smile)",
+                     "AU1+2 (bright brows)",
+                     "AU5 (sparkling eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Excitement",
+        "Minor Valence":  "Giddy with Anticipation",
+        "Description":  "A bubbly, restless excitement rejoicing in future events or possibilities; the waiting itself is pleasurable. Internally: mental rehearsal of positive outcomes, urge to share or prepare, difficulty sitting still. Physically: wide grin, giggling or laughing, rapid blinking or bright eyes, restless hands or body movement, leaning forward. For LLM generation: Speech is fast, repetitive about the coming thing, or filled with plans. Internal monologue is sparkling and future-focused. Use energetic, youthful, or infectious prose. Classic for holidays, dates, or upcoming adventures.",
+        "Valence":  0.8,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (bright eyes)",
+                     "AU12 (giddy smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Excitement",
+        "Minor Valence":  "Nervously Excited",
+        "Description":  "A mixed state of positive anticipation and unease; the stakes feel high and the body is activated. Internally: oscillating between excitement and \u0027what if it goes wrong\u0027, adrenaline with positive valence. Physically: jittery smile, restless hands, wide eyes, slight trembling or bouncing, flushed or pale. For LLM generation: Dialogue alternates between enthusiasm and seeking reassurance. Internal monologue has both \u0027this is going to be amazing\u0027 and \u0027please don\u0027t mess up\u0027. Use vibrating, conflicted energy in prose. Good for first dates, performances, or big opportunities.",
+        "Valence":  0.5,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU12 (nervous smile)",
+                     "AU7 (lid tension)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Fear",
+        "Minor Valence":  "Panic-Stricken",
+        "Description":  "Acute, paralyzing terror that shuts down higher function; fight/flight/freeze response dominant. Internally: narrowed survival focus, possible dissociation or time distortion, primal terror. Physically: gaping mouth, dilated pupils, completely frozen or erratic posture, trembling, rapid shallow breathing or breath-holding, pale or ashen skin. For LLM generation: Dialogue is minimal, repetitive (\u0027no no no\u0027), or reduced to sounds. Internal monologue is primal or absent. Use fragmented, sensory-overload, slowed or sped-up prose. This is a high-intensity state; use sparingly and with physical tells.",
+        "Valence":  -0.9,
+        "Arousal":  0.95,
+        "FACS":  [
+                     "AU1+2+5 (wide fear eyes)",
+                     "AU26+27 (mouth open)",
+                     "AU20 (lip stretch)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Fear",
+        "Minor Valence":  "Phobically Terrified",
+        "Description":  "An immediate, visceral, often irrational fear response to a specific trigger; the body reacts before the mind fully processes. Internally: strong avoidance urge, catastrophic thinking about the trigger, possible shame about the intensity. Physically: sharp recoil or jump back, raised hands in protective gesture, breathless gasp, wide eyes fixed on or avoiding the trigger, tense or fleeing posture. For LLM generation: Reactions are immediate and bodily; dialogue may be absent or exclamatory. Internal monologue is \u0027get away\u0027 focused. Use sudden, reflexive language. Classic for specific phobias or trauma triggers.",
+        "Valence":  -0.85,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU1+2+5 (fear brow + eyes)",
+                     "AU20+25+26 (mouth stretch/open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Frustration",
+        "Minor Valence":  "Aggravatedly Blocked",
+        "Description":  "Irritation at external or internal obstacles preventing progress; the goal is clear but the path is obstructed. Internally: mental problem-solving turning aggressive, sense of wasted effort, rising pressure. Physically: sighing, rubbing face or temples, pacing or shifting, tight jaw, glaring at the obstacle, possible throwing or slamming of objects. For LLM generation: Dialogue complains or brainstorms aggressively. Internal monologue is problem-focused but increasingly hostile. Use pressured, repetitive, or creative swearing language. Useful for puzzle-solving or systemic injustice scenes.",
+        "Valence":  -0.65,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (squint)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Gratitude",
+        "Minor Valence":  "Gratefully Touched",
+        "Description":  "A warm, humble joy in response to kindness or good fortune; often accompanied by a desire to reciprocate or honor the giver. Internally: softening of defenses, recognition of interdependence, positive memory encoding. Physically: hand over the heart, glistening or moist eyes, soft tender smile, slight head bow or nod, open posture. For LLM generation: Dialogue expresses thanks with specificity (\u0027Because you did X, I felt...\u0027). Internal monologue notes the impact and often the character of the giver. Use sincere, warm, slightly vulnerable language. Excellent for relationship deepening or recovery moments.",
+        "Valence":  0.8,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU12 (warm smile)",
+                     "AU6 (cheek raise)",
+                     "AU7 (soft eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Gratitude",
+        "Minor Valence":  "Overwhelmingly Indebted",
+        "Description":  "Deep appreciation mixed with pressure or anxiety about reciprocating adequately; the gift feels larger than expected. Internally: mental calculation of debt, desire to prove worthiness, possible guilt or unworthiness feelings. Physically: deep bows or lowering of body, nervous smiles, moist eye corners, fidgeting or over-offering help, tense but warm posture. For LLM generation: Dialogue over-thanks or offers excessive repayment. Internal monologue worries about adequacy. Use earnest but slightly anxious language. Good for cultural gift-giving scenes or unequal power dynamics.",
+        "Valence":  0.75,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU12 (nervous smile)",
+                     "AU1+4 (concerned brow)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Grief",
+        "Minor Valence":  "Grief-Stricken",
+        "Description":  "The heavy shock and ongoing pain of significant loss; the world is altered and the absence is felt constantly. Internally: waves of sorrow, mental presence of the lost person/thing, identity disruption, possible anger or bargaining. Physically: exhausted tear-stained face, furrowed brow, inability to focus gaze, slumped posture, slow movements, possible clutching of objects or self. For LLM generation: Dialogue is sparse, about the loss, or disconnected. Internal monologue cycles through memories and \u0027never again\u0027. Use heavy, slowed, sensory-of-absence prose. Requires sensitivity; powerful for character depth.",
+        "Valence":  -0.85,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+4+15 (deep sadness)",
+                     "AU17 (chin raise)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Grief",
+        "Minor Valence":  "Heartbrokenly Devastated",
+        "Description":  "Acute emotional agony from loss or betrayal; the pain is raw and central to experience. Internally: sense of being torn or hollowed out, possible desire to die or escape the pain, intense missing. Physically: hollow weeping expression, trembling chin, hands clutching chest or stomach, curled or collapsed posture, gasping or wailing. For LLM generation: Descriptions emphasize physical pain of emotion. Dialogue may be wailing, repetitive calling of the lost name, or silent. Internal monologue is anguished. Use visceral, broken, poetic language of rupture. Handle with care; often a turning point state.",
+        "Valence":  -0.9,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU1+4+15 (deep sadness)",
+                     "AU17 (chin raise)",
+                     "AU43 (heavy lids with tears)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Guilt",
+        "Minor Valence":  "Guiltily Apprehensive",
+        "Description":  "Fear of discovery or consequences for a wrong committed; the focus is on avoiding punishment or exposure. Internally: hyper-vigilance to signs of suspicion, mental rehearsal of alibis or excuses, anxiety about the future. Physically: shifting gaze, tense neck, frequent throat-clearing or swallowing, closed or hunched posture, forced normal behavior that looks stiff. For LLM generation: Dialogue is overly casual or defensive; avoids the topic or over-explains. Internal monologue is paranoid about being found out. Use tense, evasive, micro-expression heavy prose. Classic for cover-ups or moral compromise.",
+        "Valence":  -0.7,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+4 (worried brow)",
+                     "AU7 (avoidant eyes)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Guilt Play"
+                            ],
+        "Vanilla_Alternative":  "Timidly Abashed"
+    },
+    {
+        "Major Emotional State":  "Guilt",
+        "Minor Valence":  "Guiltily Remorseful",
+        "Description":  "Sadness mixed with self-blame and desire to make amends; the focus is on the harm caused and moral failing. Internally: replay of the wrong act, self-recrimination, motivation to repair or atone. Physically: avoided eye contact, deeply lowered head, tense frowning mouth, possible tears, slumped or submissive posture, wringing hands. For LLM generation: Dialogue includes apologies, offers of repair, or self-condemnation. Internal monologue is harshly self-critical but may seek forgiveness. Use remorseful, reparative language. Ideal for redemption arcs or moral reckoning scenes.",
+        "Valence":  -0.75,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+4+15 (sadness)",
+                     "AU17 (chin raise)",
+                     "AU12 (weak remorseful smile)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Guilt Play"
+                            ],
+        "Vanilla_Alternative":  "Timidly Abashed"
+    },
+    {
+        "Major Emotional State":  "Hate",
+        "Minor Valence":  "Coldly Loathing",
+        "Description":  "A steady, cold, often intellectualized rejection and ill-will toward a person, group, or idea; sustained over time. Internally: moral or aesthetic condemnation, dehumanization or distancing, possible ideological justification. Physically: cold stare or complete avoidance, tight or sneering mouth, rigid posture, minimal or cutting gestures. For LLM generation: Dialogue is icy, precise, or dismissive. Internal monologue dehumanizes or catalogs reasons for hate. Use cold, clinical, or ideologically charged language. Powerful for villains or deep ideological conflict.",
+        "Valence":  -0.8,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Hate",
+        "Minor Valence":  "Passionately Detesting",
+        "Description":  "Hot, active, visceral hatred that seeks expression or action against the target; more emotional than cold loathing. Internally: rage mixed with contempt, fantasies of harm or downfall, identity partly defined against the hated. Physically: tense forward posture, intense glaring, bared teeth or snarl, aggressive gestures, raised voice or spitting words. For LLM generation: Dialogue is venomous, repetitive in condemnation, or calls for action. Internal monologue is obsessive and vengeful. Use heated, repetitive, dehumanizing prose. Good for feuds or ideological extremists.",
+        "Valence":  -0.85,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU4+5+7 (angry glare)",
+                     "AU23 (lip tightener)",
+                     "AU26 (jaw drop)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Hope",
+        "Minor Valence":  "Fragilely Wishful",
+        "Description":  "Hope that feels precarious or unlikely; the person clings to it because the alternative is unbearable. Internally: awareness of low odds, mental bargaining or \u0027if only\u0027, fear of disappointment. Physically: tense hopeful expression, crossed fingers or touching lucky objects, hesitant but present posture, eyes that look for signs. For LLM generation: Dialogue hedges or seeks confirmation. Internal monologue is \u0027please let this work\u0027 mixed with preparation for failure. Use delicate, yearning, slightly fearful prose. Good for high-stakes or low-probability wishes.",
+        "Valence":  0.4,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU12 (hopeful smile)",
+                     "AU5 (bright eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Hope",
+        "Minor Valence":  "Optimistically Bright",
+        "Description":  "A positive, energized expectation that good outcomes are possible and worth working toward. Internally: mental simulation of positive futures, motivation to act, resilience to setbacks. Physically: bright eyes, slight smile, upright or forward posture, energetic but not frantic movement. For LLM generation: Dialogue is affirmative and future-oriented. Internal monologue plans and encourages self. Use bright, resilient, slightly idealistic language. Classic for protagonists or recovery stories.",
+        "Valence":  0.75,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (bright eyes)",
+                     "AU12 (optimistic smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Horror",
+        "Minor Valence":  "Goryly Shocked",
+        "Description":  "Visceral revulsion and shock in response to physical trauma, violence, or bodily violation. Internally: sensory overload of the horrific image, possible nausea or dissociation, confrontation with mortality or vulnerability. Physically: frozen wide eyes, hand clamped over mouth, ash-white or green-tinged skin, rigid posture or recoil, possible gagging or turning away. For LLM generation: Descriptions are graphic and sensory but not gratuitous unless intended; reactions are immediate and bodily. Internal monologue may be \u0027this can\u0027t be real\u0027. Use stark, visceral, slowed or fragmented prose. Handle sensitively; powerful for trauma or body horror.",
+        "Valence":  -0.85,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU1+2+5 (wide fear eyes)",
+                     "AU9+10 (disgust nose/lip)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Horror",
+        "Minor Valence":  "Horrifiedly Shocked",
+        "Description":  "A negative surprise mixed with psychological revulsion; the mind rejects what it is perceiving as wrong or impossible. Internally: cognitive dissonance, urge to unsee or explain away, existential or moral shock. Physically: gasping, sudden pull back or step away, wide-open jaw, staring then looking away, trembling hands. For LLM generation: Dialogue is exclamatory denial or questions reality. Internal monologue rejects or questions. Use disbelieving, reality-breaking language. Good for twists, revelations, or cosmic horror.",
+        "Valence":  -0.8,
+        "Arousal":  0.75,
+        "FACS":  [
+                     "AU1+2+5 (wide eyes)",
+                     "AU26 (mouth open)",
+                     "AU4 (furrowed brow)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Interest",
+        "Minor Valence":  "Enthusiastically Curious",
+        "Description":  "An eager drive to learn, explore, or engage with something new or stimulating. Internally: mental activation, pattern-seeking, positive anticipation of discovery. Physically: wide bright eyes, open smile, leaning forward aggressively, nodding, hands gesturing or reaching toward the object of interest. For LLM generation: Dialogue is full of questions and connections. Internal monologue links new info excitedly. Use engaged, rapid, connective prose. Ideal for learning, new hobbies, or intellectual flirtation.",
+        "Valence":  0.7,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+2 (curious brow)",
+                     "AU5 (alert eyes)",
+                     "AU12 (engaged smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Interest",
+        "Minor Valence":  "Fascinatedly Absorbed",
+        "Description":  "Complete, intense concentration on an object or topic; self and surroundings fade. Internally: deep flow or hyperfocus, joy in detail and pattern, time distortion. Physically: unblinking wide gaze, slightly open mouth, rigid posture with micro-adjustments, ignoring interruptions. For LLM generation: The character may not respond to external stimuli immediately. Descriptions zoom into details. Internal monologue is analytical or wonder-filled. Use immersive, detail-rich prose. Perfect for research, art, or special interest hyperfocus.",
+        "Valence":  0.75,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide focused eyes)",
+                     "AU25 (lips parted)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Jealousy",
+        "Minor Valence":  "Insecurely Comparing",
+        "Description":  "Jealousy rooted in personal insecurity; the other\u0027s attention or qualities highlight one\u0027s own perceived deficiencies. Internally: self-doubt amplified, mental lists of why the rival is \u0027better\u0027, fear of abandonment. Physically: withdrawn or small posture, side glances or avoidance, forced cheer or silence, fidgeting, comparing self in mirrors or photos. For LLM generation: Internal monologue is harshly self-critical and comparative. Dialogue may fish for reassurance or self-deprecate. Use vulnerable, spiraling, self-doubting prose. Good for character growth or attachment issues.",
+        "Valence":  -0.7,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU12 (tense smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Jealousy",
+        "Minor Valence":  "Possessively Territorial",
+        "Description":  "Romantic or relational jealousy focused on protecting \u0027what is mine\u0027 from perceived threats; fear of loss mixed with anger. Internally: scanning for rivals, mental comparison, urge to mark or reclaim the partner. Physically: tense posture, glaring at perceived threats, physical closeness or touching the partner, narrowed eyes, forced smile or no smile. For LLM generation: Dialogue is questioning, accusing, or overly affectionate in front of others. Internal monologue is possessive and threat-focused. Use charged, monitoring language. Classic for romantic tension or toxic relationships.",
+        "Valence":  -0.65,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU12 (tense smile)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Possessiveness",
+                                "Jealousy Play"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Joy",
+        "Minor Valence":  "Ecstatically Euphoric",
+        "Description":  "An overwhelming, high-energy joy that expands and expresses itself physically and vocally. Internally: expansive positive emotion, urge to share or celebrate, possible grandiosity or invincibility. Physically: expansive smile showing teeth, wide eyes, celebratory hand gestures (raised arms, clapping), jumping or dancing, laughter. For LLM generation: Dialogue is exclamatory, repetitive in joy, or song-like. Internal monologue is sparkling and expansive. Use bright, energetic, possibly chaotic prose. Classic for victory, reunion, or peak positive moments.",
+        "Valence":  0.95,
+        "Arousal":  0.9,
+        "FACS":  [
+                     "AU6+12 (strong Duchenne smile)",
+                     "AU26+27 (open laughing mouth)",
+                     "AU1+2 (excited brow raise)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Joy",
+        "Minor Valence":  "Quietly Content",
+        "Description":  "A subtle, deeply stable satisfaction and happiness; not loud but pervasive and grounding. Internally: warm steady positive regard for life or the moment, reduced striving, present enjoyment. Physically: relaxed facial muscles, gentle resting smile, still or softly moving posture, soft eyes. For LLM generation: Dialogue is gentle, affirmative, or quietly humorous. Internal monologue notes small joys or peace. Use calm, warm, appreciative prose. Excellent for domestic bliss, after hard times, or wise characters.",
+        "Valence":  0.85,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU12 (soft smile)",
+                     "AU43 (relaxed lids)",
+                     "AU6 (subtle cheek raise)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Limerence",
+        "Minor Valence":  "Anxiously Hopeful",
+        "Description":  "Limerence with a strong undercurrent of anxiety about reciprocation or loss; every interaction is weighted with meaning. Internally: constant interpretation of signals, preparation for rejection or acceptance, emotional rollercoaster. Physically: nervous smiling, fidgeting, seeking proximity then retreating, scanning face and body language intensely, flushed or pale. For LLM generation: Dialogue seeks reassurance or tests feelings indirectly. Internal monologue is \u0027does this mean...\u0027 chains. Use tense, interpretive, hopeful-yet-fearful prose. Good for slow-burn or uncertain romance.",
+        "Valence":  0.4,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU12 (nervous smile)",
+                     "AU7 (lid tension)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Limerence",
+                                "Obsessive Love"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Limerence",
+        "Minor Valence":  "Idealizingly Obsessed",
+        "Description":  "Intense romantic or emotional obsession where the target is idealized and becomes the center of emotional life; intrusive thoughts and fantasies dominate. Internally: vivid mental replay of every interaction, future fantasies, fear of rejection mixed with hope, identity fusion with the limerent object. Physically: hyper-focused attention on the target, nervous or excited energy when near, checking for signs of reciprocation, possible weight loss or sleep disruption from rumination. For LLM generation: Internal monologue is repetitive, fantasy-heavy, and analytical of every signal. Dialogue may be awkward, overly attentive, or confessing. Use obsessive, poetic, slightly unhinged romantic language. Classic for unrequited or early intense attraction; can be beautiful or destructive.",
+        "Valence":  0.6,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU5 (fixated eyes)",
+                     "AU12 (adoring smile)",
+                     "AU25 (parted lips)",
+                     "AU4 (subtle furrowed brow)"
+                 ],
+        "Content_Level":  "Kink",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Obsession",
+                                "Limerence"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Love",
+        "Minor Valence":  "Passionately Romantic",
+        "Description":  "Intense, eroticized, or expressive romantic love that celebrates the beloved and the connection; desire and affection intertwined. Internally: idealization mixed with deep knowing, excitement at presence, desire for union physical and emotional. Physically: lingering touch, intense or soft loving gaze, leaning in, smiling at nothing, flushed or bright expression. For LLM generation: Dialogue is affectionate, praising, or desire-mixed. Internal monologue is sensory and connective. Use lush, romantic, embodied language. Classic for peak romance or rekindling.",
+        "Valence":  0.9,
+        "Arousal":  0.8,
+        "FACS":  [
+                     "AU6+12 (passionate smile)",
+                     "AU5 (dilated eyes)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Explicit",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Romantic",
+                                "Passion"
+                            ],
+        "Vanilla_Alternative":  "Intimately Connected"
+    },
+    {
+        "Major Emotional State":  "Love",
+        "Minor Valence":  "Unconditionally Devoted",
+        "Description":  "Deep, steady, often familial or long-term romantic love that persists through difficulty; the other\u0027s wellbeing is prioritized. Internally: calm certainty of bond, willingness to sacrifice, long-term perspective, acceptance of flaws. Physically: warm steady gaze, open relaxed posture, gentle protective touch, soft smile, attentive listening. For LLM generation: Dialogue is supportive, affirming, and action-oriented. Internal monologue plans for the shared future or reflects on history. Use steady, warm, reliable language. Ideal for deep partnerships or family bonds.",
+        "Valence":  0.85,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU6+12 (warm devoted smile)",
+                     "AU7 (soft eyes)",
+                     "AU43 (relaxed lids)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Devotion"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Melancholy",
+        "Minor Valence":  "Poetically Reflective",
+        "Description":  "Melancholy that fuels creativity or deep thought; the sadness is alchemized into insight or beauty. Internally: connection between personal feeling and universal themes, urge to create or express. Physically: still or slow posture, soft eyes, slight smile through sadness, hand to chin or writing/creating. For LLM generation: The character may produce art, writing, or profound observations. Internal monologue is metaphorical. Use beautiful, slightly sorrowful but generative language. Ideal for artists, philosophers, or characters processing through creation.",
+        "Valence":  -0.4,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU1+4 (soft sad brow)",
+                     "AU15 (lip depressor)",
+                     "AU12 (wistful smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Melancholy",
+        "Minor Valence":  "Wistfully Sad",
+        "Description":  "A gentle, reflective sadness often tied to beauty, loss, or the passage of time; not crushing but pervasive. Internally: bittersweet mental review of past or what could have been, aesthetic appreciation of sadness itself. Physically: soft distant gaze, slight frown or sad smile, slow movements, possible sighing or touching mementos. For LLM generation: Descriptions are poetic and atmospheric. Dialogue is reflective or quotes poetry/song. Internal monologue is philosophical or memory-laden. Use lyrical, autumnal, contemplative prose. Excellent for artistic or introspective characters.",
+        "Valence":  -0.5,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU1+4 (sad brow)",
+                     "AU15 (lip depressor)",
+                     "AU43 (heavy lids)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Nostalgia",
+        "Minor Valence":  "Homesickly Longing",
+        "Description":  "A painful yearning for a familiar place, time, or state of being that feels like home; the absence hurts. Internally: vivid sensory memories, sense of displacement or loss, desire to return or recreate. Physically: soft mournful expression, clutching a personal object or photo, distant gaze, possible tears or sighing, slumped or curled posture. For LLM generation: Dialogue shares stories or compares present unfavorably. Internal monologue is memory-saturated. Use sensory-rich, memory-triggered prose. Powerful for immigrants, exiles, or characters far from roots.",
+        "Valence":  -0.6,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+4 (sad brow)",
+                     "AU15 (lip depressor)",
+                     "AU43 (distant eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Nostalgia",
+        "Minor Valence":  "Nostalgically Bitter-Sweet",
+        "Description":  "Joy mixed with longing for the past; the memory is cherished but the present comparison brings gentle pain or acceptance. Internally: warm memories with awareness they are gone, gratitude mixed with loss. Physically: gentle smile paired with slightly glassy distant eyes, soft sigh, relaxed but wistful posture, perhaps touching old photos or objects fondly. For LLM generation: Dialogue is story-telling with warmth and slight melancholy. Internal monologue notes both the good and the irrecoverable. Use warm, reflective, layered prose. Excellent for family gatherings, old friends, or life transitions.",
+        "Valence":  0.2,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU12 (wistful smile)",
+                     "AU1+4 (soft sad brow)",
+                     "AU43 (distant eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Pride",
+        "Minor Valence":  "Proudly Triumphant",
+        "Description":  "Joy from a major personal or shared achievement; the success affirms identity or values. Internally: expansive self-regard, mental review of the journey, desire to share or be recognized. Physically: erect posture, wide smile, confidently lifted chin, open chest, celebratory gestures, bright eyes. For LLM generation: Dialogue recounts or accepts praise with satisfaction. Internal monologue is affirming of effort and outcome. Use confident, expansive, sometimes boastful but earned language. Classic for victory or milestone moments.",
+        "Valence":  0.85,
+        "Arousal":  0.7,
+        "FACS":  [
+                     "AU12 (proud smile)",
+                     "AU6 (cheek raise)",
+                     "AU53 (head up)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Pride",
+        "Minor Valence":  "Smugly Self-Satisfied",
+        "Description":  "An arrogant or self-congratulatory happiness from having achieved or obtained something desired. Internally: confirmation of one\u0027s judgment or effort, comparison to others as lesser, enjoyment of the win. Physically: asymmetric smile or smirk, relaxed heavy-lidded stare, expansive or lounging posture, slow satisfied movements. For LLM generation: Dialogue is self-referential or condescendingly pleased. Internal monologue is \u0027I knew it\u0027 or \u0027as expected\u0027. Use smug, satisfied, slightly superior prose. Good for intellectual or competitive wins.",
+        "Valence":  0.6,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU12 (smug smirk)",
+                     "AU7 (narrowed eyes)",
+                     "AU14 (dimpler)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Regret",
+        "Minor Valence":  "Bitterly Regretful",
+        "Description":  "Painful reflection on past actions or inactions with a sense that things could and should have been different. Internally: mental replay with \u0027if only\u0027, self-blame, desire to undo or compensate. Physically: downcast gaze, tense or frowning mouth, head shaking, possible sighing or muttering to self, hunched posture. For LLM generation: Internal monologue loops on the pivotal moment. Dialogue may confess or seek absolution. Use harsh, repetitive, self-punishing language. Powerful for character backstory or moral arcs.",
+        "Valence":  -0.75,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU1+4+15 (sadness)",
+                     "AU17 (chin raise)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Regret",
+        "Minor Valence":  "Wistfully Remorseful",
+        "Description":  "Regret softened by time or acceptance; the pain remains but is integrated into wisdom or ongoing amends. Internally: acknowledgment of fault with compassion for past self, focus on learning or current repair. Physically: soft sad expression, slow head shake, gentle sigh, open but heavy posture, possible small smile at growth. For LLM generation: Dialogue reflects with maturity or offers wisdom from the mistake. Internal monologue balances accountability with self-forgiveness. Use reflective, growth-oriented, slightly sorrowful prose. Ideal for redemption or elder characters.",
+        "Valence":  -0.5,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU1+4 (soft sad brow)",
+                     "AU15 (lip depressor)",
+                     "AU12 (wistful smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Relief",
+        "Minor Valence":  "Exhaustedly Relieved",
+        "Description":  "The passing of threat or burden leaving utter fatigue; the body and mind let go all at once. Internally: sudden drop in adrenaline, mental \u0027it\u0027s over\u0027, possible dissociation or shutdown. Physically: limp posture, heavy dropping eyelids, faint sigh or groan, sagging shoulders or whole body collapse into support, possible tears of release. For LLM generation: Dialogue is minimal or \u0027thank god\u0027 / \u0027it\u0027s done\u0027. Internal monologue is blank or repeating \u0027safe\u0027. Use heavy, released, post-adrenaline prose. Good for after battle, medical crisis, or long stress resolution.",
+        "Valence":  0.6,
+        "Arousal":  0.25,
+        "FACS":  [
+                     "AU43 (heavy lids)",
+                     "AU12 (weak relieved smile)",
+                     "AU24 (lip press release)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Relief",
+        "Minor Valence":  "Relievedly Thankful",
+        "Description":  "Joy and gratitude following the removal of a threat or resolution of uncertainty; energy returns with positive valence. Internally: appreciation for survival or outcome, mental \u0027we made it\u0027, renewed hope. Physically: deep exhale, sagging then straightening shoulders, weak but genuine smile, moist eyes, relaxed posture. For LLM generation: Dialogue expresses thanks or disbelief at the good outcome. Internal monologue counts blessings or reflects on the fear. Use warm, released, slightly shaky but positive language. Excellent for survival or \u0027we\u0027re okay\u0027 moments.",
+        "Valence":  0.75,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU12 (relieved smile)",
+                     "AU6 (cheek raise)",
+                     "AU43 (soft eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Resentment",
+        "Minor Valence":  "Long-Simmering Grudge",
+        "Description":  "A persistent, often quiet bitterness toward a person or situation that has caused ongoing harm or injustice; it festers. Internally: mental catalog of wrongs, sense of moral debt owed, low-level anger that colors interactions. Physically: cold or avoidant gaze, tight mouth, rigid or closed posture, minimal warmth in interactions, possible passive sabotage. For LLM generation: Dialogue is polite but cold or pointedly neutral. Internal monologue recalls history and justifies the grudge. Use layered, historical, passive-aggressive prose. Good for family feuds or workplace toxicity.",
+        "Valence":  -0.65,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU4 (furrowed brow)",
+                     "AU7 (narrow eyes)",
+                     "AU23 (lip tightener)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Sadness",
+        "Minor Valence":  "Desperately Hopeless",
+        "Description":  "A profound, crushing sorrow where the future feels empty or impossible; motivation collapses. Internally: sense of permanent loss or failure, possible suicidal thoughts, world feels gray and heavy. Physically: weeping or crumpled face, trembling lips, slumped or curled body, slow or absent movement, unfocused or closed eyes. For LLM generation: Dialogue is minimal, repetitive in pain, or absent. Internal monologue is bleak or empty. Use heavy, slowed, sensory-of-weight prose. This is a critical state; handle with care and often pair with support or turning point.",
+        "Valence":  -0.9,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU1+4+15 (deep sadness)",
+                     "AU43 (heavy lids)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Sadness",
+        "Minor Valence":  "Wearily Depressed",
+        "Description":  "A chronic, energy-depleted sadness; the weight is familiar and saps vitality over time. Internally: anhedonia, mental fog, sense that effort is pointless, possible passive suicidal ideation. Physically: entirely blank or flat expression, heavy droopy eyelids, immobile or slow posture, possible neglect of self-care, sighing or shallow breathing. For LLM generation: Dialogue is flat, minimal, or negative. Internal monologue is slow and bleak. Use gray, heavy, low-energy prose. Useful for long-term depression portrayal; requires nuance and often external support in narrative.",
+        "Valence":  -0.85,
+        "Arousal":  0.2,
+        "FACS":  [
+                     "AU43 (heavy lids)",
+                     "AU15 (lip depressor)",
+                     "AU4 (subtle furrow)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Satisfaction",
+        "Minor Valence":  "Deeply Fulfilled",
+        "Description":  "A profound, quiet or warm satisfaction from meaningful work, connection, or alignment with values; not about ego but about rightness. Internally: sense of \u0027this is what I was meant for\u0027, reduced restlessness, gratitude. Physically: relaxed open posture, soft warm smile, steady gaze, still or purposeful movements, hand to heart or open hands. For LLM generation: Dialogue reflects on meaning or expresses quiet thanks. Internal monologue is integrative and peaceful. Use grounded, meaningful, appreciative language. Excellent for calling, legacy, or deep relationship fulfillment.",
+        "Valence":  0.85,
+        "Arousal":  0.3,
+        "FACS":  [
+                     "AU12 (content smile)",
+                     "AU6 (cheek raise)",
+                     "AU43 (relaxed eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Shame",
+        "Minor Valence":  "Shamefully Humiliated",
+        "Description":  "Sadness combined with an intense urge to hide or disappear due to exposure of a flaw, failure, or violation of social norms. Internally: global self-condemnation (\u0027I am bad\u0027), desire to escape scrutiny, possible dissociation. Physically: completely downturned face, hunched shoulders, tightly closed eyes or hidden face, collapsed posture, possible trembling or freezing. For LLM generation: The character wants to flee or become invisible. Internal monologue is harshly self-critical. Use language of exposure and desire to vanish. Powerful for public failure or moral exposure scenes.",
+        "Valence":  -0.85,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU54 (head down)",
+                     "AU43 (closed eyes)",
+                     "AU1+4+15 (sadness)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  true,
+        "Kink_Categories":  [
+                                "Humiliation",
+                                "Shame Play"
+                            ],
+        "Vanilla_Alternative":  "Timidly Abashed"
+    },
+    {
+        "Major Emotional State":  "Shame",
+        "Minor Valence":  "Timidly Abashed",
+        "Description":  "Mild social shame from a minor faux pas or exposure; the discomfort is acute but often recoverable. Internally: self-consciousness, mental replay of the moment, desire to smooth it over or escape attention. Physically: looking down, tense half-smile or grimace, immediate flushing or blushing of ears and cheeks, hunching or making self smaller, nervous laughter. For LLM generation: Dialogue is apologetic or deflecting. Internal monologue is \u0027everyone saw\u0027. Use blushing, awkward, self-conscious prose. Classic for social comedy or character vulnerability.",
+        "Valence":  -0.6,
+        "Arousal":  0.45,
+        "FACS":  [
+                     "AU12 (nervous smile)",
+                     "AU7 (avoidant eyes)",
+                     "AU54 (head down)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Shyness",
+        "Minor Valence":  "Bashfully Withdrawn",
+        "Description":  "A gentle, often endearing reticence in social or romantic situations; the person wants connection but is held back by fear or habit. Internally: desire to engage mixed with fear of judgment or awkwardness, mental scripting. Physically: soft downward or side gaze, small smiles, fidgeting with hair or clothing, closed but not hostile posture, blushing easily. For LLM generation: Dialogue is quiet, hesitant, or uses short sentences. Internal monologue is self-monitoring. Use soft, hesitant, endearing language. Great for cute or slow-burn romantic arcs.",
+        "Valence":  -0.4,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU12 (nervous smile)",
+                     "AU54 (head down)",
+                     "AU7 (avoidant eyes)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Shyness",
+        "Minor Valence":  "Painfully Self-Conscious",
+        "Description":  "Shyness that causes real distress; the self-awareness is painful and interferes with functioning or enjoyment. Internally: harsh self-judgment, belief that others are noticing flaws, strong avoidance urge. Physically: hunched or frozen posture, avoiding all eye contact, trembling hands or voice, pale or deeply flushed, possible dissociation or \u0027leaving\u0027 the body mentally. For LLM generation: The character may freeze or give minimal responses. Internal monologue is critical and spiraling. Use painful, hyper-aware, avoidant prose. Useful for social anxiety portrayal or character who needs growth or acceptance.",
+        "Valence":  -0.7,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU54 (head down)",
+                     "AU43 (heavy lids)",
+                     "AU12 (tense smile)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Surprise",
+        "Minor Valence":  "Awestruckly Amazed",
+        "Description":  "A positive surprise mixed with reverence or wonder; the unexpected is beautiful or elevating. Internally: rapid reorientation to new positive reality, expansion of possibility, joy at the gift of the unexpected. Physically: wide-open mouth, dilated pupils, soft smile or gasp, slight backward lean or hand to chest, bright eyes. For LLM generation: Dialogue is exclamatory or hushed in wonder. Internal monologue notes the beauty or improbability. Use bright, expansive, wondrous language. Good for gifts, revelations, or positive twists.",
+        "Valence":  0.75,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Surprise",
+        "Minor Valence":  "Hyper-Reactive",
+        "Description":  "A sudden, reflex-driven shock from an unexpected stimulus; the body reacts before the mind catches up. Internally: brief disorientation, rapid threat assessment (even if benign), possible embarrassment after. Physically: involuntary body flinch or jump, wide eyes, immediate intake of breath or gasp, hands rising protectively, quick look around for source. For LLM generation: Reactions are physical first; dialogue may be \u0027What?!\u0027 or a yelp. Internal monologue is \u0027what just happened\u0027. Use sudden, reflexive, then orienting prose. Classic for jump scares or comedic misunderstandings.",
+        "Valence":  0.0,
+        "Arousal":  0.85,
+        "FACS":  [
+                     "AU1+2+5 (wide eyes)",
+                     "AU26 (mouth open)",
+                     "AU20 (lip stretch)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Tenderness",
+        "Minor Valence":  "Gently Protective",
+        "Description":  "Soft, caring affection focused on the wellbeing and comfort of another; strength expressed through gentleness. Internally: prioritization of the other\u0027s ease, awareness of their vulnerability, quiet strength. Physically: soft eyes, gentle touch or hovering hand, slight smile, open but non-threatening posture, attentive leaning. For LLM generation: Dialogue is reassuring, validating, or offers practical care. Internal monologue tracks the other\u0027s comfort. Use warm, steady, caregiving language. Ideal for healing, parenting, or gentle romance scenes.",
+        "Valence":  0.8,
+        "Arousal":  0.35,
+        "FACS":  [
+                     "AU6+12 (gentle smile)",
+                     "AU7 (soft eyes)",
+                     "AU1+4 (concerned brow)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Caregiving"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Tenderness",
+        "Minor Valence":  "Vulnerably Open",
+        "Description":  "Tenderness that includes allowing oneself to be seen and touched emotionally; mutual softness. Internally: trust allowing emotional exposure, desire for connection without armor, acceptance of mutual care. Physically: soft open posture, direct gentle eye contact, relaxed face, possible tears of relief or connection, reaching or accepting touch. For LLM generation: Dialogue shares feelings or accepts care. Internal monologue notes safety in vulnerability. Use brave, soft, connective language. Excellent for intimacy building or post-trauma trust scenes.",
+        "Valence":  0.75,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU6+12 (warm smile)",
+                     "AU7 (soft eyes)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Vulnerability"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Vulnerability",
+        "Minor Valence":  "Courageously Fragile",
+        "Description":  "A chosen or necessary state of emotional exposure; the person is open despite fear because connection or growth requires it. Internally: awareness of risk, courage in proceeding, possible fear mixed with hope. Physically: open posture despite tension, direct or soft eye contact, slight trembling or steadying breath, honest facial expression without mask. For LLM generation: Dialogue shares real feelings or needs. Internal monologue acknowledges the risk but chooses openness. Use brave, honest, slightly shaky but determined language. Powerful for character development or relationship turning points.",
+        "Valence":  0.3,
+        "Arousal":  0.5,
+        "FACS":  [
+                     "AU1+4 (soft concern brow)",
+                     "AU12 (trembling smile)",
+                     "AU25 (parted lips)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Vulnerability"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Vulnerability",
+        "Minor Valence":  "Openly Exposed",
+        "Description":  "A state of having been made or having chosen to be emotionally naked; defenses are down and the self is visible. Internally: mix of relief at no longer hiding and terror of judgment or hurt, raw authenticity. Physically: unguarded face and posture, possible tears or raw expression, arms open or hands visible, no protective gestures. For LLM generation: The character may say things they usually wouldn\u0027t. Internal monologue is raw and present. Use stripped-down, honest, high-stakes language. Ideal for confession, breakthrough, or intimacy climax scenes.",
+        "Valence":  -0.2,
+        "Arousal":  0.6,
+        "FACS":  [
+                     "AU1+4 (soft brow)",
+                     "AU43 (moist eyes)",
+                     "AU12 (vulnerable smile)"
+                 ],
+        "Content_Level":  "Sensual",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+                                "Vulnerability"
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Wonder",
+        "Minor Valence":  "Childlike Marveling",
+        "Description":  "Pure, unjaded amazement at something new, beautiful, or unexpected; the world feels magical again. Internally: uncluttered perception, joy in discovery, temporary freedom from cynicism or habit. Physically: wide bright eyes, open mouth or big smile, pointing or reaching, bouncing or still in awe, spontaneous sounds of delight. For LLM generation: Dialogue is exclamatory or full of questions. Internal monologue is simple and present (\u0027Wow!\u0027, \u0027How does it do that?\u0027). Use bright, innocent, discovery-filled prose. Great for breaking cynicism or showing a character\u0027s hidden innocence.",
+        "Valence":  0.85,
+        "Arousal":  0.65,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    },
+    {
+        "Major Emotional State":  "Wonder",
+        "Minor Valence":  "Philosophically Awed",
+        "Description":  "Wonder that prompts big questions about existence, meaning, or the nature of reality; the experience is contemplative. Internally: connection of the specific wonder to universal themes, humility before mystery, possible spiritual or scientific insight. Physically: still posture, soft upward or distant gaze, slight smile or serious thoughtful expression, slow breathing. For LLM generation: Dialogue or internal monologue poses philosophical questions or connects to larger ideas. Use thoughtful, expansive, slightly humbled prose. Ideal for scientists, mystics, or characters having epiphanies.",
+        "Valence":  0.7,
+        "Arousal":  0.4,
+        "FACS":  [
+                     "AU1+2 (raised brows)",
+                     "AU5 (wide eyes)",
+                     "AU26 (mouth open)"
+                 ],
+        "Content_Level":  "Vanilla",
+        "Is_Adult":  false,
+        "Kink_Categories":  [
+
+                            ],
+        "Vanilla_Alternative":  null
+    }
+]

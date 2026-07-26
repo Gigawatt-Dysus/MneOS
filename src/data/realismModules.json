@@ -1,0 +1,25 @@
+{
+  "realism_modules": [
+    {
+      "module_name": "female_arousal_realism_module",
+      "anatomy_block": "Anatomically correct vulva with detailed labia majora and labia minora, visible clitoral hood and clitoris, natural vaginal opening properly positioned, realistic perineum and anus with natural texture and folds.",
+      "wetness_block": "Natural translucent creamy vaginal arousal fluids with realistic viscosity, glistening on inner labia, beading, slow stringing and dripping, mixing with light sweat and vellus hairs.",
+      "nipple_block": "Realistic nipples with natural areola texture, subtle bumps, and erectness matching arousal level.",
+      "volume_levels": {
+        "subtle": "light glistening and minimal beading",
+        "moderate": "visible creamy fluids with slow dripping",
+        "heavy": "copious viscous arousal fluids, heavy beading and dripping"
+      }
+    },
+    {
+      "module_name": "male_fluid_realism_module",
+      "anatomy_block": "Anatomically correct penis with realistic skin texture, veins, glans detail, and natural scrotum.",
+      "ejaculation_block": "Thick viscous pearly-translucent semen in ropes and clumps (pre-liquefaction phase), slow dripping, beading on skin and vellus hair.",
+      "volume_levels": {
+        "subtle": "light ropes and droplets",
+        "moderate": "multiple thick strands and pools",
+        "heavy": "copious volume with strong ropes and pooling"
+      }
+    }
+  ]
+}

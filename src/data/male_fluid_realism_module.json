@@ -1,0 +1,11 @@
+{
+  "module_name": "male_fluid_realism_module",
+  "description": "Modular blocks for male anatomy and ejaculation details.",
+  "anatomy_block": "Anatomically correct penis with realistic skin texture, veins, glans detail, and natural scrotum.",
+  "ejaculation_block": "Thick viscous pearly-translucent semen in ropes and clumps (pre-liquefaction phase), slow dripping and beading, natural sticky texture with light refraction, catching on skin and vellus hair.",
+  "volume_levels": {
+    "subtle": "light ropes and droplets",
+    "moderate": "multiple thick strands and pools",
+    "heavy": "copious volume with strong ropes, dripping, and pooling"
+  }
+}

@@ -68,6 +68,7 @@ build-log.txt
 !vercel.json
 !cors.json
 !repomix.config.json
+!src/data/*.json
 !Project_GIGI.txt
 !project-roadmap.txt
 !AGENTS.md
