@@ -1,0 +1,48 @@
+/* [ZEN V11] Auto-Pagination Styles */
+.daydream-page-break {
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    height: 50px; /* pageGap */
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.05) 10px,
+        rgba(0, 0, 0, 0.02) 10px,
+        rgba(0, 0, 0, 0.02) 20px
+    );
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    position: relative;
+    pointer-events: none; /* Can't click/type inside */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.daydream-page-break::after {
+    content: attr(data-page);
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.2);
+    font-family: monospace;
+    background: #0f1219;
+    padding: 0 8px;
+    border-radius: 99px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Print Styles */
+@media print {
+    .daydream-page-break {
+        display: block !important;
+        height: 0;
+        margin: 0;
+        border: none;
+        background: none;
+        page-break-after: always;
+        break-after: page;
+    }
+    .daydream-page-break::after {
+        display: none;
+    }
+}

@@ -1,0 +1,86 @@
+/* [ZEN V34] NEURAL ARCH - CINEMATIC UI TOKENS */
+
+.neural-arch-container {
+  --arch-glow: rgba(6, 182, 212, 0.3);
+  --arch-bg: rgba(10, 10, 11, 0.85);
+  --arch-border: rgba(255, 255, 255, 0.08);
+  --bubble-user-bg: linear-gradient(135deg, rgba(124, 58, 237, 0.4), rgba(139, 92, 246, 0.2));
+  --bubble-ai-bg: linear-gradient(135deg, rgba(31, 41, 55, 0.6), rgba(17, 24, 39, 0.4));
+}
+
+/* THE ARCH: HOVER REVEAL */
+.top-arch-hover-zone {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  z-index: 100;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.top-arch-hover-zone:hover {
+  background: linear-gradient(to bottom, rgba(6, 182, 212, 0.05), transparent);
+}
+
+.neural-arch-header {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(-90%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.neural-arch-header.is-open {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* CINEMATIC BUBBLES */
+.cinematic-bubble {
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--arch-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  transition: all 0.3s ease;
+}
+
+.cinematic-bubble:hover {
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(6, 182, 212, 0.15);
+}
+
+.cinematic-bubble-user {
+  background: var(--bubble-user-bg) !important;
+  border-color: rgba(139, 92, 246, 0.3) !important;
+}
+
+.cinematic-bubble-ai {
+  background: var(--bubble-ai-bg) !important;
+}
+
+/* COMMAND DOCK */
+.command-dock {
+  background: rgba(15, 18, 25, 0.7);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 2rem;
+  transition: all 0.4s ease;
+}
+
+.command-dock:focus-within {
+  border-color: rgba(6, 182, 212, 0.4);
+  box-shadow: 0 0 40px rgba(6, 182, 212, 0.1);
+}
+
+/* GLOW PULSE FOR SOVEREIGN STATE */
+@keyframes arch-pulse {
+  0% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.1); }
+  50% { box-shadow: 0 0 25px rgba(6, 182, 212, 0.3); }
+  100% { box-shadow: 0 0 10px rgba(6, 182, 212, 0.1); }
+}
+
+.sovereign-glow {
+  animation: arch-pulse 4s infinite ease-in-out;
+}

@@ -1,0 +1,84 @@
+# Logic
+node_modules/
+dist/
+build/
+*.local
+.env
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor
+.vscode/
+.idea/
+
+# Temp
+functions/lib/
+functions/node_modules/
+hydration_errors.log
+backup_exclude.txt
+*.log
+.git_quarantine/
+
+# Secrets (ZEN SECURITY)
+serviceAccountKey.json
+gigi-skeleton-key.json
+src/gigi-skeleton-key.json
+**/*skeleton-key*
+**/*serviceAccount*
+.env.local
+.env.production
+.env.development
+
+# LARGE & TEMP FILES
+TEMP_RESTORE/
+*_CLEAN_SOURCE/
+temp_staging/
+temp_thumbs/
+*.txt
+**/*.zip
+**/*.mp3
+**/*.mp4
+**/*.glb
+**/*.fbx
+!public/**/*.glb
+!public/**/*.fbx
+**/*.obj
+**/*.mtl
+**/*.blend
+_backups/
+_functions_rescue_archived/
+backups/
+rescue_data_admin/
+rescue_data_deep/
+functions/scratch/
+scratch/
+build-log.txt
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+!firebase.json
+!firestore.indexes.json
+!firestore.rules
+!vercel.json
+!cors.json
+!repomix.config.json
+!Project_GIGI.txt
+!project-roadmap.txt
+!AGENTS.md
+.vercel
+.env.vercel*
+
+.env*
+.vercel
+
+# Staging Database
+# Staging Database
+staging.db*
+*.xml
+*.sqlite*

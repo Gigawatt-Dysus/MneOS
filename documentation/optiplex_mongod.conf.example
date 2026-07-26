@@ -1,0 +1,20 @@
+storage:
+  dbPath: D:\mongo\data   # Point this to a directory on your fast/JBOD storage
+  journal:
+    enabled: true
+  wiredTiger:
+    engineConfig:
+      cacheSizeGB: 4     # Hard cap at 4GB (Critical for 16GB GGA setup)
+
+systemLog:
+  destination: file
+  path: D:\mongo\log\mongod.log
+  logAppend: true
+
+net:
+  bindIp: 0.0.0.0        # Allows Victus Sweeper to connect via local LAN (\\GENESIS-ALPHA)
+  port: 27017
+
+operationProfiling:
+  mode: slowOp
+  slowOpThresholdMs: 200

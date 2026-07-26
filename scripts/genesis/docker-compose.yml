@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  sovereign-mongo:
+    image: mongo:7.0
+    container_name: sovereign_db
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - sovereign_mongo_data:/data/db
+      - sovereign_mongo_config:/data/configdb
+    environment:
+      # Optional: Set up basic auth, or leave blank for local network trust
+      # If you use these, you will need to update sovereignDbAdapter.ts connection strings
+      - MONGO_INITDB_ROOT_USERNAME=zen
+      - MONGO_INITDB_ROOT_PASSWORD=sovereign
+
+volumes:
+  sovereign_mongo_data:
+  sovereign_mongo_config:
