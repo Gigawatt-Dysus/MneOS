@@ -78,9 +78,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const data = await response.json();
         
         // Fal.ai returns images in an array: { images: [ { url: 'https://...', content_type: 'image/jpeg' } ] }
-        const imageUrl = data.images?.[0]?.url;
+        const generatedImageUrl = data.images?.[0]?.url;
 
-        if (!imageUrl) {
+        if (!generatedImageUrl) {
             throw new Error('Erato woke up, but the canvas was blank (No image returned).');
         }
 
@@ -88,7 +88,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         res.status(200).json({
             success: true,
-            imageUrl: imageUrl, 
+            imageUrl: generatedImageUrl, 
             metadata: {
                 modelUsed: model,
                 seed: data.seed

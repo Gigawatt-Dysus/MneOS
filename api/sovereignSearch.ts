@@ -82,7 +82,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
               filter: { userId: userId }
             }
           }
-        ]).toArray().catch(e => {
+        ]).toArray().catch((e: any) => {
             console.warn("[sovereignSearch] Vector search failed (likely local MongoDB):", e.message);
             return [];
         })
@@ -102,7 +102,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           },
           { $match: { userId: userId } },
           { $limit: limit * 2 }
-        ]).toArray().catch(async (e) => {
+        ]).toArray().catch(async (e: any) => {
             console.warn("[sovereignSearch] Atlas $search failed, falling back to regex:", e.message);
             const terms = queryText.split(/\s+/).filter((t: string) => t.length > 2);
             if (terms.length === 0) return [];

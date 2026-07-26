@@ -1,6 +1,6 @@
 import { MongoClient, ObjectId } from 'mongodb';
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import { S3Client, PutObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
 import sharp from 'sharp';
 
 let client: MongoClient | null = null;
