@@ -488,6 +488,54 @@ const server = http.createServer((req, res) => {
     }
 });
 
+// --- Dynamic Fuel Gauge Heartbeat (1M Token Scale / Gemini 3.6 Flash High) ---
+function updateFuelGauge() {
+    try {
+        const brainDir = path.join(process.env.USERPROFILE || 'C:\\Users\\artin', '.gemini', 'antigravity', 'brain');
+        if (!fs.existsSync(brainDir)) return;
+
+        let newestFile = null;
+        let newestMtime = 0;
+
+        const convDirs = fs.readdirSync(brainDir);
+        for (const dir of convDirs) {
+            const overviewPath = path.join(brainDir, dir, '.system_generated', 'logs', 'overview.txt');
+            if (fs.existsSync(overviewPath)) {
+                const stat = fs.statSync(overviewPath);
+                if (stat.mtimeMs > newestMtime) {
+                    newestMtime = stat.mtimeMs;
+                    newestFile = overviewPath;
+                }
+            }
+        }
+
+        if (newestFile) {
+            const stat = fs.statSync(newestFile);
+            const sizeBytes = stat.size;
+            const approxTokens = Math.round(sizeBytes / 4);
+            const maxTokens = 1000000;
+            const pctUsed = Math.min(100, Math.round((approxTokens / maxTokens) * 100));
+            const pctRemaining = Math.max(0, 100 - pctUsed);
+            const kbSize = Math.round(sizeBytes / 1024);
+
+            const filledBars = Math.min(10, Math.round((pctRemaining / 100) * 10));
+            const emptyBars = 10 - filledBars;
+            const barGraph = '█'.repeat(filledBars) + '░'.repeat(emptyBars);
+
+            const fuelGaugeContent = `# 🔋 CONTEXT FUEL GAUGE: [${barGraph}] ${pctRemaining}% REMAINING 🔋\n` +
+                `[STATUS]: OPTIMIZED - Gemini 3.6 Flash (High) | Used: ${approxTokens.toLocaleString()} / 1,000,000 Tokens (${kbSize} KB / 4.0 MB) | General Order 4 Active\n`;
+
+            const gaugeFile = path.join(__dirname, '..', '.agent', 'rules', 'fuel-gauge.md');
+            fs.writeFileSync(gaugeFile, fuelGaugeContent, 'utf8');
+        }
+    } catch (err) {
+        // Silent background telemetry catch
+    }
+}
+
 server.listen(PORT, () => {
     console.log(`[Zen Sentinel] Sovereign Harvester & HyperSearch Daemon running on http://localhost:${PORT}`);
+    updateFuelGauge();
+    setInterval(updateFuelGauge, 15000);
 });
+
