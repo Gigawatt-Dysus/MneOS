@@ -1,0 +1,13 @@
+# AiChat Renovation & 429 Crisis Response
+
+- [ ] **Research & Assessment**
+    - [ ] Explore `src/components/AiChat/` structure <!-- id: 0 -->
+    - [ ] Analyze `useAiChatBridge.ts` (Engine Room) for state sync logic <!-- id: 1 -->
+    - [ ] Analyze `enrichmentService` or `useAiChat` logic for blocking calls <!-- id: 2 -->
+- [ ] **Refactoring (The 429 Crisis)**
+    - [ ] De-couple "The Librarian" (Make archiving non-blocking) <!-- id: 3 -->
+    - [ ] Implement Graceful 429 Handling (Try/Catch around enrichment) <!-- id: 4 -->
+    - [ ] Verify State Sync (Functional updates in `setMessages`) <!-- id: 5 -->
+- [ ] **Verification**
+    - [/] Confirm messages render immediately <!-- id: 6 -->
+    - [/] Confirm background tasks don't block UI <!-- id: 7 -->

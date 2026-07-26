@@ -1,0 +1,205 @@
+import { v4 as uuidv4 } from 'uuid';
+
+const generateId = () => {
+    return typeof crypto !== 'undefined' && crypto.randomUUID 
+        ? crypto.randomUUID() 
+        : Math.random().toString(36).substring(2) + Date.now().toString(36);
+};
+
+export interface ProcessedAsset {
+  id: string;
+  file: File;
+  preview: string;       
+  logicalDate: Date;     
+  metadata: {
+    width: number;
+    height: number;
+    aspectRatio: number;
+  };
+  thumbnails: {
+    small: Blob;
+    medium: Blob;
+    large: Blob;
+  };
+  status: 'clean' | 'provisional';
+}
+
+export const processIncomingFile = async (file: File): Promise<ProcessedAsset | null> => {
+  const isImage = file.type.startsWith('image/');
+  const isVideo = file.type.startsWith('video/');
+
+  // [ZEN FIX] Allow both Image and Video
+  if (!isImage && !isVideo) {
+      console.warn(`[ImageProcessor] Skipping unsupported file type: ${file.type}`);
+      return null;
+  }
+
+  // --- LOGICAL DATE EXTRACTION ---
+  let logicalDate = new Date();
+  
+  // @ts-ignore
+  if (file.gigi_creationTime) {
+      // @ts-ignore
+      logicalDate = new Date(file.gigi_creationTime);
+  } else {
+      const lastMod = (file as any).lastModifiedDate || file.lastModified;
+      if (lastMod) logicalDate = new Date(lastMod);
+  }
+
+  // --- VIDEO PROCESSOR ---
+  if (isVideo) {
+      return new Promise((resolve) => {
+          const video = document.createElement('video');
+          video.preload = 'metadata';
+          video.muted = true;
+          video.playsInline = true;
+          const objectUrl = URL.createObjectURL(file);
+          video.src = objectUrl;
+
+          // Timeout to prevent hanging
+          const timeout = setTimeout(() => {
+              console.warn(`[ImageProcessor] Video timeout: ${file.name}`);
+              resolve(null);
+          }, 5000);
+
+          video.onloadeddata = async () => {
+              clearTimeout(timeout);
+              // Seek to 1s or 25% to avoid black frames
+              video.currentTime = Math.min(1.0, video.duration * 0.25);
+          };
+
+          video.onseeked = async () => {
+              // Capture Frame
+              const width = video.videoWidth;
+              const height = video.videoHeight;
+              const aspectRatio = height > 0 ? width / height : 1;
+
+              const createVideoThumbnail = (targetWidth: number): Promise<Blob> => {
+                  return new Promise((resBlob) => {
+                      const scale = targetWidth / width;
+                      const canvas = document.createElement('canvas');
+                      canvas.width = targetWidth;
+                      canvas.height = height * scale;
+                      const ctx = canvas.getContext('2d');
+                      if (ctx) {
+                          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                          // Overlay Play Icon (Baked into thumbnail for fallback compatibility)
+                          ctx.fillStyle = 'rgba(0,0,0,0.5)';
+                          ctx.beginPath();
+                          ctx.arc(canvas.width/2, canvas.height/2, canvas.width * 0.15, 0, Math.PI*2);
+                          ctx.fill();
+                          ctx.fillStyle = '#ffffff';
+                          ctx.beginPath();
+                          const size = canvas.width * 0.1;
+                          const cx = canvas.width/2 + (size * 0.1); 
+                          const cy = canvas.height/2;
+                          ctx.moveTo(cx - size/2, cy - size/2);
+                          ctx.lineTo(cx + size/2, cy);
+                          ctx.lineTo(cx - size/2, cy + size/2);
+                          ctx.fill();
+
+                          canvas.toBlob((b) => resBlob(b!), 'image/jpeg', 0.8);
+                      } else {
+                          // Fallback empty blob if canvas fails
+                          resBlob(new Blob([])); 
+                      }
+                  });
+              };
+
+              try {
+                  const [small, medium, large] = await Promise.all([
+                      createVideoThumbnail(200),
+                      createVideoThumbnail(800),
+                      createVideoThumbnail(1600)
+                  ]);
+
+                  // Clean up
+                  URL.revokeObjectURL(objectUrl);
+                  video.remove();
+
+                  resolve({
+                      id: generateId(),
+                      file,
+                      preview: URL.createObjectURL(medium), // Use the thumbnail as the preview
+                      logicalDate,
+                      metadata: { width, height, aspectRatio },
+                      thumbnails: { small, medium, large },
+                      status: 'clean'
+                  });
+              } catch (e) {
+                  console.error("Video thumbnail failed", e);
+                  resolve(null);
+              }
+          };
+
+          video.onerror = () => {
+              clearTimeout(timeout);
+              console.warn("Video load error", file.name);
+              resolve(null);
+          };
+      });
+  }
+
+  // --- IMAGE PROCESSOR (Standard) ---
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    img.onload = async () => {
+      const width = img.naturalWidth;
+      const height = img.naturalHeight;
+      const aspectRatio = height > 0 ? width / height : 1;
+
+      const createThumbnail = (targetWidth: number): Promise<Blob> => {
+        return new Promise((resBlob) => {
+          if (width === 0 || height === 0) { resBlob(file); return; }
+          const scale = targetWidth / width;
+          const canvas = document.createElement('canvas');
+          canvas.width = targetWidth;
+          canvas.height = height * scale;
+          
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            canvas.toBlob((b) => {
+                if (b) resBlob(b);
+                else resBlob(file); 
+            }, 'image/jpeg', 0.85);
+          } else {
+             resBlob(file);
+          }
+        });
+      };
+
+      try {
+          const [small, medium, large] = await Promise.all([
+            createThumbnail(200),
+            createThumbnail(800),
+            createThumbnail(1600)
+          ]);
+
+          resolve({
+            id: generateId(),
+            file,
+            preview: objectUrl,
+            logicalDate,
+            metadata: { width, height, aspectRatio },
+            thumbnails: { small, medium, large },
+            status: 'clean', 
+          });
+      } catch (err) {
+          console.error("Thumbnail generation error", err);
+          resolve(null);
+      }
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(null);
+    };
+
+    img.src = objectUrl;
+  });
+};

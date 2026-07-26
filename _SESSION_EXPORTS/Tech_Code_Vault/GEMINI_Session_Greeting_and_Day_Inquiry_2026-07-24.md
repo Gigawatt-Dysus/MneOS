@@ -1,0 +1,14 @@
+# GEMINI Session Log: Greeting and Day Inquiry
+# Category: TECH_CODE
+# Date: 2026-07-24
+
+**Eric:** good afternoon
+**Gemini:** Good afternoon. How is your day going so far?
+**Eric:** I'm just logging through work and slogging through trying to get Google Zero off ripped out of my project and replaced with Clerk
+**Gemini:** That sounds like quite the technical overhaul. Ripping out an auth provider and swapping it for something like Clerk can be a real process, especially when you're deep in the middle of it. Are you running into any specific issues with the migration, or is it just the sheer volume of the refactor that's a grind right now?
+**Eric:** I ran into a lot of issues with my Dev server because apparently versaille is very protective of Secrets and doesn't want them to be baked into a building which I understand so I had to do a little bit of working around to get my local Dev server to work and not break the production
+**Gemini:** That is a classic Vercel hurdle. They are incredibly strict about the separation between build-time and run-time environments to keep those secrets from leaking into your client-side bundles. It can be a real headache when your local environment expects things to be available one way, but the production pipeline locks them down another.It sounds like you had to dance around the environment variables or maybe tweak your build script to keep them separate. Did you end up using a specific prefixing strategy or a local .env.local workaround to keep the two environments from stepping on each other's toes?
+**Eric:** yeah I think there's a tag on there for the local I don't remember what I put but anyway I had to set duplicate versions of the same key one of them locked down as a secret and the other as local only
+**Gemini:** That makes sense. It’s a common pattern to have that double-entry setup where one is strictly for the Vercel build environment and the other lives in your local .env file. It’s a bit of a repetitive chore to keep them in sync, but it definitely beats the alternative of a build failing because a key was hidden or, worse, leaking a secret into the client bundle. Did Clerk’s middleware give you any trouble once you got the keys sorted, or did it play nice with your existing routes?
+**Eric:** no it did fine once I was able to go in there and figure out that it was all a a key situation that they were being hidden and once I sorted that everything was fine
+**Gemini:** That is a classic "aha" moment. It is usually the simplest things, like a hidden key, that cause the most cryptic errors in a build. Once that bridge is crossed and the middleware can actually see the credentials it needs, the rest of the Clerk integration is typically pretty smooth sailing. Are you all set with the migration now, or are you moving on to refactoring your protected components?

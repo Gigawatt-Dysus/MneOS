@@ -28,6 +28,7 @@ import { WindowManagerProvider } from './context/WindowManagerContext';
 import LoomCanvas from './components/Loom/LoomCanvas';
 
 import TagEditor from './components/TagEditor';
+import SimpleChatApp from './components/chat/SimpleChatApp';
 import LoginPage from './components/LoginPage';
 import LoginHeader from './components/LoginHeader';
 import MneOSLogo from './components/MneOSLogo';
@@ -112,6 +113,10 @@ const App: React.FC = () => {
 
     // [ZEN FEATURE] Biodata Extract Intercept
     const path = window.location.pathname;
+    const hostname = window.location.hostname;
+    const isDefaultChat = path === '/chat' || path.startsWith('/chat/') || (hostname.includes('gigiwatt') && path === '/');
+    const [viewMode, setViewMode] = useState<'chat' | 'os'>(isDefaultChat ? 'chat' : 'os');
+
     if (path.startsWith('/u/')) {
         const publicUserId = path.split('/u/')[1]?.split('/')[0] || path.split('/u')[1]?.split('/')[0];
         if (publicUserId) {
@@ -315,6 +320,16 @@ const App: React.FC = () => {
 
                     <SignedIn>
                         {logic.user && !forceLoginPage ? (
+                            viewMode === 'chat' ? (
+                                <SimpleChatApp
+                                    user={logic.user}
+                                    tags={logic.tags}
+                                    onNavigateOS={() => {
+                                        setViewMode('os');
+                                        window.history.pushState({}, '', '/os');
+                                    }}
+                                />
+                            ) : (
                             <WindowManagerProvider>
                             <ChatSessionProvider user={logic.user}>
                             <WikiNavigationProvider
@@ -704,6 +719,7 @@ const App: React.FC = () => {
                             </WikiNavigationProvider>
                             </ChatSessionProvider>
                             </WindowManagerProvider>
+                            )
                         ) : (
                             <div className="flex-1 flex items-center justify-center bg-black/80 backdrop-blur-md">
                                 <SplashShield 

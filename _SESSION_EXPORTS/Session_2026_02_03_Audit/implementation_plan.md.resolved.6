@@ -1,0 +1,68 @@
+# Vantablack Protocol Phase 2: The Librarian's Shutter
+
+## Goal
+Transform the [enrichmentService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/enrichmentService.ts) into a **Cognitive Firewall** that enforces exposure mode rules across all AI interactions.
+
+---
+
+## Proposed Changes
+
+### [NEW] `VantablackShutter` Module
+#### [NEW] [vantablackShutter.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts)
+
+Central privacy enforcement module with three core functions:
+
+1. **`getRedactedNames(tags)`** — Returns Set of blacklisted entity names (exposure_mode === 'black')
+2. **`filterGreyTags(tags, userPrompt)`** — Returns only grey tags explicitly mentioned in current turn
+3. **`redactText(text, blacklistedNames)`** — Find/replace sacred names with `[REDACTED_ENTITY]`
+4. **`auditResponse(responseText, blacklistedNames)`** — Post-generation safety check
+
+---
+
+### Chat Context Pipeline
+
+#### [MODIFY] [context.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/context.ts)
+
+**`buildMatrixContext(media)`** → Add tag filtering:
+- Exclude BLACK tags entirely from context
+- Include GREY tags only if mentioned in user prompt (passed as param)
+
+#### [MODIFY] [chat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts)
+
+**[generateAgentResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#13-316)**:
+- Pre-dispatch: Redact BLACK names from conversation history
+- Post-dispatch: Audit AI response for leaked names
+- If `contextMode === 'creative'`: Apply 100% Vantablack opacity (strictest filtering)
+
+---
+
+### Memory Service Integration
+
+#### [MODIFY] [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts)
+
+**`recallContext()`**:
+- Filter recalled memories to exclude those containing BLACK entity names
+- Apply GREY mention-only logic to prevent "Context Munge"
+
+---
+
+### Daydream Module
+
+#### [MODIFY] [DaydreamEditor.tsx](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/Daydream/DaydreamEditor.tsx)
+
+Ensure `is_fiction: true` mode triggers maximum Vantablack protection.
+
+---
+
+## Verification Plan
+
+### Automated Tests
+1. Create Black-tagged entity (e.g., "Alex")
+2. Attempt creative mode conversation mentioning "Alex"
+3. Verify AI receives `[REDACTED_ENTITY]` not "Alex"
+4. If AI hallucinates "Alex" in response, verify it's caught and replaced
+
+### Manual Verification
+1. Toggle shield states in Tag Gallery
+2. Confirm Grey entities only appear when explicitly typed
+3. Confirm Black entities never leak into any AI context

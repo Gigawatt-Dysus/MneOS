@@ -1,0 +1,44 @@
+# Bayesian-Stacking Cortex Implementation
+
+## Goal
+Replace the binary "Cortex Filter" with a sophisticated **Bayesian-Stacking** engine that weighs memories by age, resonance, and semantic relevance before injecting them.
+
+## Core Logic
+
+### 1. Widen Retrieval (The "Net")
+- **Action**: Increase Typesense retrieval limit from ~5-10 to **20 items**.
+- **Why**: We need enough candidates to find "Resonance Clusters" even if individual items are weak.
+
+### 2. Weighted Scoring (The "Stack")
+Calculate a `RelevanceScore` for each memory:
+- **Base Score**: 1.0
+- **Temporal Decay**: `-0.1` per year since the event.
+    - Example: A 2024 event = 1.0. A 1974 event = 0.1 (Old memories are faint unless reinforced).
+- **Resonance Boost**: `+0.2` for every *other* retrieved memory sharing >2 keywords or same Tags.
+- **Core Memory Boost**: `+0.5` if `is_core` is true (Core memories defy decay).
+
+### 3. The Bayesian Vibe Check (The "Judge")
+- **Mechanism**: Send the Top 10 highest-scored candidates to Gemini Flash.
+- **Prompt**: "Assign a relevance probability (0.0 - 1.0) for each memory given the User Query."
+- **Threshold**: Discard anything < 0.3.
+
+## Proposed Changes
+
+### [Search Service] [src/services/searchService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/searchService.ts)
+- **Modify** [searchChatMemory](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/searchService.ts#211-299) / [searchTimeline](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/searchService.ts#334-366):
+    - Increase `per_page` to 20.
+    - Compute `age_years` for each hit.
+
+### [Memory Service] [src/services/memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts)
+- **Modify** [cortexFilter](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#84-147):
+    - Rename to `bayesianCortexFilter`.
+    - Implement the Scoring Logic (Decay + Resonance).
+    - Update the AI Prompt to return `probability` scores instead of binary indices.
+    - Filter logic: `FinalScore = (HeuristicScore * 0.5) + (AiProbability * 0.5)`. Keep if > 0.4.
+
+## Verification
+- **Test**: Ask about "school" (Old topic).
+- **Expectation**:
+    - Old events retrieved but suffer heavy Temporal Decay.
+    - If user asks specifically about "1975", AI Probability is 0.9, saving the memory.
+    - If user asks about "coding" (modern), 1975 events get low AI Prob and die.

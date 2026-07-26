@@ -1,0 +1,36 @@
+# Neural-Stream & Gatekeeper Implementation Plan
+
+## Goal
+Implement a "Gatekeeper" throttle to prevent 429s from the Librarian, and ensure the UI reflects *all* AI activity (including background enrichment) in the `isThinking` state.
+
+## Proposed Changes
+
+### Service Layer
+#### [MODIFY] [enrichmentService.ts](file:///src/services/enrichmentService.ts)
+*   **New Class**: `LibrarianQueue`.
+    *   Properties: `queue` (array of tasks), `isProcessing` (bool), `listeners` (array of callbacks).
+    *   Methods: 
+        *   `enqueue(task)`: Adds task, triggers processing.
+        *   [process()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#534-663): Loop that respects 2000ms gap.
+        *   `subscribe(callback)`: To notify UI of state changes.
+*   **Integration**:
+    *   [dispatchAnalysis](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/enrichmentService.ts#153-169): Pushes the API call into `LibrarianQueue.enqueue`.
+    *   Bypass: Explicitly note that this service *only* handles enrichment items. The main chat generation in [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#34-874) calls [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) directly, effectively bypassing this queue (as requested).
+
+### Logic Layer
+#### [MODIFY] [useAiChat.ts](file:///src/hooks/useAiChat.ts)
+*   **State Update**:
+    *   `isLibrarianBusy` state.
+    *   `isGrokThinking` (rename existing `isThinking` logic or combine).
+    *   Effective `isThinking` exposed to UI = `isGrokWaiting || isLibrarianBusy`.
+*   **Subscription**:
+    *   `useEffect` to subscribe to `EnrichmentService.queue`.
+    *   Update `enrichmentStatus` based on queue results (success/error).
+
+### Telemetry
+*   The Amber Triangle in [ChatHeader](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/ChatHeader.tsx#30-155) (already implemented) will now respond to the `enrichmentStatus` driven by the Queue's error reporting.
+
+## Verification Plan
+1.  **Queue Test**: Send 3 rapid messages. Verify Librarian processes them 1-by-1 with 2s gaps.
+2.  **UI Test**: Verify "Thinking" (bouncing dots) persists even after text appears, while the Librarian is working on tags/memory.
+3.  **Error Test**: Force a 429 (mock or real) and verify Amber Triangle.

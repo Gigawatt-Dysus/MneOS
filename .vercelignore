@@ -1,0 +1,18 @@
+.git
+node_modules
+dist
+build
+_backups
+_LEGACY_ROOT_BACKUP
+_STALE_SRC_BACKUP
+_SESSION_EXPORTS
+_functions_rescue_archived
+rescue_data_admin
+rescue_data_deep
+backups
+scratch
+*.zip
+# *.glb
+# *.fbx
+# *.obj
+*.blend

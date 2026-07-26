@@ -1,0 +1,21 @@
+# RAG Relevance & Context Hygiene
+
+- [x] **Analysis & Design** <!-- id: 60 -->
+    - [x] Analyze [generateAgentResponse](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#13-316) and [recallContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#8-60) <!-- id: 61 -->
+    - [x] Create Implementation Plan for Cortex Filter <!-- id: 62 -->
+
+- [x] **Phase 1: Binary Filter (Completed)** <!-- id: 63 -->
+    - [x] Modify [chat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts): Increase RAG trigger threshold (5 -> 15 chars) <!-- id: 64 -->
+    - [x] Modify [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts): Implement `filterByRelevance` using fast LLM <!-- id: 65 -->
+    - [x] Modify [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts): Integrate filter into [recallContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#8-60) <!-- id: 66 -->
+
+- [ ] **Phase 2: Bayesian-Stacking Cortex** <!-- id: 70 -->
+    - [ ] **Widen the Net**: Increase [searchService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/searchService.ts) retrieval limits (5->20) <!-- id: 71 -->
+    - [ ] **Temporal Decay**: Calculate base scores with age penalty (-10%/yr) in [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts) <!-- id: 72 -->
+    - [ ] **Resonance**: Implement clustering bonus logic <!-- id: 73 -->
+    - [ ] **Vibe Check**: Update [cortexFilter](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#84-147) to return probability (0.0-1.0) <!-- id: 74 -->
+    - [ ] **Integration**: Implement final score formula (Heuristic + AI) <!-- id: 75 -->
+
+- [ ] **Verification** <!-- id: 67 -->
+    - [ ] Verify short queries (e.g., "Hello") do NOT trigger RAG <!-- id: 68 -->
+    - [ ] Verify irrelevant RAG items are filtered out (Probability < 0.3) <!-- id: 69 -->

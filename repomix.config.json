@@ -1,0 +1,42 @@
+{
+  "ignore": {
+    "customPatterns": [
+      "**/assets/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/*.svg",
+      "**/*.png",
+      "**/*.jpg",
+      "**/*.mp4",
+      "**/*.ico",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml",
+      "**/.git/**",
+      "**/.firebase/**",
+      "**/_backups/**",
+      "**/_STALE_SRC_BACKUP/**",
+      "**/_LEGACY_ROOT_BACKUP/**",
+      "**/_SESSION_EXPORTS/**",
+      "**/_SANDBOX_LIFEBOAT/**",
+      "**/_SCRATCH_TRANSPLANT/**",
+      "**/temp_*/**",
+      "**/rescue_data_*/**",
+      "**/*.db",
+      "**/*.db-shm",
+      "**/*.db-wal",
+      "**/*.log",
+      "**/*.xml",
+      "**/*.txt",
+      "**/public/**",
+      "**/.vercel/**",
+      "**/zen-satellite/**",
+      "**/documentation/**",
+      "**/scripts/migration/GooglePhotosTakeoutHelper/**",
+      "**/GooglePhotosTakeoutHelper/**",
+      "**/build/**",
+      "**/*.exe",
+      "**/*.dll"
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+# Neural-Stream & Gatekeeper Protocol
+
+- [ ] **Enrichment Service (The Gatekeeper)**
+    - [ ] Implement `RequestQueue` with 2000ms throttle & concurrency 1. <!-- id: 16 -->
+    - [ ] Add event subscription (listeners) for queue status (`busy`, `idle`, `error`). <!-- id: 17 -->
+    - [ ] Wrap [dispatchAnalysis](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/enrichmentService.ts#153-169) to use the queue. <!-- id: 18 -->
+- [ ] **Neural Link (isThinking Persistence)**
+    - [ ] Update [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#34-874) to subscribe to Enrichment queue status. <!-- id: 19 -->
+    - [ ] Logic: `isThinking = isGrokGenerating || isLibrarianQueueBusy`. <!-- id: 20 -->
+    - [ ] Update `enrichmentStatus` based on queue events (handling 429s). <!-- id: 21 -->
+- [ ] **Verification**
+    - [ ] Verify `isThinking` stays active during the 2000ms gaps. <!-- id: 22 -->
+    - [ ] Verify 429s trigger the Amber Triangle but don't crash. <!-- id: 23 -->
+    - [ ] Verify Grok bypasses the queue (immediate response). <!-- id: 24 -->

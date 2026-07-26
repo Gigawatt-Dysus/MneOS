@@ -1,0 +1,20 @@
+# Vantablack Protocol Phase 2: The Librarian's Shutter
+
+- [/] **VantablackShutter Module** <!-- id: 40 -->
+    - [x] Create [vantablackShutter.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts) with core functions <!-- id: 41 -->
+    - [x] `getRedactedNames()` — Get BLACK entity names <!-- id: 42 -->
+    - [x] `filterGreyTags()` — Mention-only filter <!-- id: 43 -->
+    - [x] [redactText()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#99-116) — Find/replace sacred names <!-- id: 44 -->
+    - [x] [auditResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#192-227) — Post-generation safety check <!-- id: 45 -->
+- [ ] **Chat Pipeline Integration** <!-- id: 46 -->
+    - [ ] Modify [generateAgentResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#13-316) pre-dispatch redaction <!-- id: 47 -->
+    - [ ] Modify [generateAgentResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#13-316) post-dispatch audit <!-- id: 48 -->
+    - [ ] Update `buildMatrixContext()` for tag filtering <!-- id: 49 -->
+- [ ] **Memory Service Integration** <!-- id: 50 -->
+    - [ ] Filter recalled memories for BLACK entities <!-- id: 51 -->
+- [ ] **Daydream Hardening** <!-- id: 52 -->
+    - [ ] Ensure `is_fiction: true` triggers max protection <!-- id: 53 -->
+- [ ] **Verification** <!-- id: 54 -->
+    - [ ] Test BLACK entity redaction in creative mode <!-- id: 55 -->
+    - [ ] Test GREY mention-only logic <!-- id: 56 -->
+    - [ ] Test outbound audit catches hallucinated names <!-- id: 57 -->

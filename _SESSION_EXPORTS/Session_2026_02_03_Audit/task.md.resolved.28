@@ -1,0 +1,58 @@
+# Task List: Project GIGI Implementation
+
+This documents the progress of the current session.
+
+- [x] **Phase 1: Secure the Perimeter (EWO #05)** <!-- id: 70 -->
+    - [x] **Stop the Bleeding**: Add immediate logic in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) to Respect User Scope. <!-- id: 71 -->
+    - [x] **Verify**: Confirm limits are enforced in [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#97-209). <!-- id: 72 -->
+
+- [x] **Phase 2: The Audit (EWO #07)** <!-- id: 73 -->
+    - [x] **Dry Run Analysis**: Run [reconcileContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts#25-205) in DRY RUN mode. <!-- id: 74 -->
+    - [x] **Root Cause ID**: Confirm if `isDeleted: true` docs are persisting. <!-- id: 75 -->
+
+- [x] **Phase 3: The Exorcism (EWO #07 & #08+)** <!-- id: 80 -->
+    - [x] **EWO #05**: Enforce `historyLimit` in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) <!-- id: 81 -->
+    - [x] **EWO #07 (Part 1)**: Implement Hard Delete logic <!-- id: 82 -->
+    - [x] **EWO #08 (Refinement)**: Remove `isDeleted` skip to catch Shadow Orphans <!-- id: 84 -->
+    - [x] **EWO #08 (Indexing)**: Implement "Force Feed" for missing Typesense docs <!-- id: 85 -->
+    - [x] **Signature Update**: Pass full `messages` array to [reconcileContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts#25-205) <!-- id: 86 -->
+    - [x] **EWO #09 (HUD)**: Implement "Data Integrity Readout" in Chat Header <!-- id: 87 -->
+
+- [x] **Phase 4: Global Neural Refit (EWO #12)** <!-- id: 90 -->
+    - [x] **Refit Providers**: Replaced stub with xAI `grok-4.1-embedding`. <!-- id: 91 -->
+    - [x] **Update Schema**: Added `embedding` to [ChatMessage](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/types/models.ts#44-59). <!-- id: 92 -->
+    - [x] **Atomic Save**: Implemented auto-embedding in [saveToFirestore](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#217-253). <!-- id: 93 -->
+    - [x] **Neural Audit**: Upgraded Heal button to backfill missing vectors. <!-- id: 94 -->
+
+- [x] **Phase 5: Neural Calibration (EWO #14)** <!-- id: 100 -->
+    - [x] **Correct Endpoint**: Updated [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) to `v1-embedding` / `v1/embeddings`. <!-- id: 101 -->
+    - [x] **Fail-Safe**: Wrapped embedding connection in try/catch to maintain chat uptime. <!-- id: 102 -->
+    - [x] **Burst Reflow**: Added sliding window truncation to [dispatchBurst](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#112-177) for performance. <!-- id: 103 -->
+
+- [x] **Phase 6: The Clean Voice (EWO #15)** <!-- id: 110 -->
+    - [x] **Constraint Injection**: Updated [getSystemInstruction](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/context.ts#63-108) with Negative Formatting Constraint. <!-- id: 111 -->
+    - [x] **Source Kill**: Removed `[Name]:` prefix injection in [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#37-999) API history builder. <!-- id: 112 -->
+    - [x] **Vantablack Filter**: Added output sanitizer to strip hallucinated prefixes. <!-- id: 113 -->
+
+- [x] **Phase 7: The Chronology Fix (EWO #16)** <!-- id: 120 -->
+    - [x] **Service Layer**: Implemented [updateChatMessage](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/typesenseService.ts#239-251) with `updatedAt` tracking. <!-- id: 121 -->
+    - [x] **Hook Refactor**: Updated [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#37-999) to use granular updates instead of bulk overwrites. <!-- id: 122 -->
+    - [x] **Timestamp Lock**: Ensured `timestamp` (createdAt) is immutable during edits. <!-- id: 123 -->
+
+- [x] **Phase 8: The Voyage Restoration (EWO #21)** <!-- id: 130 -->
+    - [x] **Neural Transplant**: Replaced xAI embedding with Voyage AI (`voyage-3`). <!-- id: 131 -->
+    - [x] **Secrets Lock-In**: Added VOYAGE_API_KEY to SecretsManager and Skeleton Key backup. <!-- id: 132 -->
+    - [x] **Chronology Lock**: Verified `createdAt` sorting and update logic. <!-- id: 133 -->
+    - [x] **Appellation Eraser**: Installed regex filter in [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#97-209) to strip `[Brita]:` prefixes. <!-- id: 134 -->
+    - [x] **Heal Refit**: Confirmed Neural Audit targets Voyage AI. <!-- id: 135 -->
+
+- [x] **Phase 9: Contextual Anchoring** <!-- id: 140 -->
+    - [x] **State Implementation**: Add `lastFocalPoint` to [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#37-999). <!-- id: 141 -->
+    - [x] **Bridge Wiring**: Pass focal point through [useAiChatBridge](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/useAiChatBridge.ts#51-522). <!-- id: 142 -->
+    - [x] **Focal Scroll Logic**: Implement Scenario A/B/C scrolling in [MessageList](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/MessageList.tsx#65-335). <!-- id: 143 -->
+    - [x] **Verification**: Test scroll behavior on edit vs new message. <!-- id: 144 -->
+
+- [x] **Phase 10: The Stability Protocol (EWO #23)** <!-- id: 150 -->
+    - [x] **Memoize Uplink**: Fix [useGigiData.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useGigiData.ts) to stop dependency loops on `isShieldDisabled`. <!-- id: 151 -->
+    - [x] **Guard Initialization**: Add `hasInitialized` ref to [useAiChat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts) to prevent 703-msg reload spam. <!-- id: 152 -->
+    - [x] **Fix Bad Request**: Identify missing index (orderBy `createdAt` + filters) and warn user. <!-- id: 153 -->

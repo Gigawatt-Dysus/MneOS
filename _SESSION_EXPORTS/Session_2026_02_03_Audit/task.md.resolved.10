@@ -1,0 +1,20 @@
+# Vantablack Protocol Phase 2: The Librarian's Shutter
+
+- [x] **VantablackShutter Module** <!-- id: 40 -->
+    - [x] Create [vantablackShutter.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts) with core functions <!-- id: 41 -->
+    - [x] [getBlacklistedNames()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#31-59) — Get BLACK entity names <!-- id: 42 -->
+    - [x] [filterTagsForContext()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#156-187) — Mention-only filter <!-- id: 43 -->
+    - [x] [redactText()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#99-116) / [redactHistory()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#117-151) — Find/replace sacred names <!-- id: 44 -->
+    - [x] [auditResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/vantablackShutter.ts#192-227) — Post-generation safety check <!-- id: 45 -->
+- [x] **Chat Pipeline Integration** <!-- id: 46 -->
+    - [x] Modify [generateAgentResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#14-350) pre-dispatch redaction <!-- id: 47 -->
+    - [x] Modify [generateAgentResponse()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#14-350) post-dispatch audit <!-- id: 48 -->
+    - [x] Update [buildFamilyGraphContext()](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/context.ts#3-22) for tag filtering <!-- id: 49 -->
+- [x] **Daydream Hardening** <!-- id: 52 -->
+    - [x] Load tags and build blacklist in fiction mode <!-- id: 53 -->
+    - [x] Redact story context before AI sees it <!-- id: 54 -->
+    - [x] Audit outbound response for leaks <!-- id: 55 -->
+- [ ] **Verification** <!-- id: 56 -->
+    - [ ] Test BLACK entity redaction in creative mode <!-- id: 57 -->
+    - [ ] Test GREY mention-only logic <!-- id: 58 -->
+    - [ ] Test outbound audit catches hallucinated names <!-- id: 59 -->

@@ -1,0 +1,38 @@
+# RAG Relevance & Context Hygiene Protocol
+
+## Problem
+The AI is hallucinating based on irrelevant, ancient "Life Events" retrieved by the RAG system.
+- **Over-Retrieval**: Broad queries pull in too many events.
+- **Context Flooding**: All retrieved items are dumped into the prompt without relevance checking.
+- **Prompt Sensitivity**: The model latches onto the "Instructional Background" (RAG data) over recent chat history.
+
+## Solution
+
+### 1. The "Cortex Filter" (AI Relevance Gate)
+Implement a secondary check *after* retrieval but *before* context injection.
+- **Mechanism**: Send the User Query + Retrieved Candidates to a fast model (Gemini Flash).
+- **Task**: "Return indices of items that are DIRECTLY RELEVANT to the query. If none, return NONE."
+- **Effect**: Filters out 50-year-old events unless the user explicitly asked about them.
+
+### 2. Tuning the RAG Trigger
+- Increase `userQuery.length` threshold from 5 chars to **15 chars**.
+- Prevents RAG activation on "Hello", "Thanks", "What's up".
+
+## Proposed Changes
+
+### [MemoryService] [src/services/memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts)
+#### [MODIFY] [recallContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#6-41)
+- Add a call to `cortexFilter` after `Promise.all` retrieval.
+- Only include items approved by the filter.
+
+#### [NEW] `cortexFilter` (Private Helper)
+- Implementation of the relevance checking logic.
+
+### [Chat Generator] [src/services/ai/generators/chat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts)
+#### [MODIFY] [generateAgentResponse](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#14-350)
+- Increase RAG trigger threshold: `if (userQuery.length > 15)`
+
+## Verification Plan
+1. **Dry Run**: Log what the RAG retrieves vs. what the Cortex Filter approves.
+2. **User Test**: Ask a vague question and ensure random events are NOT injected.
+3. **User Test**: Ask a specific memory question and ensure it IS injected.

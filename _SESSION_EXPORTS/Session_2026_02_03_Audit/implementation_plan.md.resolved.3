@@ -1,0 +1,34 @@
+# AiChat Recovery & Context Optimization Plan
+
+## Goal Description
+1.  **UI Feedback**: Add a subtle indicator in the Chat Header to show if the background "Librarian" (Enrichment) service is active or has failed (e.g., due to 429s), resolving the "Silent Failure" issue.
+2.  **Context Control**: Replace the blind "Safety Truncation" in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) with a more deliberate context management strategy (e.g., Sliding Window) to ensure valid history is preserved.
+
+## Proposed Changes
+
+### UI Layer
+#### [MODIFY] [ChatHeader.tsx](file:///src/components/AiChat/ChatHeader.tsx)
+*   Add `enrichmentStatus` prop.
+*   Render a small dot/icon: Blue (Processing), Red (Error), Green/Invisible (Idle).
+*   Add tooltip to error state explaining "Librarian is resting (Rate Limit)".
+
+#### [MODIFY] [index.tsx](file:///src/components/AiChat/index.tsx)
+*   Pass `enrichmentStatus` from bridge to header.
+
+### Logic Layer
+#### [MODIFY] [useAiChatBridge.ts](file:///src/components/AiChat/useAiChatBridge.ts)
+*   Expose `enrichmentStatus` from [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#34-871).
+
+#### [MODIFY] [useAiChat.ts](file:///src/hooks/useAiChat.ts)
+*   Add `enrichmentStatus` state (`'idle' | 'enriching' | 'error'`).
+*   Update status during the `setTimeout` background call.
+*   On 429/Error, set status to 'error' (non-blocking).
+
+### Core AI Layer
+#### [MODIFY] [providers.ts](file:///src/services/ai/providers.ts)
+*   Modify [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#92-200) truncation logic.
+*   Instead of hard 500 cap warning, implement `smartTruncate` that explicitly keeps:
+    *   System Prompt
+    *   Last N messages (e.g., 100? 200?)
+    *   (Future) Summarized context of older messages?
+    *   For now: Just ensure the "User decided" limit is respected or gracefully handled. The user mentioned "Manual Sliding Window". We will expose the limit or make it logic-based.

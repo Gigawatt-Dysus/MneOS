@@ -1,0 +1,25 @@
+# AiChat Debugging Plan: Phase 2
+
+## Goal
+Confirm that `setMessages` is successfully updating the state and that [MessageList](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/MessageList.tsx#63-285) is receiving the new props. The user reports non-rendering despite logs, which could imply a disconnected state or a misunderstanding of the "Safety Truncation" warning.
+
+## Changes
+
+### 1. Telemetry Injection ([useAiChat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts))
+*   Add `console.log` inside `setMessages` functional update to prove execution.
+*   Add `console.log` after [saveToFirestore](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#164-181) to prove control flow.
+*   Add `console.log` inside [processAgentTurn](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#528-657) success path.
+
+### 2. View Telemetry ([MessageList.tsx](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/MessageList.tsx))
+*   Add `useEffect` logging on `messages` prop change.
+
+### 3. Safety Check ([index.tsx](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/index.tsx))
+*   Ensure no parent re-renders are wiping state.
+
+## Verification
+*   User sends 'test'.
+*   Check console for:
+    *   `[AiChat] State Update Triggered: 5 -> 6 messages`
+    *   `[MessageList] Received 6 messages`
+    *   `[AiChat] Firestore Save Complete`
+    *   `[AiChat] AI Response: "Hello..."`

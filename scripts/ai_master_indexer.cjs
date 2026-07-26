@@ -350,15 +350,22 @@ function processSingleFile(targetPath, callback) {
                     console.log(`[AI Master Indexer] 🏷️ Auto-renamed Vault file:\n   Old: ${filename}\n   New: ${newFilename}`);
                     
                     // Also rename mirror file in G: Drive or Local if both exist
-                    const mirrorDir = dir.startsWith(G_DRIVE_VAULT_DIR) 
-                        ? dir.replace(G_DRIVE_VAULT_DIR, LOCAL_EXPORTS_DIR)
-                        : dir.replace(LOCAL_EXPORTS_DIR, G_DRIVE_VAULT_DIR);
+                    let mirrorDir = dir;
+                    if (dir.startsWith(G_DRIVE_VAULT_DIR)) {
+                        mirrorDir = dir.replace(G_DRIVE_VAULT_DIR, LOCAL_EXPORTS_DIR);
+                    } else if (dir.startsWith(LOCAL_EXPORTS_DIR)) {
+                        mirrorDir = dir.replace(LOCAL_EXPORTS_DIR, G_DRIVE_VAULT_DIR);
+                    }
                     
                     const oldMirror = path.join(mirrorDir, filename);
                     const newMirror = path.join(mirrorDir, newFilename);
                     if (fs.existsSync(oldMirror) && !fs.existsSync(newMirror)) {
-                        fs.renameSync(oldMirror, newMirror);
-                        console.log(`[AI Master Indexer] 🏷️ Auto-renamed Mirror file: ${newFilename}`);
+                        try {
+                            fs.renameSync(oldMirror, newMirror);
+                            console.log(`[AI Master Indexer] 🏷️ Auto-renamed Mirror file: ${newFilename}`);
+                        } catch (mErr) {
+                            // Mirror rename catch
+                        }
                     }
                     
                     targetPath = newPath;
@@ -483,32 +490,35 @@ function processAllFiles() {
     processNext(0);
 }
 
-const args = process.argv.slice(2);
-if (args.includes('--rebuild')) {
-    const jsonPath = path.join(VAULT_OUTPUT_DIR, '_INDEXES', '00_MASTER_META_INDEX.json');
-    if (fs.existsSync(jsonPath)) {
-        let masterEntries = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-        masterEntries.forEach(e => {
-            const isTech = (e.session_category === 'TECH_CODE') || 
-                           (e.unbounded_keyword_index || []).some(k => 
-                               /xai|voice agent|billing|antigravity|zen|tampermonkey|grok app|appdata|script|node|code|powershell|python/i.test(k)
-                           );
-            e.session_category = isTech ? 'TECH_CODE' : (e.session_category === 'TECH_CODE' ? 'TECH_CODE' : 'ROLEPLAY_LORE');
+if (require.main === module) {
+    const args = process.argv.slice(2);
+    if (args.includes('--rebuild')) {
+        const jsonPath = path.join(VAULT_OUTPUT_DIR, '_INDEXES', '00_MASTER_META_INDEX.json');
+        if (fs.existsSync(jsonPath)) {
+            let masterEntries = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
+            masterEntries.forEach(e => {
+                const isTech = (e.session_category === 'TECH_CODE') || 
+                               (e.unbounded_keyword_index || []).some(k => 
+                                   /xai|voice agent|billing|antigravity|zen|tampermonkey|grok app|appdata|script|node|code|powershell|python/i.test(k)
+                               );
+                e.session_category = isTech ? 'TECH_CODE' : (e.session_category === 'TECH_CODE' ? 'TECH_CODE' : 'ROLEPLAY_LORE');
+            });
+            generateMarkdownIndexes(masterEntries);
+            console.log(`[AI Master Indexer] ⚡ Rebuilt all markdown sub-indexes from 00_MASTER_META_INDEX.json!`);
+        } else {
+            console.error('00_MASTER_META_INDEX.json not found.');
+        }
+    } else if (args.includes('--all')) {
+        processAllFiles();
+    } else if (args[0]) {
+        processSingleFile(args[0], (err, result) => {
+            if (err) console.error('Error:', err.message);
+            else console.log('Single file distilled successfully:\n', JSON.stringify(result, null, 2));
         });
-        generateMarkdownIndexes(masterEntries);
-        console.log(`[AI Master Indexer] ⚡ Rebuilt all markdown sub-indexes from 00_MASTER_META_INDEX.json!`);
     } else {
-        console.error('00_MASTER_META_INDEX.json not found.');
+        console.log('Usage:\n  node ai_master_indexer.cjs --all\n  node ai_master_indexer.cjs <filepath>');
     }
-} else if (args.includes('--all')) {
-    processAllFiles();
-} else if (args[0]) {
-    processSingleFile(args[0], (err, result) => {
-        if (err) console.error('Error:', err.message);
-        else console.log('Single file distilled successfully:\n', JSON.stringify(result, null, 2));
-    });
-} else {
-    console.log('Usage:\n  node ai_master_indexer.cjs --all\n  node ai_master_indexer.cjs <filepath>');
 }
 
 module.exports = { processSingleFile, processAllFiles };
+

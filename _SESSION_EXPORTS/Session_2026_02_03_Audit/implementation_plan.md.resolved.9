@@ -1,0 +1,41 @@
+# Deep Context Lock & Exorcism Plan
+
+## EWO #05: Enforce User Scope
+The AI is defaulting to "Deep Context" (all 700+ msgs) regardless of the UI setting (e.g., "Last 50").
+**Action:**
+- Modify [src/services/ai/providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) (specifically [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#97-210) logic).
+- Remove the "Deep Context" auto-default.
+- **Force** truncation of `messages` array based on `aiParams.historyLimit`.
+
+## EWO #07: The Exorcism (Hard Reconciliation)
+The UI shows 696 messages, but Firestore has 739. The 43 "Shadow Messages" are driving the hallucination loops.
+**Action:**
+- Update [src/services/contextReconciler.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts).
+- The [Reconcile](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#887-913) button currently just syncs Typesense. It must now:
+    1. Fetch ALL Firestore IDs.
+    2. Compare with Client Rendered IDs.
+    3. **HARD DELETE** the diff (the 43 orphans) from Firestore.
+
+## Proposed Changes
+
+### 1. [providers.ts] Enforce Scope
+```typescript
+// Replace Deep Context logic
+const userLimit = aiParams?.historyLimit || 50;
+let workingMessages = messages;
+if (messages.length > userLimit) {
+    workingMessages = messages.slice(-userLimit); // Strict chop
+}
+```
+
+### 2. [contextReconciler.ts] Hard Delete Logic
+```typescript
+// Identify Shadow Messages
+const shadowIds = firestoreIds.filter(id => !renderedIds.has(id));
+// Banish them
+await Promise.all(shadowIds.map(id => deleteDoc(doc(db, 'chats', id))));
+```
+
+## Verification
+1. **Scope Test**: Set History Limit to 10. Verify logs show "Sending 10 messages".
+2. **Exorcism Test**: Click "Heal" button. Verify Firestore count drops from 739 to 696. Verify "Shadow" messages are gone.

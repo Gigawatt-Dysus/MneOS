@@ -1,0 +1,22 @@
+# Voidrifter Refinement Plan
+
+## Goal
+1.  **Gatekeeper Restoration**: Fix the failed edits to [useAiChat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts) to ensure `librarianQueue` is actually subscribed.
+2.  **Pill Persistence**: Modify [useAiChatBridge.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/useAiChatBridge.ts) to stop clearing the `tacticalDirective` after message submission.
+
+## Proposed Changes
+
+### [MODIFY] [useAiChat.ts](file:///src/hooks/useAiChat.ts)
+*   Add import `librarianQueue`.
+*   Add `isLibrarianBusy` state.
+*   Add `useEffect` subscription.
+*   Update `isThinking` return value.
+
+### [MODIFY] [useAiChatBridge.ts](file:///src/components/AiChat/useAiChatBridge.ts)
+*   In [handleTacticalSubmit](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/useAiChatBridge.ts#377-381):
+    *   Remove `setTacticalDirective('')` call.
+    *   Ensure `userInput` IS cleared, but `tacticalDirective` stays.
+
+## Verification
+*   Check console for "Background enrichment silent fail" loop (should be gone/managed).
+*   Test sending a message with a pill; ensure pill remains selected in UI.

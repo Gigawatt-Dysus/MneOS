@@ -1,0 +1,44 @@
+﻿<html><body style='background:#1a1a2e; padding:50px;'>
+<style>
+.muse-icon {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  clip-path: circle(42% at 50% 42%);
+  transition: all 0.3s;
+}
+.muse-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+}
+.active .muse-icon {
+  filter: drop-shadow(0 0 10px rgba(34,211,238,0.8));
+}
+.active-dot {
+  position: absolute;
+  bottom: -8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22d3ee;
+  box-shadow: 0 0 8px #22d3ee;
+}
+</style>
+<div style='display:flex; gap:20px;'>
+  <div class='muse-container active'>
+    <img src='public/assets/muses/set1/set1_0.png' class='muse-icon' />
+    <div class='active-dot'></div>
+  </div>
+  <div class='muse-container'>
+    <img src='public/assets/muses/set1/set1_1.png' class='muse-icon' />
+  </div>
+  <div class='muse-container'>
+    <img src='public/assets/muses/set1/set1_2.png' class='muse-icon' />
+  </div>
+</div>
+</body></html>

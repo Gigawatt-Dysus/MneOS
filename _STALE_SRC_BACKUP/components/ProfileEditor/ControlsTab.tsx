@@ -1,0 +1,220 @@
+import React from 'react';
+import type { User, ImportStatus, View } from '@/types';
+import { DisplaySettingsIcon, ClipboardIcon, RestoreIcon } from '../icons';
+import { GlassButton } from '../GlassButton';
+import { Cloud, Database, HardDrive, ShieldAlert, Bot, Activity } from 'lucide-react';
+
+interface ControlsTabProps {
+    user: User;
+    setIsSettingsModalOpen: (v: boolean) => void;
+    onCreateUserPersonTag: () => void;
+    onNavigate: (view: View) => void;
+    migrationStatus: { active: boolean, current: number, total: number };
+    handleMigrateToCloud: () => void;
+    localRescueCount: number;
+    handleRescueLocalData: () => void;
+    isRescuing: boolean;
+    onExportAllData: () => void;
+    onTriggerRestore: () => void;
+    legacyImportFileRef: React.RefObject<HTMLInputElement>;
+    handleLegacyFileSelected: (e: React.ChangeEvent<HTMLInputElement>) => void;
+    legacyImportStatus: ImportStatus;
+    handleStartLegacyImport: () => void;
+    setLegacyImportStatus: (status: ImportStatus) => void;
+    handleResetAndSeed: () => void;
+    isResetting: boolean;
+    handleDeleteMedia: (mediaId: string) => void;
+    handlePersonalIncinerate: () => void;
+    isIncinerating: boolean;
+}
+
+export const ControlsTab: React.FC<ControlsTabProps> = ({
+    user, setIsSettingsModalOpen, onCreateUserPersonTag, onNavigate, migrationStatus, handleMigrateToCloud,
+    localRescueCount, handleRescueLocalData, isRescuing, onExportAllData, onTriggerRestore,
+    legacyImportFileRef, handleLegacyFileSelected, legacyImportStatus, handleStartLegacyImport, setLegacyImportStatus,
+    handleResetAndSeed, isResetting, handlePersonalIncinerate, isIncinerating
+}) => {
+    return (
+        <div className="space-y-6">
+            {/* Settings Header */}
+            <div className="flex justify-between items-center gap-4 bg-white/5 p-4 rounded-2xl border border-white/10">
+                <div className="flex-grow">
+                    <h3 className="text-lg font-bold text-white">System Configuration</h3>
+                    <p className="text-xs text-slate-400 mt-1 font-mono">Manage UI preferences and AI behaviors.</p>
+                </div>
+                <GlassButton onClick={() => setIsSettingsModalOpen(true)} variant="secondary" className="h-10 w-10 p-0 flex items-center justify-center rounded-full">
+                    <DisplaySettingsIcon className="w-5 h-5" />
+                </GlassButton>
+            </div>
+
+            {/* Diagnostics */}
+            <div className="p-5 border border-white/10 rounded-2xl bg-[#0f1219]">
+                <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                    <Cloud size={14} /> Cloud Diagnostics
+                </h4>
+                <div className="p-3 bg-black/40 rounded-xl border border-white/5 font-mono text-xs space-y-2 text-slate-400">
+                    <div className="flex justify-between items-center">
+                        <span>UID:</span>
+                        <span className="text-slate-200 select-all">{user.id}</span>
+                        <button onClick={() => navigator.clipboard.writeText(user.id)} className="text-cyan-500 hover:text-cyan-400"><ClipboardIcon className="w-3 h-3" /></button>
+                    </div>
+                    <div className="flex justify-between items-center">
+                        <span>EMAIL:</span>
+                        <span className="text-slate-200">{user.email}</span>
+                    </div>
+                </div>
+            </div>
+
+            {/* Link Profile */}
+            {!user.personTagId && (
+                <div className="p-5 border border-emerald-500/30 bg-emerald-900/10 rounded-2xl">
+                    <h4 className="text-xs font-bold text-emerald-400 uppercase tracking-widest mb-3">Profile Link Missing</h4>
+                    <GlassButton onClick={onCreateUserPersonTag} variant="success" className="w-full justify-center">
+                        Create & Link Person Tag
+                    </GlassButton>
+                </div>
+            )}
+
+            {/* AI Management */}
+            <div className="p-5 border border-white/10 rounded-2xl bg-[#0f1219]">
+                <h4 className="text-xs font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                    <Bot size={14} /> Intelligence
+                </h4>
+                <GlassButton onClick={() => onNavigate('aiCompanionEditor')} variant="primary" className="w-full justify-center">
+                    Manage AI Companions
+                </GlassButton>
+            </div>
+
+            {/* Cloud Optimization */}
+            <div className="p-5 border border-white/10 rounded-2xl bg-[#0f1219]">
+                <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                    <Database size={14} /> Optimization
+                </h4>
+                {migrationStatus.active ? (
+                    <div className="w-full">
+                        <div className="flex justify-between text-xs font-semibold mb-2 text-indigo-300">
+                            <span>Migrating...</span>
+                            <span>{migrationStatus.current} / {migrationStatus.total}</span>
+                        </div>
+                        <div className="w-full bg-black/40 rounded-full h-2">
+                            <div className="bg-indigo-500 h-2 rounded-full transition-all duration-300" style={{ width: `${(migrationStatus.current / Math.max(migrationStatus.total, 1)) * 100}%` }}></div>
+                        </div>
+                    </div>
+                ) : (
+                    <GlassButton onClick={handleMigrateToCloud} variant="secondary" className="w-full justify-center">
+                        Migrate Local Images to Cloud
+                    </GlassButton>
+                )}
+            </div>
+
+            {/* Local Rescue */}
+            {localRescueCount > 0 && (
+                <div className="p-5 border border-amber-500/30 bg-amber-900/10 rounded-2xl">
+                    <h4 className="text-xs font-bold text-amber-400 uppercase tracking-widest flex items-center gap-2 mb-3">
+                        <HardDrive size={14} /> Data Rescue
+                    </h4>
+                    <p className="text-xs text-amber-200/70 mb-4">Found {localRescueCount} items stranded on this device.</p>
+                    <GlassButton
+                        onClick={handleRescueLocalData}
+                        disabled={isRescuing}
+                        variant="secondary" // [ZEN FIX] Changed from 'warning' to 'secondary'
+                        className="w-full justify-center bg-amber-500/20 text-amber-400 border-amber-500/50 hover:bg-amber-500/30 hover:text-amber-200"
+                    >
+                        {isRescuing ? "Merging..." : "Merge Device Data to Cloud"}
+                    </GlassButton>
+                </div>
+            )}
+
+            {/* Data Management */}
+            <div className="p-5 border border-white/10 rounded-2xl bg-[#0f1219]">
+                <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Data Operations</h4>
+                <div className="flex flex-col gap-3">
+                    <GlassButton onClick={onExportAllData} variant="secondary" className="justify-center">
+                        Export Options...
+                    </GlassButton>
+                    <GlassButton onClick={onTriggerRestore} variant="secondary" className="justify-center">
+                        <RestoreIcon className="w-4 h-4 mr-2" /> Restore / Migrate from Backup
+                    </GlassButton>
+                </div>
+            </div>
+
+            {/* Danger Zone */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="p-5 border border-white/10 rounded-2xl bg-[#0f1219]">
+                    <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Legacy Import (v1)</h4>
+                    <input type="file" ref={legacyImportFileRef} onChange={handleLegacyFileSelected} className="hidden" accept=".json, .js" />
+                    <GlassButton onClick={() => legacyImportFileRef.current?.click()} variant="secondary" className="w-full justify-center">
+                        Select File
+                    </GlassButton>
+
+                    {legacyImportStatus.type !== 'idle' && (
+                        <div className="mt-4 p-3 bg-black/40 rounded-xl border border-white/5">
+                            {legacyImportStatus.type === 'confirming' && (
+                                <div className="text-center">
+                                    <p className="text-xs text-slate-300 mb-3">Import <strong>{legacyImportStatus.file.name}</strong>?</p>
+                                    <div className="flex gap-2 justify-center">
+                                        <GlassButton onClick={handleStartLegacyImport} variant="success" className="text-xs h-8">Confirm</GlassButton>
+                                        <GlassButton onClick={() => setLegacyImportStatus({ type: 'idle' })} variant="ghost" className="text-xs h-8">Cancel</GlassButton>
+                                    </div>
+                                </div>
+                            )}
+                            {(legacyImportStatus.type === 'loading' || legacyImportStatus.type === 'success' || legacyImportStatus.type === 'error') && (
+                                <div className={`text-xs text-center font-mono ${legacyImportStatus.type === 'success' ? 'text-emerald-400' :
+                                    legacyImportStatus.type === 'error' ? 'text-red-400' :
+                                        'text-blue-400'
+                                    }`}>{legacyImportStatus.message}</div>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="p-5 border border-red-500/30 bg-red-900/10 rounded-2xl">
+                    <h4 className="text-xs font-bold text-red-400 uppercase tracking-widest flex items-center gap-2 mb-4">
+                        <ShieldAlert size={14} /> Danger Zone
+                    </h4>
+                    <GlassButton
+                        onClick={handleResetAndSeed}
+                        disabled={isResetting}
+                        variant="danger"
+                        className="w-full justify-center"
+                    >
+                        {isResetting ? 'Resetting...' : 'Factory Reset'}
+                    </GlassButton>
+                </div>
+            </div>
+
+            {/* [ZEN NEW] PERSONAL NEURAL INCINERATOR */}
+            <div className="p-8 border-2 border-red-500/30 bg-red-950/20 rounded-3xl space-y-6 shadow-[0_0_50px_rgba(239,68,68,0.1)] relative overflow-hidden group">
+                <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <ShieldAlert size={80} className="text-red-500" />
+                </div>
+
+                <div className="relative z-10">
+                    <h3 className="text-lg font-black text-red-400 uppercase tracking-[0.3em] flex items-center gap-3 mb-2">
+                        <Activity size={24} className="animate-pulse" /> Neural Memory Incinerator
+                    </h3>
+                    <p className="text-xs text-red-200/60 leading-relaxed font-bold uppercase tracking-widest max-w-md">
+                        Permanently purge your personal chat history from the cloud.
+                        <span className="block mt-1 text-red-500">System will automatically trigger an archive backup.</span>
+                    </p>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-4 relative z-10">
+                    <GlassButton
+                        onClick={handlePersonalIncinerate}
+                        disabled={isIncinerating}
+                        variant="danger"
+                        className="flex-1 py-4 bg-red-600 hover:bg-red-500 shadow-xl shadow-red-900/40 text-xs font-black tracking-[0.2em] border-none"
+                    >
+                        {isIncinerating ? <Bot size={18} className="animate-spin mr-2" /> : <ShieldAlert size={18} className="mr-2" />}
+                        {isIncinerating ? "INCINERATING..." : "ACTIVATE QUANTUM SNAP"}
+                    </GlassButton>
+                </div>
+
+                <p className="text-[10px] text-slate-500 font-mono italic">
+                    Note: This only affects your personal conversational data. Entity tags and Matrix assets are preserved.
+                </p>
+            </div>
+        </div >
+    );
+};

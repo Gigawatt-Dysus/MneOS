@@ -1,0 +1,40 @@
+# Task List: Project GIGI Implementation
+
+This documents the progress of the current session.
+
+- [x] **Phase 1: Secure the Perimeter (EWO #05)** <!-- id: 70 -->
+    - [x] **Stop the Bleeding**: Add immediate logic in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) to Respect User Scope. <!-- id: 71 -->
+    - [x] **Verify**: Confirm limits are enforced in [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#97-205). <!-- id: 72 -->
+
+- [x] **Phase 2: The Audit (EWO #07)** <!-- id: 73 -->
+    - [x] **Dry Run Analysis**: Run [reconcileContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts#25-205) in DRY RUN mode. <!-- id: 74 -->
+    - [x] **Root Cause ID**: Confirm if `isDeleted: true` docs are persisting. <!-- id: 75 -->
+
+- [x] **Phase 3: The Exorcism (EWO #07 & #08+)** <!-- id: 80 -->
+    - [x] **EWO #05**: Enforce `historyLimit` in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) <!-- id: 81 -->
+    - [x] **EWO #07 (Part 1)**: Implement Hard Delete logic <!-- id: 82 -->
+    - [x] **EWO #08 (Refinement)**: Remove `isDeleted` skip to catch Shadow Orphans <!-- id: 84 -->
+    - [x] **EWO #08 (Indexing)**: Implement "Force Feed" for missing Typesense docs <!-- id: 85 -->
+    - [x] **Signature Update**: Pass full `messages` array to [reconcileContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts#25-205) <!-- id: 86 -->
+    - [x] **EWO #09 (HUD)**: Implement "Data Integrity Readout" in Chat Header <!-- id: 87 -->
+
+- [x] **Phase 4: Global Neural Refit (EWO #12)** <!-- id: 90 -->
+    - [x] **Refit Providers**: Replaced stub with xAI `grok-4.1-embedding`. <!-- id: 91 -->
+    - [x] **Update Schema**: Added `embedding` to [ChatMessage](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/types/models.ts#44-59). <!-- id: 92 -->
+    - [x] **Atomic Save**: Implemented auto-embedding in [saveToFirestore](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#214-250). <!-- id: 93 -->
+    - [x] **Neural Audit**: Upgraded Heal button to backfill missing vectors. <!-- id: 94 -->
+
+- [x] **Phase 5: Neural Calibration (EWO #14)** <!-- id: 100 -->
+    - [x] **Correct Endpoint**: Updated [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) to `v1-embedding` / `v1/embeddings`. <!-- id: 101 -->
+    - [x] **Fail-Safe**: Wrapped embedding connection in try/catch to maintain chat uptime. <!-- id: 102 -->
+    - [x] **Burst Reflow**: Added sliding window truncation to [dispatchBurst](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#109-174) for performance. <!-- id: 103 -->
+
+- [x] **Verification** <!-- id: 67 -->
+
+## Notes
+- "Shadow Orphans" (isDeleted=true but still in Firestore) were the cause of "Context Gaslighting".
+- "Gap Messages" (in UI but missing in Typesense) were caused by failed indexing or soft-deletions on re-render.
+- **HUD Added**: Live readout of `UI | DB | RAG` counts.
+- **xAI Embeddings**: Now using native xAI embedding model (768 dims).
+- **Atomic Save**: Vectors are now stored inside the Firestore document, preventing sync drift.
+- **Fail-Safe**: Chat continues even if Neural API temporarily fails; "Heal" button fixes gaps later.

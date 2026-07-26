@@ -1,0 +1,13 @@
+# AiChat Recovery & Context Optimization
+
+- [ ] **Librarian Status Indicator**
+    - [ ] Add `enrichmentStatus` state to [useAiChat](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts#34-871) (idle, active, error) <!-- id: 8 -->
+    - [ ] Update `ChatHeader` to display low-profile status icon <!-- id: 9 -->
+    - [ ] Hook up `MemoryManager` calls to update this status <!-- id: 10 -->
+- [ ] **Context Management**
+    - [ ] Analyze [callXAI](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts#92-200) truncation logic <!-- id: 11 -->
+    - [ ] Implement "Smart Sliding Window" (preserve system prompt + recent N messages, maybe summary?) <!-- id: 12 -->
+    - [ ] (Optional) Investigate 429 causes (Token usage vs Req/sec) <!-- id: 13 -->
+- [ ] **Verification**
+    - [ ] Verify indicator shows "Error" on 429 <!-- id: 14 -->
+    - [ ] Verify core chat context handling <!-- id: 15 -->

@@ -1,0 +1,14 @@
+# RAG Relevance & Context Hygiene
+
+- [ ] **Analysis & Design** <!-- id: 60 -->
+    - [x] Analyze [generateAgentResponse](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts#13-316) and [recallContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#6-41) <!-- id: 61 -->
+    - [x] Create Implementation Plan for Cortex Filter <!-- id: 62 -->
+
+- [ ] **Implementation: The Cortex Filter** <!-- id: 63 -->
+    - [ ] Modify [chat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/generators/chat.ts): Increase RAG trigger threshold (5 -> 15 chars) <!-- id: 64 -->
+    - [ ] Modify [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts): Implement `filterByRelevance` using fast LLM <!-- id: 65 -->
+    - [ ] Modify [memoryService.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts): Integrate filter into [recallContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/memoryService.ts#6-41) <!-- id: 66 -->
+
+- [ ] **Verification** <!-- id: 67 -->
+    - [ ] Verify short queries (e.g., "Hello") do NOT trigger RAG <!-- id: 68 -->
+    - [ ] Verify irrelevant RAG items are filtered out by Cortex Filter <!-- id: 69 -->

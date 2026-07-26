@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Interface | System Core</title>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #121212;
+            --panel-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-dim: #888;
+            --accent: #00ffcc; /* Zen/Liberator Blue-Green */
+            --alert: #ff4444;
+            --input-bg: #0a0a0a;
+            --border: #333;
+        }
+        body {
+            font-family: 'Segoe UI', monospace;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 20px;
+            height: 100vh; box-sizing: border-box;
+            display: flex; flex-direction: column;
+        }
+        h1 { margin: 0 0 20px 0; color: var(--accent); letter-spacing: 3px; font-weight: 300; }
+        .status-light { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #555; margin-right: 10px; }
+        .status-connected { background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; flex-grow: 1; min-height: 0; }
+        .col { display: flex; flex-direction: column; gap: 15px; min-height: 0; }
+        
+        .panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            display: flex; flex-direction: column;
+        }
+        .panel-header { font-weight: bold; color: var(--accent); margin-bottom: 10px; display: flex; justify-content: space-between; }
+        
+        textarea {
+            background: var(--input-bg); color: var(--accent);
+            border: 1px solid var(--border);
+            font-family: 'Consolas', monospace; font-size: 13px;
+            padding: 10px; resize: none; flex-grow: 1; outline: none;
+        }
+        textarea:focus { border-color: var(--accent); }
+
+        button {
+            background: var(--accent); color: #000;
+            border: none; padding: 12px; font-weight: bold;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            margin-top: 10px; transition: 0.2s;
+        }
+        button:hover { background: #fff; box-shadow: 0 0 15px var(--accent); }
+
+        /* Status Bar */
+        #status-bar { font-size: 0.8em; color: var(--text-dim); margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1><span id="connection-status" class="status-light"></span>ZEN <span style="opacity:0.5; font-size:0.6em">V2.1 // FIRESTORE LINKED</span></h1>
+    <div id="status-bar">Initialize System...</div>
+
+    <div class="grid">
+        <div class="col">
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header">
+                    <span>SHIP'S LOG (The Immutable Truth)</span>
+                    <span style="font-size:0.8em; cursor:pointer;" onclick="saveContext()" title="Force Save">💾</span>
+                </div>
+                <textarea id="shipLog" placeholder="Loading from Firestore...">LOADING...</textarea>
+            </div>
+
+            <div class="panel" style="flex: 1;">
+                <div class="panel-header">DAMAGE REPORT (Paste Code Diff)</div>
+                <textarea id="codeDiff" placeholder="Paste the code you just changed here. Zen will summarize it automatically."></textarea>
+            </div>
+
+            <div class="panel" style="flex: 0 0 100px;">
+                <div class="panel-header">COMMAND INPUT</div>
+                <textarea id="userCommand" placeholder="What is the next directive?"></textarea>
+            </div>
+            
+            <button onclick="engageZen()">GENERATE & SYNC</button>
+        </div>
+
+        <div class="col">
+            <div class="panel" style="height: 100%;">
+                <div class="panel-header">TRANSMISSION (Copy to AI)</div>
+                <textarea id="finalPrompt" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // 0. CONSTANTS (DEFINED FIRST)
+        // ==========================================
+        const DOC_REF = "dev_context/active_session"; 
+
+        // ==========================================
+        // 1. CONFIGURATION (PASTE YOUR KEYS HERE)
+        // ==========================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyBdSPXluDaF6C4UydWV-9mFWUo7iBG_saA",
+            authDomain: "gigi-time-machine.firebaseapp.com",
+            projectId: "gigi-time-machine",
+            storageBucket: "gigi-time-machine.firebasestorage.app",
+            messagingSenderId: "402649544404",
+            appId: "1:402649544404:web:6a7357062274309b77e309"
+        };
+
+        // Initialize Firebase
+        let db;
+        
+        // Hoist loadContext definition
+        function loadContext() {
+            if (!db) return;
+            console.log("Attempting to load context from:", DOC_REF);
+            db.doc(DOC_REF).get().then((doc) => {
+                if (doc.exists) {
+                    const data = doc.data();
+                    if (data.architecture) {
+                        document.getElementById('shipLog').value = data.architecture;
+                    }
+                    document.getElementById('status-bar').innerText = "CONTEXT LOADED FROM CLOUD";
+                } else {
+                    document.getElementById('shipLog').value = "ARCHITECTURE LOCK:\n- Flat Structure.\n- Vanilla JS.\n- No Build Steps.";
+                    document.getElementById('status-bar').innerText = "NEW SESSION CREATED";
+                }
+            }).catch((error) => {
+                console.error("Firestore Read Error:", error);
+                document.getElementById('status-bar').innerText = "READ ERROR: " + error.message;
+            });
+        }
+
+        // ==========================================
+        // 2. INITIALIZATION
+        // ==========================================
+        try {
+            // Basic check to see if user updated keys
+            if (firebaseConfig.apiKey.includes("PASTE_API_KEY")) {
+                console.warn("Firebase keys not set yet.");
+                document.getElementById('status-bar').innerText = "WAITING FOR CONFIG...";
+            } else {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.firestore();
+                document.getElementById('connection-status').classList.add('status-connected');
+                document.getElementById('status-bar').innerText = "SYSTEM ONLINE. CONFIRMED. LINKED TO FIRESTORE CORE";
+                
+                // Execute Load
+                loadContext(); 
+            }
+        } catch (e) {
+            console.error(e);
+            document.getElementById('status-bar').innerText = "CONNECTION FAILED: " + e.message;
+        }
+
+        function saveContext() {
+            if (!db) {
+                alert("Database not connected. Check keys.");
+                return;
+            }
+            const arch = document.getElementById('shipLog').value;
+            db.doc(DOC_REF).set({
+                architecture: arch,
+                last_updated: firebase.firestore.FieldValue.serverTimestamp()
+            }, { merge: true });
+            
+            const icon = document.querySelector('.panel-header span[onclick]');
+            const original = icon.innerText;
+            icon.innerText = "✅";
+            setTimeout(() => icon.innerText = original, 1500);
+            
+            document.getElementById('status-bar').innerText = "SHIP LOG SAVED";
+        }
+
+        function engageZen() {
+            const shipLog = document.getElementById('shipLog').value;
+            const codeDiff = document.getElementById('codeDiff').value;
+            const command = document.getElementById('userCommand').value;
+            
+            const prompt = `
+=== SYSTEM: ZEN CODING PROTOCOL ===
+[CONTEXT SOURCE: FIRESTORE CLOUD SYNC]
+
+[1. ARCHITECTURAL INVARIANTS]
+${shipLog}
+
+[2. RECENT FILE MODIFICATIONS]
+${codeDiff ? "I have just modified this code:\n```javascript\n" + codeDiff + "\n```" : "No recent code changes provided."}
+
+===================================
+
+[3. USER DIRECTIVE]
+${command}
+
+[INSTRUCTION]
+- Review the invariants in [1]. 
+- Analyze the code in [2] to understand the current state.
+- Execute directive [3].
+- maintain the flat file structure.
+`;
+
+            document.getElementById('finalPrompt').value = prompt;
+            navigator.clipboard.writeText(prompt);
+
+            if (db) {
+                db.doc(DOC_REF).set({
+                    last_action: command.substring(0, 50) + "...",
+                    last_diff_snippet: codeDiff.substring(0, 100) + "...",
+                    last_updated: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+            }
+
+            const btn = document.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "COPIED & SYNCED!";
+            setTimeout(() => btn.innerText = originalText, 2000);
+        }
+    </script>
+</body>
+</html>

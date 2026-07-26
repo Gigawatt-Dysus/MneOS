@@ -1,0 +1,11 @@
+# Voidrifter Enhancements
+
+- [ ] **Gatekeeper Fix**
+    - [ ] Re-apply `librarianQueue` subscription in [useAiChat.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/hooks/useAiChat.ts). <!-- id: 25 -->
+    - [ ] Ensure `isThinking` logic merges both states. <!-- id: 26 -->
+- [ ] **Tactical Pill Persistence**
+    - [ ] Modify [handleTacticalSubmit](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/useAiChatBridge.ts#377-381) in [useAiChatBridge.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/components/AiChat/useAiChatBridge.ts) to *not* clear `tacticalDirective`. <!-- id: 27 -->
+    - [ ] Ensure it only clears on explicit removal logic (if any exists, or leave to user manual clear). <!-- id: 28 -->
+- [ ] **Verification**
+    - [ ] Verify pills persist after send. <!-- id: 29 -->
+    - [ ] Verify Gatekeeper subscription is active. <!-- id: 30 -->

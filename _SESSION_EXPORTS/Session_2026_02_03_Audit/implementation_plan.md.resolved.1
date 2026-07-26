@@ -1,0 +1,26 @@
+# AiChat Refactor & 429 Crisis Mitigation Plan
+
+## Goal Description
+Address the critical issue where blocking backend calls (specifically to xAI/enrichment services) and 429 errors are preventing the chat UI from updating, despite successful message transmission. Refactor the logic within the new `src/components/AiChat` modular architecture.
+
+## User Review Required
+> [!IMPORTANT]
+> The "Librarian" (archiving/enrichment) will be moved to a "fire-and-forget" pattern. This means if it fails silently (e.g., due to 429), the user might not know immediately, but the chat flow will remain uninterrupted.
+
+## Proposed Changes
+
+### AiChat Component Layer (`src/components/AiChat/`)
+#### [MODIFY] [useAiChat.ts](file:///src/hooks/useAiChat.ts)
+*   **Decoupling:** Wrap `MemoryManager.archiveMessageInBackground` in a `setTimeout(..., 0)` block to force it to the next event loop tick and ensure strictly non-blocking behavior.
+*   **State Safety:** Updates `setMessages` calls to use functional updates: `setMessages(prev => [...prev, newMsg])`.
+*   **Error Handling:** Ensure the fire-and-forget block has its own try/catch to prevent any unhandled promise rejections from bubbling.
+
+#### [MODIFY] [enrichmentService.ts](file:///src/services/enrichmentService.ts)
+*   Review error handling to ensuring 429s are logged gracefully.
+
+## Verification Plan
+
+### Manual Verification
+*   **Chat Flow:** Send messages and verify immediate appearance in the UI ("Tactical Deck" to "Message List").
+*   **Simulated Lag:** Verify UI updates even if the backend enrichment is slow.
+*   **Logs:** Check console logs for "429" errors and verify they do not crash the app or freeze the UI.

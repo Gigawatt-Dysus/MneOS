@@ -1,0 +1,15 @@
+{
+  "ignore": {
+    "customPatterns": [
+      "**/assets/**",
+      "**/dist/**",
+      "**/node_modules/**",
+      "**/*.svg",
+      "**/*.png",
+      "**/*.jpg",
+      "package-lock.json",
+      "yarn.lock",
+      "pnpm-lock.yaml"
+    ]
+  }
+}

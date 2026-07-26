@@ -1,0 +1,12 @@
+# RAG Relevance & Context Hygiene
+
+- [x] **Phase 1 & 2** (Completed) <!-- id: 70 -->
+
+- [ ] **Phase 3: The Exorcism (EWO #07 & #08)** <!-- id: 80 -->
+    - [x] **EWO #05**: Enforce `historyLimit` in [providers.ts](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/ai/providers.ts) <!-- id: 81 -->
+    - [x] **EWO #07 (Part 1)**: Implement Hard Delete logic <!-- id: 82 -->
+    - [x] **EWO #08 (Refinement)**: Remove `isDeleted` skip to catch Shadow Orphans <!-- id: 84 -->
+    - [x] **EWO #08 (Indexing)**: Implement "Force Feed" for missing Typesense docs <!-- id: 85 -->
+    - [x] **Signature Update**: Pass full `messages` array to [reconcileContext](file:///c:/Users/artin/Documents/Project-GIGI-Firebase/Project-GIGI/src/services/contextReconciler.ts#23-172) <!-- id: 86 -->
+
+- [x] **Verification** <!-- id: 67 -->
