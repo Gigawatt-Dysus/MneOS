@@ -35,7 +35,7 @@ function mergeMetadata(primary, fragment) {
 }
 
 (async () => {
-    const cloudUri = 'mongodb+srv://dysus2026:alpha-Omega-911@lifeos-cluster.qmjogz8.mongodb.net/LifeOS?retryWrites=true&w=majority&appName=LifeOS-Cluster';
+    const cloudUri = process.env.ATLAS_CLOUD_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/LifeOS';
     const localUri = 'mongodb://zen:sovereign@100.116.12.18:27017/LifeOS?authSource=admin';
     
     const cloudClient = new MongoClient(cloudUri);

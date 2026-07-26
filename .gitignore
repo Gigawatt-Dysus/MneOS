@@ -82,3 +82,13 @@ build-log.txt
 staging.db*
 *.xml
 *.sqlite*
+
+# ZEN SECURITY: Scratch and Legacy Migration Scripts
+functions/scripts/
+functions/*.js
+scripts/migration/
+generate_chassis_asset.py
+verify_sync.cjs
+compare_dbs.cjs
+mongo_migrate.cjs
+

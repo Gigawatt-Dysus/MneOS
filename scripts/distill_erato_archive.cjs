@@ -21,7 +21,7 @@ if (fs.existsSync(envPath)) {
     });
 }
 
-const ATLAS_URI = process.env.ATLAS_CLOUD_URI || "mongodb+srv://dysus2026:alpha-Omega-911@lifeos-cluster.qmjogz8.mongodb.net/LifeOS?retryWrites=true&w=majority&appName=LifeOS-Cluster";
+const ATLAS_URI = process.env.ATLAS_CLOUD_URI || process.env.MONGODB_URI || "mongodb://localhost:27017/LifeOS";
 const ERIC_UID = '9MPVGVTxE8dXvkCrl1XrWHQzCl23';
 
 const LOCAL_ERATO_DIR = path.join(__dirname, '..', '_SESSION_EXPORTS', 'ERATO_HISTORICAL_RAW');
