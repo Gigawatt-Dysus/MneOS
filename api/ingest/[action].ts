@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import photosHandler from './handlers/photos';
-import triageHandler from './handlers/triage';
+import photosHandler from '../../src/api_handlers/ingest/photos';
+import triageHandler from '../../src/api_handlers/ingest/triage';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { action } = req.query;

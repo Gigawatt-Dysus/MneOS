@@ -1,13 +1,13 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import comfyWorkerHandler from './handlers/comfyWorker';
-import renderPlanHandler from './handlers/renderPlan';
-import runpodLeaseServiceHandler from './handlers/runpodLeaseService';
-import thunderDeployServiceHandler from './handlers/thunderDeployService';
-import thunderLeaseServiceHandler from './handlers/thunderLeaseService';
-import vastLeaseServiceHandler from './handlers/vastLeaseService';
-import vastMarketServiceHandler from './handlers/vastMarketService';
-import vlmInjectHandler from './handlers/vlmInject';
+import comfyWorkerHandler from '../../src/api_handlers/loom/comfyWorker';
+import renderPlanHandler from '../../src/api_handlers/loom/renderPlan';
+import runpodLeaseServiceHandler from '../../src/api_handlers/loom/runpodLeaseService';
+import thunderDeployServiceHandler from '../../src/api_handlers/loom/thunderDeployService';
+import thunderLeaseServiceHandler from '../../src/api_handlers/loom/thunderLeaseService';
+import vastLeaseServiceHandler from '../../src/api_handlers/loom/vastLeaseService';
+import vastMarketServiceHandler from '../../src/api_handlers/loom/vastMarketService';
+import vlmInjectHandler from '../../src/api_handlers/loom/vlmInject';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { action } = req.query;

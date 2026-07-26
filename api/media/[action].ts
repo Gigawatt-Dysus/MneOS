@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import eratosPalaceHandler from './handlers/eratosPalace';
-import forceRebakeOrientationHandler from './handlers/forceRebakeOrientation';
-import forgeReimagineHandler from './handlers/forgeReimagine';
-import healThumbnailsHandler from './handlers/heal-thumbnails';
-import proxyHandler from './handlers/proxy';
+import eratosPalaceHandler from '../../src/api_handlers/media/eratosPalace';
+import forceRebakeOrientationHandler from '../../src/api_handlers/media/forceRebakeOrientation';
+import forgeReimagineHandler from '../../src/api_handlers/media/forgeReimagine';
+import healThumbnailsHandler from '../../src/api_handlers/media/heal-thumbnails';
+import proxyHandler from '../../src/api_handlers/media/proxy';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { action } = req.query;
