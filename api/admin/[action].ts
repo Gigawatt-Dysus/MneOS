@@ -1,10 +1,10 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
-import commitPurifiedSchema from '../_admin/commitPurifiedSchema';
-import deleteTimelineEvent from '../_admin/deleteTimelineEvent';
-import fetchPurificationPayload from '../_admin/fetchPurificationPayload';
-import rehydrateMessage from '../_admin/rehydrateMessage';
-import transplantAsset from '../_admin/transplantAsset';
+import commitPurifiedSchema from './handlers/commitPurifiedSchema';
+import deleteTimelineEvent from './handlers/deleteTimelineEvent';
+import fetchPurificationPayload from './handlers/fetchPurificationPayload';
+import rehydrateMessage from './handlers/rehydrateMessage';
+import transplantAsset from './handlers/transplantAsset';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { action } = req.query;
