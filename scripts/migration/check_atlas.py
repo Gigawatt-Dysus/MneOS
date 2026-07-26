@@ -1,7 +1,8 @@
+import os
 from pymongo import MongoClient
 
 def run():
-    atlas_uri = "mongodb+srv://dysus2026:alpha-Omega-911@lifeos-cluster.qmjogz8.mongodb.net/LifeOS"
+    atlas_uri = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/LifeOS')
     client = MongoClient(atlas_uri)
     db = client['LifeOS']
     

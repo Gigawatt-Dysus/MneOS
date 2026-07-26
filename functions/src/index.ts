@@ -51,8 +51,8 @@ export const getMongoClient = async (): Promise<MongoClient> => {
 
 
 // --- CONFIGURATION ---
-const CLIENT_ID = '459534779564-bp6l3b1cncl53cbh5eu7m6q0ng96bsmh.apps.googleusercontent.com';
-const CLIENT_SECRET = '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';
+const CLIENT_ID = process.env.GOOGLE_CLIENT_ID || '';
+const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || '';
 const REDIRECT_URI = 'postmessage';
 const JWT_SECRET = 'gigi-skeleton-key-12345';
 

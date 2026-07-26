@@ -2,7 +2,7 @@ import os
 from google import genai
 from google.genai import types
 
-os.environ['GEMINI_API_KEY'] = "AQ.Ab8RN6LQGIJ5f4MFvTFAA-qglmbZgTyQKsllIdfDwmVJ7AHdhg"
+os.environ['GEMINI_API_KEY'] = os.getenv('GEMINI_API_KEY', '')
 
 client = genai.Client()
 
