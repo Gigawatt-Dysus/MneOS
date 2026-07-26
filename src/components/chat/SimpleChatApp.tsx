@@ -294,22 +294,10 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
 
                 {/* Right Bar Controls */}
                 <div className="flex items-center gap-3">
-                    {/* Model Engine Selector */}
-                    <div className="hidden md:flex bg-black/40 rounded-xl overflow-hidden border border-white/10 text-xs font-bold uppercase tracking-wider">
-                        <button
-                            onClick={() => setModelEngine('xai')}
-                            className={`px-3 py-1.5 transition-colors ${modelEngine === 'xai' ? 'bg-cyan-500/20 text-cyan-300 shadow-[inset_0_0_10px_rgba(6,182,212,0.2)]' : 'text-slate-400 hover:text-slate-200'}`}
-                            title="Grok 4.x (xAI Flagship)"
-                        >
-                            Grok 4.x
-                        </button>
-                        <button
-                            onClick={() => setModelEngine('deepseek')}
-                            className={`px-3 py-1.5 transition-colors border-l border-white/10 ${modelEngine === 'deepseek' ? 'bg-violet-500/20 text-violet-300 shadow-[inset_0_0_10px_rgba(139,92,246,0.2)]' : 'text-slate-400 hover:text-slate-200'}`}
-                            title="DeepSeek Chat"
-                        >
-                            DeepSeek
-                        </button>
+                    {/* Model Engine Badge */}
+                    <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs font-bold text-cyan-300 shadow-[0_0_10px_rgba(6,182,212,0.2)]">
+                        <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>Grok 4.x</span>
                     </div>
 
                     {/* Export Transcript */}
