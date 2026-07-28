@@ -3,7 +3,7 @@ const path = require('path');
 const http = require('http');
 
 const LM_STUDIO_URL = 'http://127.0.0.1:1234/v1/chat/completions';
-const LOCAL_EXPORTS_DIR = path.join('C:', 'MneOS', '_SESSION_EXPORTS');
+const LOCAL_EXPORTS_DIR = path.join('C:', 'MneOS', 'RESCUED_ALL');
 const G_DRIVE_VAULT_DIR = path.join('G:', 'My Drive', 'MneOS_Memory_Vault');
 const STOPWORDS_FILE = path.join('C:', 'MneOS', 'scratch', 'Comprehensive_rag_stopwords.json');
 

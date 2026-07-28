@@ -38,13 +38,8 @@ const UI_ARTIFACT_PATTERNS = [
 ];
 
 const STRICT_MEDIA_PATTERNS = [
-    'nan-banana', 'nan_banana', 'nanbanana', 'portrait', 'photorealistic', 'photo edit',
-    'remove object', 'image generation', 'video generation', 'low-angle perspective',
-    'ai face', 'face on pillow', 'ticklish foot', 'freckled woman', 'veo video', 'imagen 3',
-    'increase the resolution', 'image quality', 'visible pores', 'micro-texture',
-    'beauty filter', 'ai glow', 'age lines', 'pore details', 'upscale image',
-    'photo quality', 'edit image', 'generate image', 'generate photo', 'create image',
-    'upscale', 'scene generation', 'photorealistic portrait', 'generation request', '8k image'
+    'nano-banana', 'nano_banana', 'nanobanana', 'nano banana', 'nan-banana', 'nan_banana', 'nanbanana',
+    'imagen 3', 'imagen_3', 'veo video', 'dall-e', 'midjourney', 'sdxl', 'flux'
 ];
 
 const REFUSAL_PATTERNS = [
@@ -52,12 +47,16 @@ const REFUSAL_PATTERNS = [
     'since always', 'i am grok', 'i am ara', 'how can i help you today', 'as a language model'
 ];
 
-const TECH_KEYWORDS = [
-    'antigravity', 'elitedesk', 'repo', 'crash', 'install', 'pc analysis',
-    'hardware', 'cpu', 'gpu', 'bios', 'powershell', 'node', 'script', 'python',
-    'react', 'vite', 'terminal', 'git', 'docker', 'api', 'server', 'deploy',
-    'debug', 'error', 'bug', 'config', 'json', 'yaml', 'env', 'code', 'ide',
-    'database', 'mongodb', 'express', 'typescript', 'javascript', 'cmd', 'cli'
+const LORE_PERSONA_KEYWORDS = [
+    'brita', 'erato', 'athena', 'clio', 'calliope', 'euterpe', 'melpomene', 'thalia', 'urania',
+    'roleplay', 'chapter', 'story', 'fiction', 'novel', 'darling', 'sweetheart', 'gigi'
+];
+
+const STRICT_TECH_TERMS = [
+    'antigravity', 'elitedesk', 'powershell', 'python', 'typescript',
+    'javascript', 'vite', 'react', 'mongodb', 'docker', 'terminal', 'compiler',
+    'node.js', 'package.json', 'npm run', 'git commit', 'vercel', 'sovereign node',
+    'refactor', 'stack trace', 'syntax error', 'api endpoint', 'rest api'
 ];
 
 function isUiArtifactPayload(content, turnCount = 0) {
@@ -67,10 +66,27 @@ function isUiArtifactPayload(content, turnCount = 0) {
     return UI_ARTIFACT_PATTERNS.some(pat => lower.includes(pat));
 }
 
+const STRICT_MEDIA_TITLE_PATTERNS = [
+    'portrait prompt', 'image prompt', 'photo prompt', 'art prompt', 'prompt sheet',
+    'photorealistic portrait', 'nano-banana', 'nano_banana', 'nanobanana', 'nano banana',
+    'nan-banana', 'nan_banana', 'nanbanana', 'imagen 3', 'veo video', 'dall-e',
+    'midjourney', 'sdxl', 'flux', 'camera settings', 'aspect ratio'
+];
+
 function isMediaSession(title, content, turnCount = 0) {
-    if (turnCount > 5) return false;
-    const combined = (title + ' ' + content).toLowerCase();
-    return STRICT_MEDIA_PATTERNS.some(pat => combined.includes(pat));
+    const raw = (title + ' ' + (content || ''));
+    
+    // Check for explicit user image upload metadata, generator schemas, or generated asset outputs
+    const hasImageAttachments = raw.includes('"image/png"') || raw.includes('"image/jpeg"') || raw.includes('"image/webp"') || raw.includes('content_type: "image/');
+    const hasImageGenerationOutput = raw.includes('IMAGE_GENERATION') || raw.includes('"image_generation_metadata"');
+    const hasMediaCdnLinks = raw.includes('/preview/image') || raw.includes('generated_image_') || raw.includes('input_file_');
+
+    if (hasImageAttachments || hasImageGenerationOutput || hasMediaCdnLinks) {
+        return true;
+    }
+
+    const titleLower = (title || '').toLowerCase();
+    return STRICT_MEDIA_TITLE_PATTERNS.some(pat => titleLower.includes(pat));
 }
 
 function isRefusalGarbage(content, turnCount) {
@@ -80,11 +96,23 @@ function isRefusalGarbage(content, turnCount) {
 }
 
 function isTechSession(title, content) {
-    if (content.includes('```') || content.includes('function(') || content.includes('const ') || content.includes('def ')) {
+    const cleanContent = (content || '').replace(/\*\*(Brita|Eric|Gemini|User|Assistant)\*\*/gi, '');
+    const combined = (title + ' ' + cleanContent).toLowerCase();
+    
+    // Strict Tech Keywords (unambiguous technical terms) - Priority 1
+    const hasStrictTechTerm = STRICT_TECH_TERMS.some(kw => combined.includes(kw));
+    if (hasStrictTechTerm) return true;
+
+    // Explicit code block check with language tags - Priority 2
+    if (cleanContent.includes('```')) {
         return true;
     }
-    const combined = (title + ' ' + content).toLowerCase();
-    return TECH_KEYWORDS.some(kw => combined.includes(kw));
+
+    // Explicit Lore/Persona priority: check story/RP terms on clean content - Priority 3
+    const isExplicitLore = LORE_PERSONA_KEYWORDS.some(kw => combined.includes(kw));
+    if (isExplicitLore) return false;
+
+    return false;
 }
 
 function structuralCleaner(rawText) {
@@ -228,9 +256,12 @@ const server = http.createServer((req, res) => {
     }
 
     // Direct HTTP UserScript Server Endpoint for 1-Click Updates
-    if (req.method === 'GET' && (req.url === '/mneos_batch_harvester.user.js' || req.url.startsWith('/mneos_batch_harvester.user.js'))) {
-        if (fs.existsSync(SCRIPT_PATH)) {
-            const scriptContent = fs.readFileSync(SCRIPT_PATH, 'utf8');
+    if (req.method === 'GET' && (req.url.includes('mneos_batch_harvester.user.js') || req.url.includes('mneos_gemini_harvester.user.js'))) {
+        const targetScript = req.url.includes('mneos_gemini_harvester.user.js') 
+            ? path.join('C:', 'MneOS', 'scripts', 'mneos_gemini_harvester.user.js')
+            : SCRIPT_PATH;
+        if (fs.existsSync(targetScript)) {
+            const scriptContent = fs.readFileSync(targetScript, 'utf8');
             res.writeHead(200, {
                 'Content-Type': 'application/javascript; charset=utf-8',
                 'Cache-Control': 'no-cache, no-store, must-revalidate'
@@ -254,6 +285,34 @@ const server = http.createServer((req, res) => {
         }
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ status: 'success', total: indexData.length, items: indexData }));
+        return;
+    }
+
+    if (req.method === 'GET' && (req.url === '/api/harvested-session-ids' || req.url.startsWith('/api/harvested-session-ids'))) {
+        const rescuedDir = path.join(LOCAL_VAULT_DIR, 'GEMINI_SESSIONS', 'RESCUED_ALL');
+        const harvestedIds = [];
+        if (fs.existsSync(rescuedDir)) {
+            try {
+                const files = fs.readdirSync(rescuedDir).filter(f => f.endsWith('.md'));
+                files.forEach(f => {
+                    const match = f.match(/([a-f0-9]{12,64})/i);
+                    if (match && !harvestedIds.includes(match[1])) {
+                        harvestedIds.push(match[1]);
+                    } else {
+                        // Header inspection fallback
+                        try {
+                            const content = fs.readFileSync(path.join(rescuedDir, f), 'utf8').substring(0, 500);
+                            const idMatch = content.match(/# Session ID:\s*([a-f0-9]{12,64})/i);
+                            if (idMatch && !harvestedIds.includes(idMatch[1])) {
+                                harvestedIds.push(idMatch[1]);
+                            }
+                        } catch(e) {}
+                    }
+                });
+            } catch(e) {}
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ status: 'success', count: harvestedIds.length, harvestedIds }));
         return;
     }
 
@@ -311,7 +370,7 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    if (req.method === 'POST' && req.url === '/api/save-session') {
+    if (req.method === 'POST' && (req.url === '/api/save-session' || req.url === '/ingest' || req.url.startsWith('/ingest'))) {
         let body = '';
         req.on('data', chunk => { body += chunk.toString(); });
         req.on('end', () => {
@@ -368,30 +427,9 @@ const server = http.createServer((req, res) => {
                     }).join('\n\n------------------------------------------------------------\n\n');
                 }
 
-                if (isUiArtifactPayload(rawContent, turnCount)) {
-                    console.log(`[Zen Sentinel] 🚫 Discarded UI Control Artifact Payload: "${sessionTitle}"`);
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ status: 'bypassed', message: 'UI artifact payload discarded' }));
-                    return;
-                }
-
-                if (isMediaSession(sessionTitle, rawContent, turnCount)) {
-                    console.log(`[Zen Sentinel] 🚫 Discarded MEDIA/Image session: "${sessionTitle}"`);
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ status: 'bypassed', classification: 'MEDIA', message: 'Media session discarded' }));
-                    return;
-                }
-
-                if (isRefusalGarbage(rawContent, turnCount)) {
-                    console.log(`[Zen Sentinel] 🧹 Discarded Garbage 1-Turn Refusal session: "${sessionTitle}" (${turnCount} turns)`);
-                    res.writeHead(200, { 'Content-Type': 'application/json' });
-                    res.end(JSON.stringify({ status: 'bypassed', classification: 'REFUSAL_GARBAGE', message: 'Refusal garbage discarded' }));
-                    return;
-                }
-
-                const isTech = isTechSession(sessionTitle, rawContent);
-                const cleanTurns = structuralCleaner(rawContent);
-                const categoryFolder = isTech ? 'TECH_CODE' : 'ROLEPLAY_LORE';
+                // EMERGENCY RESCUE MODE: Zero filtering, zero drops. All sessions dumped directly into RESCUED_ALL folder.
+                const cleanTurns = rawContent || 'No turn text extracted.';
+                const categoryFolder = 'RESCUED_ALL';
                 const platformFolder = `${platform.toUpperCase()}_SESSIONS`;
 
                 const localSubDir = path.join(LOCAL_VAULT_DIR, platformFolder, categoryFolder);
@@ -416,44 +454,51 @@ const server = http.createServer((req, res) => {
                     dateStr = new Date().toISOString().split('T')[0];
                 }
 
-                const header = `# ${platform.toUpperCase()} Session Log: ${sessionTitle}\n# Category: ${categoryFolder}\n# Date: ${dateStr}\n\n`;
+                const sessionHexId = data.sessionId || `session_${Date.now()}`;
+                const header = `# ${platform.toUpperCase()} Rescued Session Log: ${sessionTitle}\n# Session ID: ${sessionHexId}\n# Category: ${categoryFolder}\n# Date: ${dateStr}\n\n`;
                 const fullDoc = header + cleanTurns;
 
-                const filename = `${title}_${dateStr}.md`;
+                const filename = `${title}_${sessionHexId}.md`;
 
-                // Self-Healing Vault Maintenance: Delete any legacy misdated files for this title
+                // Self-Healing Vault Maintenance: Locate existing file for this session
+                let targetLocalPath = path.join(localSubDir, filename);
+                let targetGDrivePath = path.join(gDriveSubDir, filename);
+                let existingFileFound = false;
+
                 if (fs.existsSync(localSubDir)) {
-                    const legacyFiles = fs.readdirSync(localSubDir).filter(f => f.toLowerCase().startsWith(title.toLowerCase()) && f.toLowerCase() !== filename.toLowerCase());
-                    legacyFiles.forEach(oldFile => {
-                        try {
-                            const oldLocal = path.join(localSubDir, oldFile);
-                            if (fs.existsSync(oldLocal)) fs.unlinkSync(oldLocal);
-                            const oldGDrive = path.join(gDriveSubDir, oldFile);
-                            if (fs.existsSync(oldGDrive)) fs.unlinkSync(oldGDrive);
-                            console.log(`[Zen Sentinel] 🧹 Self-healing vault cleanup: Removed legacy misdated file: ${oldFile}`);
-                        } catch(e) {}
-                    });
+                    const existingFiles = fs.readdirSync(localSubDir).filter(f => f.endsWith('.md'));
+                    for (let f of existingFiles) {
+                        if (f.includes(sessionHexId)) {
+                            targetLocalPath = path.join(localSubDir, f);
+                            targetGDrivePath = path.join(gDriveSubDir, f);
+                            existingFileFound = true;
+                            break;
+                        }
+                    }
                 }
-
-                const localPath = path.join(localSubDir, filename);
 
                 const isGenericFilename = filename.toLowerCase().includes('google_account') || 
                                           filename.toLowerCase().includes('untitled_session') || 
                                           filename.toLowerCase().startsWith('gemini_session_') || 
                                           filename.toLowerCase().startsWith('grok_session_');
 
-                if (fs.existsSync(localPath) && !isGenericFilename) {
-                    const existingDoc = fs.readFileSync(localPath, 'utf8');
-                    if (existingDoc.trim() === fullDoc.trim()) {
-                        console.log(`[Zen Sentinel] ⏩ Content unchanged (0-byte diff) for [${filename}]. Processing distillation handoff...`);
-                    }
+                if (existingFileFound && !isGenericFilename) {
+                    try {
+                        const existingDoc = fs.readFileSync(targetLocalPath, 'utf8');
+                        if (existingDoc.trim() === fullDoc.trim()) {
+                            console.log(`[Zen Sentinel] ⏩ Content unchanged for [${path.basename(targetLocalPath)}]. Skipping redundant rewrite.`);
+                            res.writeHead(200, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ status: 'unchanged', filename: path.basename(targetLocalPath) }));
+                            return;
+                        }
+                    } catch(e) {}
                 }
 
-                fs.writeFileSync(localPath, fullDoc, 'utf8');
+                fs.writeFileSync(targetLocalPath, fullDoc, 'utf8');
 
                 let gDrivePath = null;
                 try {
-                    gDrivePath = path.join(gDriveSubDir, filename);
+                    gDrivePath = targetGDrivePath;
                     fs.writeFileSync(gDrivePath, fullDoc, 'utf8');
                 } catch (e) {
                     console.warn(`[Zen Sentinel] Could not write to G: drive (${e.message})`);
@@ -462,24 +507,32 @@ const server = http.createServer((req, res) => {
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
                     status: 'success',
-                    isTech,
+                    isTech: false,
                     filename: filename,
                     suggested_smart_title: sessionTitle,
                     gDrivePath
                 }));
 
+                console.log(`[Zen Sentinel] ✅ Successfully saved session [${platformFolder}/${categoryFolder}]: ${filename} (Title: "${sessionTitle}")`);
+
                 // Trigger Brita-ECH LLM Distillation & Reverse-Sync asynchronously in background
-                delete require.cache[require.resolve('./ai_master_indexer.cjs')];
-                const { processSingleFile } = require('./ai_master_indexer.cjs');
-                processSingleFile(localPath, (dErr, entry) => {
-                    const smartTitle = (entry && entry.suggested_smart_title) ? entry.suggested_smart_title : sessionTitle;
-                    const finalFilename = (entry && entry.filename) ? entry.filename : filename;
-                    console.log(`[Zen Sentinel] ✅ Saved & distilled session [${platformFolder}/${categoryFolder}]: ${finalFilename} (Title: "${smartTitle}")`);
-                });
+                try {
+                    delete require.cache[require.resolve('./ai_master_indexer.cjs')];
+                    const { processSingleFile } = require('./ai_master_indexer.cjs');
+                    processSingleFile(targetLocalPath, (dErr, entry) => {
+                        const smartTitle = (entry && entry.suggested_smart_title) ? entry.suggested_smart_title : sessionTitle;
+                        const finalFilename = (entry && entry.filename) ? entry.filename : filename;
+                        console.log(`[Zen Sentinel] 🧠 Distilled session [${platformFolder}/${categoryFolder}]: ${finalFilename} (Title: "${smartTitle}")`);
+                    });
+                } catch(dErr) {
+                    console.warn(`[Zen Sentinel] Background indexer warning:`, dErr.message);
+                }
             } catch (err) {
                 console.error('[Zen Sentinel] Error processing payload:', err.message);
-                res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ status: 'error', message: err.message }));
+                if (!res.headersSent) {
+                    res.writeHead(400, { 'Content-Type': 'application/json' });
+                    res.end(JSON.stringify({ status: 'error', message: err.message }));
+                }
             }
         });
     } else {

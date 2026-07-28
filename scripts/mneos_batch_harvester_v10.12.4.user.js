@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         MneOS Sovereign Session Harvester v12.7.0
+// @name         MneOS Sovereign Session Harvester v10.12.4
 // @namespace    http://mneos.ai/
-// @version      12.7.0
+// @version      10.12.4
 // @description  Sovereign Session Harvester, HyperSearch Memory Recall, and Nano Banana Detector for Grok, NotebookLM, and Gemini
 // @match        *://*.grok.com/*
 // @match        *://grok.com/*
@@ -9,15 +9,12 @@
 // @match        *://notebooklm.google.com/*
 // @match        *://*.gemini.google.com/*
 // @match        *://gemini.google.com/*
-// @match        *://gemini.google.com/u/*
-// @match        *://*.gemini.google.com/u/*
 // @match        *://gemini.google.com/app*
 // @match        *://gemini.google.com/app/*
 // @match        *://gemini.google.com
 // @match        *://*.gemini.google.com
 // @match        *://x.com/i/grok*
 // @include      *://gemini.google.com*
-// @include      *://gemini.google.com/u/*
 // @include      *://gemini.google.com/app*
 // @include      *://gemini.google.com/app/*
 // @include      *://*.gemini.google.com*
@@ -35,14 +32,7 @@
 (function() {
     'use strict';
 
-    if (window.__MNEOS_HARVESTER_INSTANTIATED__) {
-        console.warn('[MneOS Harvester] Duplicate script instance detected and terminated. Active version:', window.__MNEOS_HARVESTER_VERSION__);
-        return;
-    }
-    window.__MNEOS_HARVESTER_INSTANTIATED__ = true;
-    window.__MNEOS_HARVESTER_VERSION__ = '12.7.0';
-
-    console.log('[MneOS Harvester v12.7.0] Initialized on:', window.location.hostname);
+    console.log('[MneOS Harvester v10.12.4] Initialized on:', window.location.hostname);
 
     // TRIPLE-TIER ENDPOINT FALLBACK MATRIX
     const ENDPOINT_CANDIDATES = [
@@ -433,7 +423,7 @@
             const vLabel = document.createElement('span');
             vLabel.id = 'mneos-version-label';
             vLabel.setAttribute('style', 'color: #a855f7; font-size: 10px; font-weight: bold; margin-right: 2px;');
-            vLabel.textContent = '⚡ v12.7.0';
+            vLabel.textContent = '⚡ v10.12.4';
             content.appendChild(vLabel);
 
             const createBtn = (id, text, bg) => {
@@ -762,53 +752,58 @@
 
     async function inflateScrollableDOM() {
         updateStatus('Inflating DOM...');
-        console.log('[MneOS Harvester] Hydrating full session DOM from top to bottom...');
+        console.log('[MneOS Harvester] Starting research-backed DOM inflation loop...');
 
-        let previousTurnCount = -1;
-        let stablePasses = 0;
+        let previousTurnCount = 0;
+        let attempts = 0;
+        const maxAttempts = 4;
 
-        const scroller = document.querySelector('infinite-scroller') || document.querySelector('.chat-history') || document.querySelector('.conversation-container') || document.querySelector('main') || document.scrollingElement || document.body;
+        while (attempts < maxAttempts) {
+            const turnElements = document.querySelectorAll(
+                'user-query, model-response, [data-test-id*="user"], [data-test-id*="model"], .user-query-container, .model-response-container, chat-turn, [class*="user-query"], [class*="model-response"], message-content, .message-content, [class*="conversation-container"], [class*="turn"], article, .markdown'
+            );
+            const currentTurnCount = turnElements.length;
 
-        // Scroll to top continuously until actual top-level chat turns stop increasing
-        for (let pass = 0; pass < 30; pass++) {
-            // Count strict top-level turn components (NOT inner markdown paragraphs)
-            let turnElements = Array.from(document.querySelectorAll('user-query, model-response, chat-turn'));
-            if (turnElements.length === 0) {
-                turnElements = Array.from(document.querySelectorAll('[data-test-id*="user-query"], [data-test-id*="model-response"], .user-query-container, .model-response-container'));
+            updateStatus(`Inflating (${currentTurnCount} turns)...`);
+
+            if (turnElements.length > 0) {
+                try {
+                    turnElements[0].scrollIntoView({ behavior: 'instant', block: 'start' });
+                } catch(e) {}
             }
 
-            const currentTurnCount = turnElements.length;
-            updateStatus(`Hydrating (${currentTurnCount} turns)...`);
-
-            // Scroll container to absolute top
+            const scroller = document.querySelector('infinite-scroller') || document.querySelector('.chat-history') || document.querySelector('.conversation-container') || document.querySelector('main') || document.scrollingElement || document.body;
             if (scroller) {
                 try {
                     scroller.scrollTop = 0;
                     scroller.scrollTo(0, 0);
+                    scroller.dispatchEvent(new Event('scroll', { bubbles: true }));
                 } catch(e) {}
             }
             window.scrollTo(0, 0);
 
-            // Wait 800ms for Angular/Lit virtual list to fetch top turns
-            await new Promise(r => setTimeout(r, 800));
+            // Wait 1200ms for Gemini's async network RPC & Angular DOM hydration
+            await new Promise(r => setTimeout(r, 1200));
 
-            if (currentTurnCount > 0 && currentTurnCount === previousTurnCount) {
-                stablePasses++;
-                if (stablePasses >= 2) {
-                    console.log(`[MneOS Harvester] ✅ Reached absolute top of chat! (${currentTurnCount} full turns loaded)`);
-                    break;
-                }
+            if (currentTurnCount === previousTurnCount && currentTurnCount > 0) {
+                attempts++;
+                console.log(`[MneOS Harvester] Turn count unchanged (${currentTurnCount}). Attempt ${attempts}/${maxAttempts}...`);
             } else {
-                stablePasses = 0;
+                attempts = 0; // Reset attempts whenever new turns appear!
                 previousTurnCount = currentTurnCount;
             }
         }
 
-        // Return scroll position to bottom so all active nodes render
-        if (scroller) {
-            try { scroller.scrollTop = scroller.scrollHeight; } catch(e) {}
+        console.log(`[MneOS Harvester] DOM inflation complete. Final count: ${previousTurnCount} turns.`);
+
+        const lastElements = document.querySelectorAll('user-query, model-response, chat-turn');
+        if (lastElements.length > 0) {
+            try {
+                lastElements[lastElements.length - 1].scrollIntoView({ behavior: 'instant', block: 'end' });
+            } catch(e) {}
         }
         window.scrollTo(0, document.body.scrollHeight || 99999);
+
         await new Promise(r => setTimeout(r, 400));
     }
 
@@ -1006,9 +1001,7 @@
                 path = rawHref;
             }
 
-            // Remove any /u/0, /u/1, /u/2 multi-account auth prefix first!
-            const cleanPath = path.replace(/\/u\/\d+/i, '');
-            const parts = cleanPath.split('/').filter(Boolean); // e.g. ['app', '1a2b3c4d5e6f']
+            const parts = path.split('/').filter(Boolean); // e.g. ['app', '1a2b3c4d5e6f']
             
             // Check if path is /app/{sessionId} where sessionId is distinct from 'app' and > 5 chars
             const hasAppSessionId = parts.length >= 2 && parts[0] === 'app' && parts[1].length > 5 && parts[1] !== 'app';
@@ -1034,173 +1027,55 @@
 
     async function startAutoCrawl() {
         const platform = detectPlatform();
-        console.log(`[MneOS Harvester v12.2.1] Starting Sequential Auto-Crawl Sweep for ${platform}...`);
-        updateStatus('Opening Side Nav...');
+        console.log(`[MneOS Harvester v10.12.4] Starting Sequential Auto-Crawl Sweep for ${platform}...`);
+        updateStatus('Crawling...');
+        
+        // Multi-platform sidebar link selector covering Grok (/c/, /chat/), NotebookLM (/notebook/), and Gemini (/app/, /app)
+        const rawLinks = Array.from(document.querySelectorAll(
+            'a[href*="/app/"], a[href*="/app"], a[href*="/c/"], a[href*="/chat/"], a[href*="/notebook/"], a[href*="/project/"], a[href*="chat="], [data-test-id*="history"] a, side-nav-entry a, nav a'
+        ));
 
-        // 1. Ensure Navigation Sidebar Drawer is Expanded
-        const menuBtnSelector = 'button[aria-label*="menu" i], button[aria-label*="drawer" i], button[aria-label*="navigation" i], button[aria-label*="expand" i], [aria-label*="Main menu" i]';
-        const menuBtn = document.querySelector(menuBtnSelector);
-        let navEl = document.querySelector('side-navigation-v2, mat-drawer, nav, [role="navigation"], .conversations-container, .side-nav-container');
-        let isNavVisible = navEl && navEl.offsetWidth > 0 && navEl.offsetHeight > 0;
+        const links = rawLinks.filter(link => isValidChatLink(link, platform));
 
-        if (!isNavVisible && menuBtn) {
-            console.log('[MneOS Harvester] 🔓 Auto-opening navigation sidebar drawer...');
-            menuBtn.click();
-            await new Promise(r => setTimeout(r, 800));
-        }
-
-        // 1.5. Expand Sidebar Pagination: Click "Show More" / "View More" / "More conversations" buttons (Excluding 3-dot options menu)
-        updateStatus('Expanding History...');
-        for (let expandPass = 0; expandPass < 10; expandPass++) {
-            const expandBtns = Array.from(document.querySelectorAll('side-navigation-v2 button, mat-drawer button, nav button, [role="navigation"] button, side-nav-entry button, .side-nav-container button, button')).filter(btn => {
-                const txt = (btn.innerText || btn.getAttribute('aria-label') || btn.getAttribute('title') || '').toLowerCase().trim();
-                
-                // EXCLUDE 3-dot action menus & options buttons!
-                if (txt.includes('option') || txt.includes('action') || txt.includes('delete') || txt.includes('rename') || txt.includes('pin') || txt.includes('share') || txt.includes('menu')) {
-                    return false;
-                }
-
-                // INCLUDE explicit pagination expand buttons!
-                return txt.includes('show more') || txt.includes('view more') || txt.includes('more conversations') || txt.includes('expand history') || txt.includes('load more') || (txt.startsWith('more') && txt.length < 15);
-            });
-
-            if (expandBtns.length === 0) break;
-
-            console.log(`[MneOS Harvester] ⏬ Found ${expandBtns.length} sidebar expand / "Show More" button(s). Un-paginating history (pass ${expandPass + 1})...`);
-            for (const b of expandBtns) {
-                try {
-                    b.click();
-                    await new Promise(r => setTimeout(r, 600));
-                } catch(e) {}
-            }
-        }
-
-        // 2. Incremental Virtual-Scroll Link Discovery Accumulator (Captures ALL 100+ virtualized stubs as they pass through the DOM viewport!)
-        updateStatus('Scanning Side Nav...');
-        console.log('[MneOS Harvester] 📜 Sweeping side navigation to accumulate all virtualized chat stubs...');
-
-        // Dismiss any existing popup menus/overlays by dispatching Escape key
-        try {
-            document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', code: 'Escape', keyCode: 27, bubbles: true }));
-        } catch(e) {}
-
-        const sidebarContainers = Array.from(document.querySelectorAll('side-navigation-v2, side-navigation-v2 *, mat-drawer, mat-drawer *, nav, nav *, [role="navigation"], .side-nav-container *')).filter(el => {
-            return el.scrollHeight > el.clientHeight && el.clientHeight > 100;
-        });
-
-        const accumulatedHrefsSet = new Set();
-
-        const collectCurrentPageLinks = () => {
-            const currentDOMMatches = Array.from(document.querySelectorAll(
-                'a[href*="/app/"], a[href*="/app"], a[href*="/c/"], a[href*="/chat/"], a[href*="/notebook/"], a[href*="/project/"], a[href*="chat="], [data-test-id*="history"] a, side-nav-entry a, nav a'
-            ));
-            currentDOMMatches.forEach(link => {
-                if (isValidChatLink(link, platform)) {
-                    const href = link.getAttribute('href') || link.href;
-                    if (href) accumulatedHrefsSet.add(href);
-                }
-            });
-        };
-
-        // Sweep top-to-bottom in incremental scroll steps to catch every virtualized batch!
-        for (let pass = 0; pass < 2; pass++) {
-            const maxScroll = Math.max(...sidebarContainers.map(el => el.scrollHeight), 5000);
-            const step = 350; // Step by 350px to ensure overlapping virtual viewport windows
-
-            for (let pos = 0; pos <= maxScroll + 1000; pos += step) {
-                sidebarContainers.forEach(el => {
-                    try { el.scrollTop = pos; } catch(e) {}
-                });
-
-                window.dispatchEvent(new Event('scroll', { bubbles: true }));
-                await new Promise(r => setTimeout(r, 200));
-
-                collectCurrentPageLinks();
-                updateStatus(`Scanning (${accumulatedHrefsSet.size} sessions)...`);
-            }
-        }
-
-        // Return top position to sidebar containers
-        sidebarContainers.forEach(el => {
-            try { el.scrollTop = 0; } catch(e) {}
-        });
-        await new Promise(r => setTimeout(r, 300));
-
-        const allDiscoveredHrefs = Array.from(accumulatedHrefsSet);
-
-        if (allDiscoveredHrefs.length === 0) {
+        if (links.length === 0) {
             alert(`No active ${platform} chat links found in side nav.`);
             localStorage.setItem(getCrawlActiveKey(), 'false');
             updateCrawlButtonState();
             return;
         }
 
-        // Collect unvisited href string targets (immune to Angular DOM re-renders)
-        const uniqueUnvisitedHrefs = allDiscoveredHrefs.filter(href => !isVisited(href) && !isVisited(href.split('/').pop()));
+        const unvisitedLinks = links.filter(link => {
+            const href = link.getAttribute('href') || link.href;
+            return href && !isVisited(href) && !isVisited(href.split('/').pop());
+        });
 
-        const visitedCount = allDiscoveredHrefs.length - uniqueUnvisitedHrefs.length;
-        console.log(`[MneOS Harvester] 🔍 Discovered ${allDiscoveredHrefs.length} total virtualized chat links in sidebar (${uniqueUnvisitedHrefs.length} new, ${visitedCount} already visited).`);
-
-        if (uniqueUnvisitedHrefs.length === 0) {
-            alert(`🎉 All ${allDiscoveredHrefs.length} ${platform} sessions in the sidebar have been harvested!\n\nIf you want to re-harvest them, click '🧹 Reset' on the MneOS pill.`);
+        if (unvisitedLinks.length === 0) {
+            alert(`🎉 All ${links.length} ${platform} sessions have been harvested!`);
             localStorage.setItem(getCrawlActiveKey(), 'false');
             updateCrawlButtonState();
             updateStatus('Complete 🎉');
             return;
         }
 
-        for (let idx = 0; idx < uniqueUnvisitedHrefs.length; idx++) {
+        for (let idx = 0; idx < unvisitedLinks.length; idx++) {
             const isActive = localStorage.getItem(getCrawlActiveKey()) === 'true';
             if (!isActive) break;
 
-            const targetHref = uniqueUnvisitedHrefs[idx];
-            const targetId = targetHref.split('/').pop();
+            const currentLink = unvisitedLinks[idx];
+            const href = currentLink.getAttribute('href') || currentLink.href;
 
-            updateStatus(`Crawling (${idx + 1}/${uniqueUnvisitedHrefs.length})...`);
+            updateStatus(`Crawling (${idx + 1}/${unvisitedLinks.length})...`);
+            currentLink.click();
 
-            // Fine-Grained Virtual-Scroll Link Locator (sweeps in 250px increments to force Angular virtual DOM mounting)
-            let freshLink = document.querySelector(`a[href*="${targetId}"], a[href*="${targetHref}"]`);
-
-            if (!freshLink) {
-                const sidebarContainers = Array.from(document.querySelectorAll('side-navigation-v2, side-navigation-v2 *, mat-drawer, mat-drawer *, nav, nav *, [role="navigation"], .side-nav-container *')).filter(el => {
-                    return el.scrollHeight > el.clientHeight && el.clientHeight > 100;
-                });
-
-                const maxScroll = Math.max(...sidebarContainers.map(el => el.scrollHeight), 5000);
-                for (let pos = 0; pos <= maxScroll + 500; pos += 250) {
-                    sidebarContainers.forEach(el => { try { el.scrollTop = pos; } catch(e) {} });
-                    window.dispatchEvent(new Event('scroll', { bubbles: true }));
-                    await new Promise(r => setTimeout(r, 80));
-                    freshLink = document.querySelector(`a[href*="${targetId}"], a[href*="${targetHref}"]`);
-                    if (freshLink) break;
-                }
-            }
-
-            if (freshLink) {
-                console.log(`[MneOS Harvester] 🔗 Navigating to session (${idx + 1}/${uniqueUnvisitedHrefs.length}): ${targetId}`);
-                try { freshLink.scrollIntoView({ block: 'center' }); } catch(e) {}
-                freshLink.click();
-            } else {
-                console.warn(`[MneOS Harvester] ⚠️ Using Soft SPA PushState navigation for ${targetId}...`);
-                const currentAuthPrefix = (window.location.pathname.match(/\/u\/\d+/i) || [''])[0];
-                let fullTargetUrl = targetHref;
-                if (currentAuthPrefix && !fullTargetUrl.includes('/u/')) {
-                    fullTargetUrl = currentAuthPrefix + (fullTargetUrl.startsWith('/') ? '' : '/') + fullTargetUrl;
-                }
-                // Soft SPA navigation (preserves execution context & avoids full page reload loops)
-                window.history.pushState({}, '', fullTargetUrl);
-                window.dispatchEvent(new PopStateEvent('popstate'));
-            }
-
-            // Wait 3.0s for SPA navigation and DOM elements to mount
-            await new Promise(r => setTimeout(r, 3000));
+            // Wait 2.5s for SPA navigation and DOM elements to mount
+            await new Promise(r => setTimeout(r, 2500));
 
             // Harvest session (which runs inflateScrollableDOM() for Gemini and waits for turns)
             await harvestCurrentSession();
 
             // Mark visited ONLY AFTER harvesting is complete
-            markVisited(targetHref);
-            markVisited(targetId);
+            markVisited(href);
+            markVisited(href.split('/').pop());
 
             // Pause 1s before clicking next link
             await new Promise(r => setTimeout(r, 1000));

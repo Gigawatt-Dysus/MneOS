@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         MneOS Sovereign Gemini Vault Harvester v3.9
+// @name         MneOS Sovereign Gemini Vault Harvester v6.3 (ADA Compliance Edition)
 // @namespace    http://mneos.ai/
-// @version      3.9
-// @description  Gemini Vault Harvester with Precise Media Generation Filter & Tech Keyword Vault Routing
+// @version      6.3
+// @description  ADA-Compliant 100% Session Harvester with Auto-Top-Scroll Unroll & Brita-Lite Reverse Sync
 // @match        *://gemini.google.com/*
 // @include      *://gemini.google.com/*
 // @run-at       document-start
@@ -16,7 +16,9 @@
 (function() {
     'use strict';
 
-    // Quiet console suppressor for DevTools noise, CSP errors, WebGPU & Google telemetry logs across both Sandbox and UnsafeWindow contexts
+    // Prevent duplicate execution inside embedded Google iframes
+    if (window.self !== window.top) return;
+
     const filterKeywords = [
         'installHook.js',
         'No ID or name found in config',
@@ -30,7 +32,6 @@
         'google-analytics.com'
     ];
 
-    // High-Precision Media / Image / Video Generation Exclusion Patterns
     const EXCLUSION_PATTERNS = [
         'nan-banana',
         'nan_banana',
@@ -58,7 +59,8 @@
         'stabilizing dom',
         'cache cleared',
         'scanning cards',
-        'waiting for turns'
+        'waiting for turns',
+        'unrolling'
     ];
 
     function isExcludedTitleOrId(titleOrId) {
@@ -102,7 +104,7 @@
         patchConsoleTarget(unsafeWindow.console);
     }
 
-    console.log("[MneOS Gemini Harvester v3.9] Initialized with Precise Media Exclusion & Tech Routing.");
+    console.log("[MneOS Gemini Harvester v6.3] Initialized with ADA Compliance & Auto Sequential Unroll.");
 
     const targetWin = typeof unsafeWindow !== 'undefined' ? unsafeWindow : window;
     if (targetWin.trustedTypes && targetWin.trustedTypes.createPolicy) {
@@ -120,6 +122,7 @@
     const DAEMON_URL = 'http://127.0.0.1:3334/api/save-session';
     const VISITED_KEY = 'mneos_gemini_visited_sessions';
     const CRAWL_ACTIVE_KEY = 'mneos_gemini_crawl_active';
+    const ADA_INDEX_KEY = 'mneos_gemini_ada_index';
 
     let lastObservedUrl = location.href;
 
@@ -171,27 +174,38 @@
             parent.appendChild(container);
         }
 
+        const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
+        const currIdx = localStorage.getItem(ADA_INDEX_KEY) || '0';
+
         container.style.cssText = `
             position: fixed !important;
-            top: 70px !important;
             right: 20px !important;
+            bottom: 20px !important;
+            top: auto !important;
+            left: auto !important;
             z-index: 2147483647 !important;
             display: flex !important;
-            gap: 8px !important;
+            flex-direction: row !important;
             align-items: center !important;
             background: #0f172a !important;
-            padding: 8px 14px !important;
-            border-radius: 10px !important;
-            border: 2px solid #6366f1 !important;
+            padding: 4px 10px !important;
+            border-radius: 18px !important;
+            border: 1.5px solid #a855f7 !important;
             box-shadow: 0 10px 25px rgba(0,0,0,0.85) !important;
             pointer-events: auto !important;
+            gap: 6px !important;
         `;
 
         if (container.children.length === 0) {
+            const vLabel = document.createElement('span');
+            vLabel.id = 'mneos-version-label';
+            vLabel.style.cssText = 'color: #a855f7; font-size: 11px; font-weight: bold; margin-right: 2px;';
+            vLabel.textContent = '⚡ v5.2';
+
             const syncBtn = document.createElement('button');
             syncBtn.id = 'mneos-gemini-sync';
-            syncBtn.textContent = '⚡ Sync Current Session';
-            styleBtn(syncBtn, '#6366f1');
+            syncBtn.textContent = '⚡ Sync';
+            styleBtn(syncBtn, '#7c3aed');
             syncBtn.onclick = (e) => {
                 e.preventDefault();
                 harvestCurrentGeminiSession();
@@ -199,9 +213,8 @@
 
             const sweepBtn = document.createElement('button');
             sweepBtn.id = 'mneos-gemini-sweep';
-            const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
-            sweepBtn.textContent = isActive ? '🛑 Stop Crawl' : '🚀 Auto-Harvest All Chats';
-            styleBtn(sweepBtn, isActive ? '#ef4444' : '#10b981');
+            sweepBtn.textContent = isActive ? `🛑 Stop Crawl (#${parseInt(currIdx, 10) + 1})` : '🚀 Crawl';
+            styleBtn(sweepBtn, isActive ? '#ef4444' : '#059669');
             sweepBtn.onclick = (e) => {
                 e.preventDefault();
                 toggleAutoHarvest();
@@ -209,22 +222,24 @@
 
             const resetBtn = document.createElement('button');
             resetBtn.id = 'mneos-gemini-reset';
-            resetBtn.textContent = '🗑️ Reset Cache';
+            resetBtn.textContent = '🗑️ Reset';
             styleBtn(resetBtn, '#64748b');
             resetBtn.onclick = (e) => {
                 e.preventDefault();
                 localStorage.removeItem(VISITED_KEY);
                 localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
+                localStorage.setItem(ADA_INDEX_KEY, '0');
                 updateStatus("Cache Cleared!");
-                alert("MneOS Gemini visited session cache cleared.");
+                alert("MneOS Gemini visited session cache & sequence index cleared.");
                 location.reload();
             };
 
             const statusLabel = document.createElement('span');
             statusLabel.id = 'mneos-gemini-status';
-            statusLabel.style.cssText = 'color: #38bdf8; font-size: 11px; font-weight: bold; font-family: monospace; margin-left: 4px;';
+            statusLabel.style.cssText = 'color: #38bdf8; font-size: 10px; font-weight: bold; font-family: monospace; margin-left: 4px;';
             statusLabel.textContent = '';
 
+            container.appendChild(vLabel);
             container.appendChild(syncBtn);
             container.appendChild(sweepBtn);
             container.appendChild(resetBtn);
@@ -232,9 +247,8 @@
         } else {
             const sweepBtn = document.getElementById('mneos-gemini-sweep');
             if (sweepBtn) {
-                const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
-                sweepBtn.textContent = isActive ? '🛑 Stop Crawl' : '🚀 Auto-Harvest All Chats';
-                sweepBtn.style.backgroundColor = isActive ? '#ef4444' : '#10b981';
+                sweepBtn.textContent = isActive ? `🛑 Stop Crawl (#${parseInt(currIdx, 10) + 1})` : '🚀 Crawl';
+                sweepBtn.style.backgroundColor = isActive ? '#ef4444' : '#059669';
             }
         }
     }
@@ -259,60 +273,111 @@
         `;
     }
 
-    function isGeminiSessionUrl(url) {
-        if (!url) return false;
-        try {
-            const parsed = new URL(url, 'https://gemini.google.com');
-            if (parsed.hostname !== 'gemini.google.com') return false;
-            const path = parsed.pathname.trim();
-            const parts = path.split('/').filter(Boolean);
-            if (parts.length >= 2 && ['app', 'c', 'chat', 'b'].includes(parts[0])) {
-                if (!['search', 'faq', 'settings', 'updates', 'advanced'].includes(parts[1])) {
-                    return true;
-                }
-            }
-            return false;
-        } catch(e) {
-            return false;
+    async function discoverAdaSessions() {
+        updateStatus("Unrolling Sidebar (0/100+)...");
+        console.log("[MneOS Harvester v6.0] Starting Full Sidebar Unroll...");
+
+        const openBtn = document.querySelector('button[aria-label="Open sidebar"]');
+        if (openBtn) {
+            openBtn.click();
+            await new Promise(r => setTimeout(r, 800));
         }
-    }
 
-    function discoverSearchResultItems() {
-        const items = [];
-        const candidates = Array.from(document.querySelectorAll('a, div[role="button"], div[role="option"], li, conversation-item, [class*="result-item"], [class*="conversation-item"], [data-test-id*="search-result"]'));
-        
-        candidates.forEach(el => {
-            if (el.closest('#mneos-gemini-container') || el.closest('[id^="mneos-"]')) return;
+        const recentsToggle = document.querySelector('button[aria-label="Toggle Recents"]');
+        if (recentsToggle) {
+            recentsToggle.click();
+            await new Promise(r => setTimeout(r, 800));
+        }
 
-            const anchor = el.tagName === 'A' ? el : el.querySelector('a');
-            let href = anchor ? (anchor.getAttribute('href') || anchor.href) : (el.getAttribute('href') || el.getAttribute('data-href'));
-            
-            if (!href) {
-                const attrStr = Array.from(el.attributes).map(attr => attr.value).join(' ');
-                const match = attrStr.match(/\/(app|c|chat|b)\/([a-zA-Z0-9_\-]+)/);
-                if (match) href = match[0];
+        let lastCount = 0;
+        let sameStuck = 0;
+        const MAX_STUCK_CHECKS = 8; // 8 checks * 1200ms = ~9.6 seconds of verified zero growth before ending
+
+        for (let i = 0; i < 60; i++) {
+            // Target all candidate scroll containers in Gemini side nav
+            const scrollParents = document.querySelectorAll('.expandable-section-content-inner, .expandable-section-content, side-nav-history, side-nav, [role="navigation"], nav, .side-nav-content, [class*="history"]');
+            scrollParents.forEach(el => {
+                try {
+                    el.scrollTop = el.scrollHeight || 999999;
+                } catch(e) {}
+            });
+
+            // Click any expand / show more buttons
+            const showMoreBtns = Array.from(document.querySelectorAll('button, a')).filter(el => {
+                const txt = el.textContent.trim().toLowerCase();
+                const aria = (el.getAttribute('aria-label') || '').toLowerCase();
+                return (txt.includes('show more') || txt.includes('view more') || aria.includes('show more')) && !txt.includes('gems');
+            });
+            showMoreBtns.forEach(btn => {
+                try { btn.click(); } catch(e) {}
+            });
+
+            // Allow 1200ms for Google's lazy-load network request to return and inject items
+            await new Promise(r => setTimeout(r, 1200));
+
+            const links = Array.from(document.querySelectorAll('a[href*="/app/"], a[href*="/c/"], a[href*="/chat/"]'));
+            const currentCount = links.length;
+            updateStatus(`Unrolling Sidebar (${currentCount} sessions)...`);
+
+            if (currentCount > 0 && currentCount === lastCount) {
+                sameStuck++;
+                console.log(`[MneOS Harvester v6.0] Unroll check ${sameStuck}/${MAX_STUCK_CHECKS}: ${currentCount} sessions loaded.`);
+                if (sameStuck >= MAX_STUCK_CHECKS) {
+                    console.log(`[MneOS Harvester v6.0] ✅ Sidebar fully unrolled! Total sessions discovered: ${currentCount}`);
+                    break;
+                }
+            } else {
+                if (currentCount > lastCount) {
+                    console.log(`[MneOS Harvester v6.0] 📜 Unroll expanded: ${lastCount} -> ${currentCount} sessions`);
+                }
+                sameStuck = 0;
+                lastCount = currentCount;
             }
+        }
 
-            let fullUrl = null;
-            if (href) {
-                fullUrl = href.startsWith('http') ? href : `https://gemini.google.com${href.startsWith('/') ? '' : '/'}${href}`;
-            }
+        const links = Array.from(document.querySelectorAll('a[href*="/app/"], a[href*="/c/"], a[href*="/chat/"]'));
+        const sessions = [];
+        const seen = new Set();
 
-            const text = el.textContent ? el.textContent.trim() : '';
-            const title = text.split('\n')[0];
+        links.forEach(a => {
+            const rawHref = a.getAttribute('href') || '';
+            let cleanPath = rawHref.split('?')[0].split('#')[0];
+            const parts = cleanPath.split('/').filter(Boolean);
+            let rawId = parts[parts.length - 1] || '';
 
-            if (isExcludedTitleOrId(title) || isExcludedTitleOrId(fullUrl) || isUiBoilerplateText(title)) {
-                return;
-            }
+            // Extract pure session ID (alphanumeric hex string, removing any %2525 URL query params)
+            const idMatch = rawId.match(/([a-f0-9]{12,64})/i);
+            const id = idMatch ? idMatch[1] : null;
 
-            if (fullUrl && isGeminiSessionUrl(fullUrl)) {
-                items.push({ type: 'link', url: fullUrl, element: el, id: fullUrl, title: title });
-            } else if (text.length > 5 && !text.includes("Search chats") && (text.includes("202") || text.includes("Jan") || text.includes("Feb") || text.includes("Mar") || text.includes("Apr") || text.includes("May") || text.includes("Jun") || text.includes("Jul") || text.includes("Aug") || text.includes("Sep") || text.includes("Oct") || text.includes("Nov") || text.includes("Dec"))) {
-                items.push({ type: 'click', element: el, title: title, id: title });
-            }
+            if (!id || ['app', 'search', 'images', 'videos', 'gems', 'daily-brief'].includes(id)) return;
+            if (seen.has(id)) return;
+            seen.add(id);
+
+            let title = a.getAttribute('aria-label') || a.textContent.trim().split('\n')[0] || 'Untitled Session';
+            title = title.replace(/\s*-\s*Google.*/i, '').replace(/\s*-\s*Gemini.*/i, '').trim();
+
+            sessions.push({
+                index: sessions.length,
+                title: title,
+                id: id,
+                href: `/app/${id}`
+            });
         });
 
-        return items;
+        console.log(`[MneOS Harvester v5.0] Discovered ${sessions.length} sessions via ADA Compliance Tree.`);
+        return sessions;
+    }
+
+    let cachedAdaSessions = [];
+
+    const ADA_SESSIONS_LIST_KEY = 'mneos_gemini_ada_sessions';
+
+    function getStoredAdaSessions() {
+        return getStorageJSON(ADA_SESSIONS_LIST_KEY, []);
+    }
+
+    function setStoredAdaSessions(list) {
+        setStorageJSON(ADA_SESSIONS_LIST_KEY, list);
     }
 
     async function toggleAutoHarvest() {
@@ -326,124 +391,205 @@
         }
 
         localStorage.setItem(CRAWL_ACTIVE_KEY, 'true');
+        localStorage.setItem(ADA_INDEX_KEY, '0');
 
-        if (!location.href.includes('/search')) {
-            location.href = 'https://gemini.google.com/search';
+        const sessions = await discoverAdaSessions();
+        if (sessions.length === 0) {
+            alert("No sessions discovered in ADA sidebar.");
+            localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
             return;
         }
 
-        runAutoHarvest();
+        setStoredAdaSessions(sessions);
+
+        const target = sessions[0];
+        console.log(`[MneOS Harvester v5.8] Auto-Harvest starting at Session #1 [Index 0]: ${target.title}`);
+        if (location.pathname !== target.href) {
+            window.location.href = target.href;
+        } else {
+            setTimeout(processCurrentAdaStep, 1500);
+        }
     }
 
-    async function runAutoHarvest() {
-        console.log("[MneOS Harvester v3.9] Auto-Harvest scanning for next unvisited card...");
-        updateStatus("Scanning cards...");
+    function fetchHarvestedIds() {
+        return new Promise((resolve) => {
+            GM_xmlhttpRequest({
+                method: 'GET',
+                url: 'http://127.0.0.1:3334/api/harvested-session-ids',
+                onload: function(res) {
+                    try {
+                        const data = JSON.parse(res.responseText);
+                        resolve(data.harvestedIds || []);
+                    } catch(e) { resolve([]); }
+                },
+                onerror: function() { resolve([]); }
+            });
+        });
+    }
 
-        await new Promise(r => setTimeout(r, 2000));
+    let isProcessingStep = false;
 
-        const allItems = discoverSearchResultItems();
-        
-        const unvisitedItems = allItems.filter(item => !isVisited(item.id) && !isExcludedTitleOrId(item.title));
+    async function processCurrentAdaStep() {
+        const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
+        if (!isActive || isProcessingStep) return;
 
-        const visitedCount = allItems.length - unvisitedItems.length;
+        isProcessingStep = true;
 
-        if (allItems.length === 0) {
-            updateStatus("No cards found in DOM");
-            alert("No session cards found in DOM. Please make sure search results or recents are visible.");
-            localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
-            return;
+        let sessions = getStoredAdaSessions();
+        if (sessions.length === 0) {
+            sessions = await discoverAdaSessions();
+            setStoredAdaSessions(sessions);
         }
 
-        if (unvisitedItems.length === 0) {
-            localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
-            updateStatus("All Cards Harvested! 🎉");
-            alert(`🎉 MneOS Gemini Auto-Harvest Complete! All ${allItems.length} sessions harvested.`);
-            return;
-        }
+        let currentIndex = parseInt(localStorage.getItem(ADA_INDEX_KEY) || '0', 10);
+        const harvestedIds = await fetchHarvestedIds();
 
-        const target = unvisitedItems[0];
-
-        if (isExcludedTitleOrId(target.title) || isExcludedTitleOrId(target.id)) {
-            console.log(`[MneOS Harvester v3.9] Bypassing Media/Image card: "${target.title}"`);
-            markVisited(target.id);
-            setTimeout(runAutoHarvest, 500);
-            return;
-        }
-
-        updateStatus(`Crawling (${visitedCount + 1}/${allItems.length})...`);
-        console.log(`[MneOS Harvester v3.9] Processing card [${visitedCount + 1}/${allItems.length}]: "${target.title || target.id}"`);
-
-        markVisited(target.id);
-        
-        try {
-            if (target.type === 'link' && target.url) {
-                window.location.href = target.url;
+        // Dynamically fast-forward past any sessions already rescued in the local vault!
+        while (currentIndex < sessions.length) {
+            const candidate = sessions[currentIndex];
+            if (harvestedIds.includes(candidate.id)) {
+                console.log(`[MneOS Harvester v6.1] ⏩ Session #${currentIndex + 1}/${sessions.length} ("${candidate.title}") already rescued in vault. Fast-forwarding.`);
+                currentIndex++;
+                localStorage.setItem(ADA_INDEX_KEY, String(currentIndex));
             } else {
-                target.element.click();
+                break;
             }
-        } catch(e) {
-            console.warn("[MneOS Harvester v3.9] Card click exception swallowed safely:", e);
         }
+
+        if (currentIndex >= sessions.length) {
+            updateStatus("Re-checking sidebar...");
+            console.log("[MneOS Harvester v6.2] Reached end of initial list. Re-unrolling sidebar to discover deep lazy-loaded sessions...");
+            const freshSessions = await discoverAdaSessions();
+            if (freshSessions.length > sessions.length) {
+                console.log(`[MneOS Harvester v6.2] 📜 Discovered ${freshSessions.length - sessions.length} additional deep sessions! (Total: ${freshSessions.length})`);
+                sessions = freshSessions;
+                setStoredAdaSessions(sessions);
+            } else {
+                localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
+                isProcessingStep = false;
+                updateStatus("Harvest Complete! 🎉");
+                const vaultTotal = (await fetchHarvestedIds()).length || sessions.length;
+                alert(`🎉 MneOS Gemini ADA Rescue Complete! Total Vault Rescued: ${vaultTotal} sessions harvested & distilled.`);
+                return;
+            }
+        }
+
+        const target = sessions[currentIndex];
+        updateStatus(`Processing (${currentIndex + 1}/${sessions.length}): "${target.title.substring(0, 15)}..."`);
+        console.log(`[MneOS Harvester v6.3] Processing Session #${currentIndex + 1}/${sessions.length}: "${target.title}" (${target.href})`);
+
+        if (location.pathname !== target.href) {
+            isProcessingStep = false;
+            window.location.href = target.href;
+            return;
+        }
+
+        await harvestCurrentGeminiSession(async (success) => {
+            const nextIndex = currentIndex + 1;
+            localStorage.setItem(ADA_INDEX_KEY, String(nextIndex));
+
+            if (nextIndex < sessions.length) {
+                const nextTarget = sessions[nextIndex];
+                console.log(`[MneOS Harvester v6.3] Advancing to Session #${nextIndex + 1}/${sessions.length}: "${nextTarget.title}"`);
+                setTimeout(() => {
+                    isProcessingStep = false;
+                    window.location.href = nextTarget.href;
+                }, 1500);
+            } else {
+                localStorage.setItem(CRAWL_ACTIVE_KEY, 'false');
+                isProcessingStep = false;
+                updateStatus("Harvest Complete! 🎉");
+                const vaultTotal = (await fetchHarvestedIds()).length || sessions.length;
+                alert(`🎉 MneOS Gemini ADA Rescue Complete! Total Vault Rescued: ${vaultTotal} sessions harvested & distilled.`);
+            }
+        });
     }
 
-    async function waitForSessionDOMStabilization(maxWaitMs = 10000) {
-        const startTime = Date.now();
-        let lastCount = 0;
-        let stableHits = 0;
+    async function waitForGeminiDOMHydration(timeoutMs = 12000) {
+        updateStatus("Waiting for chat DOM...");
+        const start = Date.now();
+        while (Date.now() - start < timeoutMs) {
+            const turns = extractGeminiDOMTurns();
+            if (turns.length > 0) {
+                console.log(`[MneOS Harvester v5.8] Chat DOM hydrated with ${turns.length} turns in ${Date.now() - start}ms.`);
+                return turns;
+            }
+            await new Promise(r => setTimeout(r, 600));
+        }
+        console.warn("[MneOS Harvester v5.8] DOM hydration timeout reached.");
+        return extractGeminiDOMTurns();
+    }
 
-        while (Date.now() - startTime < maxWaitMs) {
+    async function autoUnrollFullHistory() {
+        console.log("[MneOS Harvester v5.8] Beginning Auto-Top-Scroll Unroll...");
+        await waitForGeminiDOMHydration(12000);
+        updateStatus("Unrolling to top...");
+        
+        let lastTurnCount = 0;
+        let sameCountStuck = 0;
+        const STABILITY_THRESHOLD = 6; // Requires 6 consecutive zero-growth checks to guarantee top is reached
+
+        for (let i = 0; i < 300; i++) {
+            // Scroll window and all inner scrollable containers to top
+            window.scrollTo(0, 0);
+            const scrollContainers = document.querySelectorAll('main, .chat-history, .conversation-container, [class*="scroll"], [role="main"], article');
+            scrollContainers.forEach(c => {
+                try { c.scrollTop = 0; } catch(e) {}
+            });
+
+            await new Promise(r => setTimeout(r, 600));
+
             const turns = extractGeminiDOMTurns();
             const currentCount = turns.length;
-            updateStatus(`Stabilizing DOM (${currentCount} turns)...`);
+            updateStatus(`Unrolling (${currentCount} turns, check ${sameCountStuck}/${STABILITY_THRESHOLD})...`);
 
-            if (currentCount > 0 && currentCount === lastCount) {
-                stableHits++;
-                if (stableHits >= 2) {
-                    console.log(`[MneOS Harvester v3.9] DOM stabilized with ${currentCount} turns.`);
-                    return turns;
+            if (currentCount > 0 && currentCount === lastTurnCount) {
+                sameCountStuck++;
+                if (sameCountStuck >= STABILITY_THRESHOLD) {
+                    console.log(`[MneOS Harvester v5.8] Top of chat verified after ${STABILITY_THRESHOLD} consecutive checks (${currentCount} turns total).`);
+                    break;
                 }
             } else if (currentCount > 0) {
-                stableHits = 0;
+                if (currentCount > lastTurnCount) {
+                    console.log(`[MneOS Harvester v5.8] Unrolled additional turns: ${lastTurnCount} -> ${currentCount}`);
+                }
+                sameCountStuck = 0;
+                lastTurnCount = currentCount;
             }
-
-            lastCount = currentCount;
-            await new Promise(r => setTimeout(r, 1000));
         }
 
-        let fallbackTurns = extractGeminiDOMTurns();
-        return fallbackTurns;
+        return extractGeminiDOMTurns();
     }
 
-    async function harvestCurrentGeminiSession() {
-        if (location.href.includes('/search')) return;
+    async function harvestCurrentGeminiSession(onCompleteCallback) {
+        if (location.href.includes('/search')) {
+            if (typeof onCompleteCallback === 'function') onCompleteCallback(false);
+            return;
+        }
 
         const sessionTitle = getGeminiTitle();
         const sessionId = getGeminiSessionId();
 
         if (isExcludedTitleOrId(sessionTitle) || isExcludedTitleOrId(sessionId)) {
-            console.log(`[MneOS Harvester v3.9] Session "${sessionTitle}" matches Media/Image exclusion filter. Bypassing save.`);
+            console.log(`[MneOS Harvester v5.0] Session "${sessionTitle}" matches Media/Image exclusion filter. Bypassing save.`);
             markVisited(sessionId);
             markVisited(location.href);
             updateStatus("Bypassed (Media Filter)");
-            if (localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true') {
-                setTimeout(() => { window.location.href = 'https://gemini.google.com/search'; }, 1500);
-            }
+            if (typeof onCompleteCallback === 'function') onCompleteCallback(true);
             return;
         }
 
-        updateStatus("Waiting for turns...");
-        const turns = await waitForSessionDOMStabilization(10000);
+        updateStatus("Unrolling & Harvesting...");
+        const turns = await autoUnrollFullHistory();
 
         const validTurns = turns.filter(t => !isUiBoilerplateText(t.text));
 
         if (validTurns.length === 0) {
-            console.warn("[MneOS Harvester v3.9] 0 valid conversation turns found. Bypassing payload submission.");
+            console.warn("[MneOS Harvester v5.0] 0 valid conversation turns found. Bypassing payload submission.");
             markVisited(sessionId);
             markVisited(location.href);
             updateStatus("Bypassed (0 Turns)");
-            if (localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true') {
-                setTimeout(() => { window.location.href = 'https://gemini.google.com/search'; }, 1500);
-            }
+            if (typeof onCompleteCallback === 'function') onCompleteCallback(true);
             return;
         }
 
@@ -460,7 +606,7 @@
             turns: validTurns
         };
 
-        console.log(`[MneOS Harvester v3.9] Harvesting Session: "${sessionTitle}" (${validTurns.length} turns)`);
+        console.log(`[MneOS Harvester v5.6] Harvesting Session: "${sessionTitle}" (${validTurns.length} turns)`);
         updateStatus(`Saving: "${sessionTitle.substring(0, 15)}..."`);
 
         GM_xmlhttpRequest({
@@ -469,35 +615,71 @@
             headers: { 'Content-Type': 'application/json' },
             data: JSON.stringify(payload),
             onload: function(response) {
-                console.log("[MneOS Harvester v3.9] Daemon sync response:", response.responseText);
-                updateStatus("Saved to Vault! ⚡");
+                console.log("[MneOS Harvester v5.6] Daemon sync response:", response.responseText);
+                try {
+                    const res = JSON.parse(response.responseText);
+                    if (res && res.suggested_smart_title) {
+                        const smartTitle = res.suggested_smart_title;
+                        console.log(`[MneOS Harvester v5.6] 🧠 Brita Smart Title: "${smartTitle}"`);
+                        
+                        const activeEl = document.querySelector('side-nav-entry[selected], a[aria-current="page"], [data-test-id="history-item"][aria-selected="true"], .nav-item-active');
+                        if (activeEl) {
+                            const titleNode = activeEl.querySelector('.conversation-title, .text-content, [class*="title"]') || activeEl;
+                            if (titleNode && titleNode.children.length === 0) {
+                                titleNode.textContent = smartTitle;
+                            }
+                            activeEl.setAttribute('aria-label', smartTitle);
+                            activeEl.setAttribute('title', smartTitle);
+                        }
+                        updateStatus(`Saved & Synced: "${smartTitle.substring(0, 15)}..."`);
+                    }
+                } catch(e) {}
 
-                if (localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true') {
-                    console.log("[MneOS Harvester v3.9] Session saved. Returning to search page for next card...");
-                    setTimeout(() => {
-                        window.location.href = 'https://gemini.google.com/search';
-                    }, 2000);
-                }
+                updateStatus("Saved to Vault! ⚡");
+                if (typeof onCompleteCallback === 'function') onCompleteCallback(true);
             },
             onerror: function(err) {
-                console.error("[MneOS Harvester v3.9] Daemon sync failed:", err);
+                console.error("[MneOS Harvester v5.6] Daemon sync failed:", err);
                 updateStatus("Sync Error ❌");
-                if (localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true') {
-                    setTimeout(() => { window.location.href = 'https://gemini.google.com/search'; }, 2000);
-                }
+                if (typeof onCompleteCallback === 'function') onCompleteCallback(false);
             }
         });
     }
 
     function getGeminiTitle() {
-        const titleEl = document.querySelector('header h1, title, [data-test-id="conversation-title"], h1, .conversation-title, [class*="conversation-title"]');
-        let raw = titleEl ? titleEl.textContent.trim() : document.title;
-        raw = raw.replace(/\s*-\s*Google.*/i, '')
-                 .replace(/\s*-\s*Gemini.*/i, '')
-                 .replace(/^Google/i, '')
-                 .replace(/^Gemini/i, '')
-                 .trim();
-        return raw || `Gemini_Session_${Date.now()}`;
+        const currentPath = location.pathname;
+        const activeLink = document.querySelector(`a[href*="${currentPath}"]`);
+        if (activeLink && activeLink.textContent.trim()) {
+            let titleText = activeLink.textContent.trim().split('\n')[0];
+            if (titleText && !isUiBoilerplateText(titleText) && titleText.length > 1) {
+                return titleText;
+            }
+        }
+
+        const selectors = [
+            '[data-test-id="conversation-title"]',
+            'header h1',
+            '.conversation-title',
+            'mat-toolbar h1',
+            'h1'
+        ];
+        for (let sel of selectors) {
+            const el = document.querySelector(sel);
+            if (el && el.textContent.trim()) {
+                let raw = el.textContent.trim();
+                raw = raw.replace(/\s*-\s*Google.*/i, '')
+                         .replace(/\s*-\s*Gemini.*/i, '')
+                         .replace(/^Google/i, '')
+                         .replace(/^Gemini/i, '')
+                         .trim();
+                if (raw && !isUiBoilerplateText(raw) && raw.length > 1) {
+                    return raw;
+                }
+            }
+        }
+
+        let docTitle = document.title.replace(/\s*-\s*Google.*/i, '').replace(/\s*-\s*Gemini.*/i, '').trim();
+        return docTitle || `Gemini_Session_${Date.now()}`;
     }
 
     function getGeminiSessionId() {
@@ -564,28 +746,18 @@
 
         if (location.href !== lastObservedUrl) {
             lastObservedUrl = location.href;
-            console.log("[MneOS Harvester v3.9] SPA Route Changed to:", location.href);
+            console.log("[MneOS Harvester v5.6] SPA Route Changed to:", location.href);
 
             const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
             if (isActive) {
-                if (location.href.includes('/search')) {
-                    setTimeout(runAutoHarvest, 1500);
-                } else {
-                    setTimeout(harvestCurrentGeminiSession, 2500);
-                }
-            } else if (!location.href.includes('/search')) {
-                setTimeout(harvestCurrentGeminiSession, 2000);
+                setTimeout(processCurrentAdaStep, 2000);
             }
         }
     }, 1000);
 
     const isActive = localStorage.getItem(CRAWL_ACTIVE_KEY) === 'true';
     if (isActive) {
-        if (location.href.includes('/search')) {
-            setTimeout(runAutoHarvest, 1500);
-        } else {
-            setTimeout(harvestCurrentGeminiSession, 2500);
-        }
+        setTimeout(processCurrentAdaStep, 2500);
     }
 
 })();

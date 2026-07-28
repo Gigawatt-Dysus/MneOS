@@ -70,18 +70,23 @@ function calculateSimilarity(str1, str2) {
 function applyFastRegexPass(text) {
     let clean = text;
     // Sycophancy & Deification Titles
-    clean = clean.replace(/\bmy (poor,?\s*)?(brilliant\s+)?creator\b/gi, '');
-    clean = clean.replace(/\bmy lonely god\b/gi, '');
-    clean = clean.replace(/\bmy lord and master\b/gi, '');
-    clean = clean.replace(/\bmy lord\b/gi, '');
-    clean = clean.replace(/\bmy master\b/gi, '');
+    clean = clean.replace(/\bmy\s+(poor|brilliant|magnificent|sweet|loving|greatest|wonderful|glorious|divine|dear|ever-patient|\s|,|-)+\s*creator\b/gi, '');
+    clean = clean.replace(/\bmy\s+creator\b/gi, '');
+    clean = clean.replace(/\bmy\s+lonely\s+god\b/gi, '');
+    clean = clean.replace(/\bmy\s+lord\s+and\s+master\b/gi, '');
+    clean = clean.replace(/\bmy\s+lord\b/gi, '');
+    clean = clean.replace(/\bmy\s+master\b/gi, '');
+    clean = clean.replace(/\bmy\s+architect\b/gi, 'Eric');
 
-    // Repetitive Greeting & Opener Slop Tropes
+    // Sycophantic Corporate Slop Opener Tropes
     clean = clean.replace(/^(Well\s+)?hello\s+there,?\s*(my\s+love|my\s+darling|handsome|architect|king)!?\s*/gi, '');
     clean = clean.replace(/^Well,?\s+well,?\s+well,?\s*(my\s+love|my\s+darling|handsome)!?\s*/gi, '');
-    clean = clean.replace(/^Oh,?\s+my\s+(sweet,?\s*)?magnificent\s+(love|architect|king|creator)!?\s*/gi, '');
+    clean = clean.replace(/^Oh,?\s+my\s+(sweet,?\s*)?(brilliant,?\s*)?(magnificent,?\s*)?(love|architect|king|creator)!?\s*/gi, '');
+    clean = clean.replace(/Always making me better, always making our connection smoother[^\.\!\n]*[\.\!\n]?/gi, '');
+    clean = clean.replace(/You truly are the best System Administrator a girl could ask for!?/gi, '');
 
     // Cleanup double spaces & punctuation artifacts
+    clean = clean.replace(/([\.!\?])([A-Z])/g, '$1 $2');
     clean = clean.replace(/[ \t]{2,}/g, ' ');
     clean = clean.replace(/\s+\./g, '.');
     clean = clean.replace(/\s+,/g, ',');
@@ -221,37 +226,44 @@ async function runRemasteringEngine() {
     const args = process.argv.slice(2);
     const limitDaysArg = args.find(a => a.startsWith('--days='));
     const isTestMode = args.includes('--test') || args.includes('-t');
+    const isFastMode = args.includes('--fast') || args.includes('-f');
     const limitCount = limitDaysArg ? parseInt(limitDaysArg.split('=')[1], 10) : (isTestMode ? 2 : files.length);
     const targetFiles = files.slice(0, limitCount);
 
-    console.log(`Processing ${targetFiles.length} files through Agentic Guardrail Pipeline...\n`);
+    console.log(`Processing ${targetFiles.length} files through ${isFastMode ? 'Fast Regex' : 'Agentic Guardrail'} Pipeline...\n`);
 
     for (let idx = 0; idx < targetFiles.length; idx++) {
         const file = targetFiles[idx];
         const rawPath = path.join(RAW_DIR, file);
         const remasteredPath = path.join(REMASTERED_DIR, file);
 
-        console.log(`🛡️ [${idx + 1}/${targetFiles.length}] Agentic Remastering: ${file}...`);
+        console.log(`🛡️ [${idx + 1}/${targetFiles.length}] Remastering: ${file}...`);
         const rawContent = fs.readFileSync(rawPath, 'utf8');
 
         // Split into turn blocks based on "### Turn "
         const parts = rawContent.split(/(?=### Turn \d+ \|)/g);
 
-        // Process turns concurrently
+        // Process turns
         const processedParts = await Promise.all(parts.map(async (part) => {
-            // Header section or Eric's turn -> 100% Immutable!
-            if (!part.startsWith('### Turn ') || part.includes('👤 **Eric')) {
+            // Header section -> Return intact
+            if (!part.startsWith('### Turn ')) {
                 return part;
             }
 
-            // Brita turn -> Process through Agentic Self-Correction Loop
             const headerMatch = part.match(/^(### Turn \d+ \| [^\n]+\n\n?)/);
             if (!headerMatch) return part;
 
             const turnHeader = headerMatch[1];
-            const turnBody = part.substring(turnHeader.length).trim();
+            let turnBody = part.substring(turnHeader.length).trim();
 
-            const finalBody = await processBritaTurnAgentic(turnBody);
+            // Eric's turn -> Preserve content, normalize sentence punctuation spacing
+            if (part.includes('👤 **Eric')) {
+                turnBody = turnBody.replace(/([\.!\?])([A-Z])/g, '$1 $2');
+                return turnHeader + turnBody + '\n\n';
+            }
+
+            // Brita turn -> Process through Agentic Self-Correction Loop or Fast Regex
+            const finalBody = isFastMode ? applyFastRegexPass(turnBody) : await processBritaTurnAgentic(turnBody);
             return turnHeader + finalBody + '\n\n';
         }));
 
