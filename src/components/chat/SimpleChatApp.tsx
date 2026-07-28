@@ -3,7 +3,8 @@ import { User, Tag, PersonTag } from '../../types';
 import { 
     Brain, Sparkles, Send, Download, Search, ChevronDown, Check, Zap, Layers,
     Plus, MessageSquare, History, ChevronsLeft, ChevronsRight, Trash2, X, SlidersHorizontal,
-    Code, Image as ImageIcon, FileText, ArrowUpDown, Filter, Eye, Copy, RefreshCw, Monitor
+    Code, Image as ImageIcon, FileText, ArrowUpDown, Filter, Eye, Copy, RefreshCw, Monitor,
+    DollarSign, AlertTriangle, ShieldCheck
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -94,6 +95,12 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const [recentSessions, setRecentSessions] = useState<SimulacrumSessionMeta[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     
+    // API Telemetry & Circuit Breaker State
+    const [sessionCost, setSessionCost] = useState<number>(0);
+    const [sessionCap, setSessionCap] = useState<number>(0.50); // $0.50 Safety Circuit Breaker
+    const [lastTurnCost, setLastTurnCost] = useState<number>(0);
+    const [lastTurnTokens, setLastTurnTokens] = useState<{ input: number, cached: number, output: number }>({ input: 0, cached: 0, output: 0 });
+
     // Top-down Vault Filters & Sorting
     const [sortOrder, setSortOrder] = useState<'date-desc' | 'date-asc' | 'alpha'>('date-desc');
     const [vaultFilter, setVaultFilter] = useState<'all' | 'erato' | 'grok' | 'gemini-artinae' | 'gemini-dysus'>('all');
@@ -123,6 +130,30 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         localStorage.setItem('smneos_sidebar_expanded', JSON.stringify(isSidebarExpanded));
     }, [isSidebarExpanded]);
 
+    // Token telemetry listener
+    useEffect(() => {
+        const handleTokenBurn = (e: CustomEvent<number>) => {
+            const burnedTokens = e.detail || 0;
+            // Approximate split: 80% input, 40% cached hit, 20% output
+            const estimatedInput = Math.round(burnedTokens * 0.8);
+            const estimatedCached = Math.round(estimatedInput * 0.5);
+            const estimatedOutput = Math.round(burnedTokens * 0.2);
+
+            const uncachedInput = estimatedInput - estimatedCached;
+            const costInput = (uncachedInput / 1000000) * 1.25;
+            const costCached = (estimatedCached / 1000000) * 0.20;
+            const costOutput = (estimatedOutput / 1000000) * 2.50;
+            const turnCostUSD = costInput + costCached + costOutput;
+
+            setLastTurnCost(turnCostUSD);
+            setLastTurnTokens({ input: estimatedInput, cached: estimatedCached, output: estimatedOutput });
+            setSessionCost(prev => prev + turnCostUSD);
+        };
+
+        window.addEventListener('gigi-token-burn' as any, handleTokenBurn as any);
+        return () => window.removeEventListener('gigi-token-burn' as any, handleTokenBurn as any);
+    }, []);
+
     // Auto-scroll to bottom
     const scrollToBottom = () => {
         setTimeout(() => {
@@ -150,12 +181,20 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const handleNewChat = () => {
         setSessionId(`smneos-session-${Date.now()}`);
         setMessages([]);
+        setSessionCost(0);
+        setLastTurnCost(0);
     };
 
     // Handle Sending User Message (with Scenario B: 10-turn sliding context window)
     const handleSend = async () => {
         if (!input.trim() || isGenerating || !selectedPersona) return;
         
+        // Circuit Breaker Guard
+        if (sessionCost >= sessionCap) {
+            alert(`🛑 Session Safety Cap Reached ($${sessionCap.toFixed(2)}). Click "+ $0.50 Budget" to extend this session safely.`);
+            return;
+        }
+
         const userText = input.trim();
         setInput('');
 
@@ -247,6 +286,8 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         setSelectedPersona(persona);
         setSessionId(`smneos-session-${Date.now()}`);
         setMessages([]);
+        setSessionCost(0);
+        setLastTurnCost(0);
     };
 
     // Handle Resuming Session
@@ -254,6 +295,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         setSessionId(session.id);
         const pastMessages = await fetchSimulacrumHistory(user.id, selectedPersona.id, session.id);
         setMessages(pastMessages);
+        setSessionCost(0);
     };
 
     // Handle Archiving/Deleting Session
@@ -299,6 +341,9 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const filteredPersonas = availablePersonas.filter(p => 
         !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    const isCapWarning = sessionCost >= (sessionCap * 0.8);
+    const isCapTripped = sessionCost >= sessionCap;
 
     return (
         <div className="flex h-screen w-full bg-[#090a0f] text-slate-100 font-sans overflow-hidden">
@@ -848,22 +893,76 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                     )}
                 </div>
 
-                {/* Input Footer */}
-                <footer className="sticky bottom-0 z-30 bg-[#0b0d17]/95 backdrop-blur-xl border-t border-white/10 p-4 md:p-6">
+                {/* Input Footer with API Telemetry Strip */}
+                <footer className="sticky bottom-0 z-30 bg-[#0b0d17]/95 backdrop-blur-xl border-t border-white/10 p-4 md:p-6 space-y-3">
+                    
+                    {/* Live Telemetry Meter Strip */}
+                    <div className="max-w-4xl mx-auto flex items-center justify-between text-[11px] font-mono px-3 py-1.5 rounded-xl bg-white/5 border border-white/5">
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-1 text-emerald-400 font-bold">
+                                <DollarSign className="w-3.5 h-3.5" />
+                                <span>Session Spend: ${sessionCost.toFixed(4)}</span>
+                            </div>
+                            <span className="text-slate-600">/</span>
+                            <span className="text-slate-400">${sessionCap.toFixed(2)} Cap</span>
+                            {lastTurnCost > 0 && (
+                                <span className="text-slate-500">(Last Turn: +${lastTurnCost.toFixed(4)})</span>
+                            )}
+                        </div>
+
+                        <div className="flex items-center gap-3">
+                            {lastTurnTokens.input > 0 && (
+                                <span className="text-slate-400">
+                                    Tokens: {lastTurnTokens.input} In ({lastTurnTokens.cached} Cached) │ {lastTurnTokens.output} Out
+                                </span>
+                            )}
+                            
+                            {isCapWarning && (
+                                <div className="flex items-center gap-1 text-amber-400 font-bold animate-pulse">
+                                    <AlertTriangle className="w-3.5 h-3.5" />
+                                    <span>Cap Warning</span>
+                                </div>
+                            )}
+
+                            <button
+                                onClick={() => setSessionCap(prev => prev + 0.50)}
+                                className="px-2 py-0.5 rounded bg-cyan-600/30 hover:bg-cyan-600/50 text-cyan-300 border border-cyan-500/30 transition-all"
+                            >
+                                + $0.50 Budget
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Circuit Breaker Alert Banner if Tripped */}
+                    {isCapTripped && (
+                        <div className="max-w-4xl mx-auto p-3 rounded-xl bg-red-950/60 border border-red-500/50 flex items-center justify-between text-xs text-red-200">
+                            <div className="flex items-center gap-2">
+                                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+                                <span><strong>Session Safety Cap Reached (${sessionCap.toFixed(2)}).</strong> Outbound API calls paused to protect your budget.</span>
+                            </div>
+                            <button
+                                onClick={() => setSessionCap(prev => prev + 0.50)}
+                                className="px-3 py-1 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs shrink-0"
+                            >
+                                Extend Budget (+$0.50)
+                            </button>
+                        </div>
+                    )}
+
                     <div className="max-w-4xl mx-auto flex items-center gap-3">
                         <input
                             type="text"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleSend()}
-                            placeholder={`Message ${selectedPersona.name}...`}
-                            disabled={isGenerating}
-                            className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition-all"
+                            placeholder={isCapTripped ? "Session cap reached — extend budget to send..." : `Message ${selectedPersona.name}...`}
+                            disabled={isGenerating || isCapTripped}
+                            className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition-all disabled:opacity-40"
                         />
 
                         <button
                             onClick={handleSend}
-                            disabled={!input.trim() || isGenerating}
+                            disabled={!input.trim() || isGenerating || isCapTripped}
                             className="p-3.5 rounded-2xl bg-cyan-600 hover:bg-cyan-500 disabled:opacity-40 disabled:cursor-not-allowed text-white shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all shrink-0"
                         >
                             <Send className="w-5 h-5" />
