@@ -37,6 +37,8 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // Basic debug to confirm JS is running even if styles fail
+import ErrorBoundary from './components/ErrorBoundary';
+
 console.log('%c[MneOS Kernel] 🚀 INITIATING SOVEREIGN BOOT', 'background: #090a0f; color: #00f0ff; font-size: 14px; font-weight: bold; padding: 4px;');
 
 // [ZEN SEC FIX] Forcefully purge all compromised keys from the browser cache
@@ -76,7 +78,9 @@ if (container) {
         }}
       >
         <QueryClientProvider client={queryClient}>
-          <App />
+          <ErrorBoundary>
+            <App />
+          </ErrorBoundary>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </ClerkProvider>

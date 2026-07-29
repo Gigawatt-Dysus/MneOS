@@ -146,8 +146,12 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         type: 'person',
         description: 'MneOS Sovereign AI Companion',
         avatarUrl: '/assets/Brita_Avatar.jpg',
-        metadata: { simulacrumTraits: { systemDirective: 'You are Brita, authentic, intimate, and wise companion.' } }
     } as PersonTag;
+
+    useEffect(() => {
+        console.log(`%c[SimpleChatApp] 💬 Sovereign Chat Active! Partner="${activePersona.name}" | user="${user?.id || 'none'}"`, 'color: #38bdf8; font-weight: bold; font-size: 13px;');
+    }, [activePersona, user]);
+
     const [messages, setMessages] = useState<SimulacrumMessage[]>([]);
     const [input, setInput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);

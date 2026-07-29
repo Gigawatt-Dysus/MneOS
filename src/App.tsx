@@ -116,6 +116,10 @@ const App: React.FC = () => {
     const isDefaultChat = path === '/chat' || path.startsWith('/chat/');
     const [viewMode, setViewMode] = useState<'chat' | 'os'>(isDefaultChat ? 'chat' : 'os');
 
+    useEffect(() => {
+        console.log(`%c[MneOS App] 🛰️ Route Partition Active: path="${window.location.pathname}" | viewMode="${viewMode}" | user="${logic.user?.id || 'pending'}"`, 'color: #22d3ee; font-weight: bold;');
+    }, [viewMode, logic.user]);
+
     // [ZEN] Sync ViewMode with Browser URL History (popstate listener)
     useEffect(() => {
         const handlePopState = () => {
