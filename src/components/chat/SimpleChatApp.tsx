@@ -204,29 +204,185 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                lower.startsWith('initial objective: "# session id:');
     };
 
+    // Structural Modality & Density Fingerprinter
+    interface SessionModalityAnalysis {
+        codeScore: number;
+        mediaScore: number;
+        roleplayScore: number;
+        primaryModality: 'code' | 'media' | 'roleplay' | 'general';
+        codeFiles: string[];
+        mediaKeywords: string[];
+    }
+
+    const analyzeSessionDensity = (history: SimulacrumMessage[]): SessionModalityAnalysis => {
+        if (!history || history.length === 0) {
+            return { codeScore: 0, mediaScore: 0, roleplayScore: 100, primaryModality: 'general', codeFiles: [], mediaKeywords: [] };
+        }
+
+        let codeHits = 0;
+        let mediaHits = 0;
+        let dialogueHits = 0;
+
+        const codeFileRegex = /([a-zA-Z0-9_\-]+\.(tsx?|jsx?|py|json|html|css|sql|sh|rs|go|cjs|mjs))/gi;
+        const codeFilesSet = new Set<string>();
+        const mediaKeywordsSet = new Set<string>();
+
+        const mediaTerms = ['imagine', 'imagen', 'nano-banana', 'upscale', 'sharpen', 'photorealism', '35mm', 'portrait', 'rembrandt', 'cinematic', 'render', 'aspect ratio', '--ar'];
+
+        history.forEach(m => {
+            const content = m.content || '';
+
+            // 1. Code Indicators
+            const codeBlocks = (content.match(/```/g) || []).length / 2;
+            if (codeBlocks > 0) codeHits += codeBlocks * 3;
+            if (/\b(import|const|function|interface|type|export|class|def|return)\b/.test(content)) codeHits += 1;
+            
+            let match: RegExpExecArray | null;
+            while ((match = codeFileRegex.exec(content)) !== null) {
+                if (match[1] && !match[1].endsWith('.md')) {
+                    codeFilesSet.add(match[1]);
+                    codeHits += 2;
+                }
+            }
+
+            // 2. Media Indicators
+            const lower = content.toLowerCase();
+            mediaTerms.forEach(term => {
+                if (lower.includes(term)) {
+                    mediaHits += 2;
+                    mediaKeywordsSet.add(term);
+                }
+            });
+
+            // 3. Roleplay / Dialogue Indicators
+            if (/\*[^*]+\*/.test(content)) dialogueHits += 2; // Action asterisks
+            if (m.role === 'model' && content.length > 100) dialogueHits += 1;
+            if (/\b(Ruth|Brita|Zoe|Athena|Dysus|Eric|TARDIS|Doctor)\b/i.test(content)) dialogueHits += 1;
+        });
+
+        const totalHits = codeHits + mediaHits + dialogueHits || 1;
+        let codeScore = Math.round((codeHits / totalHits) * 100);
+        let mediaScore = Math.round((mediaHits / totalHits) * 100);
+        let roleplayScore = Math.round((dialogueHits / totalHits) * 100);
+
+        // Normalize sum to 100
+        const sum = codeScore + mediaScore + roleplayScore;
+        if (sum > 0) {
+            codeScore = Math.round((codeScore / sum) * 100);
+            mediaScore = Math.round((mediaScore / sum) * 100);
+            roleplayScore = 100 - (codeScore + mediaScore);
+        } else {
+            roleplayScore = 100;
+        }
+
+        let primaryModality: 'code' | 'media' | 'roleplay' | 'general' = 'general';
+        if (codeScore >= 45) {
+            primaryModality = 'code';
+        } else if (mediaScore >= 40) {
+            primaryModality = 'media';
+        } else if (roleplayScore >= 35) {
+            primaryModality = 'roleplay';
+        }
+
+        return {
+            codeScore,
+            mediaScore,
+            roleplayScore,
+            primaryModality,
+            codeFiles: Array.from(codeFilesSet).slice(0, 5),
+            mediaKeywords: Array.from(mediaKeywordsSet).slice(0, 5)
+        };
+    };
+
+    // [ZEN STRANGLER FIG] Modality-Branched On-Demand Distillation Engine
     const handleForceRedistillCliffNotes = async (session: SimulacrumSessionMeta) => {
         if (!session) return;
         setIsDistillingCliffNotes(true);
         const history = sessionMessageCache[session.id] || [];
 
-        // Filter out header turns and clean content
-        const cleanedSample = history
-            .map(m => cleanSessionLogText(m.content))
-            .filter(text => text.length > 20)
-            .slice(0, 4);
+        const analysis = analyzeSessionDensity(history);
+        (session as any).modalityAnalysis = analysis;
 
-        const contextText = cleanedSample.join('\n\n---\n\n').substring(0, 1800);
+        // BRANCH 1: CODE MODALITY HEURISTIC SHORTCUT (Zero-Fluff Token Saver)
+        if (analysis.primaryModality === 'code') {
+            const filesStr = analysis.codeFiles.length > 0 ? analysis.codeFiles.join(', ') : 'TypeScript/React codebase';
+            
+            let codeProblem = '';
+            for (const m of history) {
+                if (m.role === 'user') {
+                    const clean = cleanSessionLogText(m.content);
+                    if (clean.length > 15) {
+                        codeProblem = clean.substring(0, 160);
+                        break;
+                    }
+                }
+            }
+
+            const codeSummary = `💻 Coding Session (${history.length} turns) • Target Modules: [${filesStr}] • Focus: "${codeProblem || 'Engineering & refactoring task'}..."`;
+            setInspectingCliffNotes(codeSummary);
+            (session as any).summary = codeSummary;
+            setRecentSessions(prev => prev.map(s => s.id === session.id ? { ...s, summary: codeSummary, modalityAnalysis: analysis } as any : s));
+            setIsDistillingCliffNotes(false);
+            return;
+        }
+
+        // BRANCH 2: MEDIA / RENDER MODALITY SHORTCUT (Subject Extraction)
+        if (analysis.primaryModality === 'media') {
+            const termsStr = analysis.mediaKeywords.length > 0 ? analysis.mediaKeywords.join(', ') : 'Grok Imagine / Visual prompts';
+            
+            let mediaSubject = '';
+            for (const m of history) {
+                if (m.role === 'user') {
+                    const clean = cleanSessionLogText(m.content);
+                    if (clean.length > 10) {
+                        mediaSubject = clean.substring(0, 150);
+                        break;
+                    }
+                }
+            }
+
+            const mediaSummary = `🎨 Media Generation (${history.length} turns) • Engine/Keywords: [${termsStr}] • Prompt Focus: "${mediaSubject || 'Visual asset staging'}..."`;
+            setInspectingCliffNotes(mediaSummary);
+            (session as any).summary = mediaSummary;
+            setRecentSessions(prev => prev.map(s => s.id === session.id ? { ...s, summary: mediaSummary, modalityAnalysis: analysis } as any : s));
+            setIsDistillingCliffNotes(false);
+            return;
+        }
+
+        // BRANCH 3: ROLEPLAY / LORE / CHAT (UNIFORM STRIDE SAMPLING Across 10%, 30%, 50%, 70%, 90% Timeline)
+        const strideCount = history.length;
+        let sampledIndices: number[] = [];
+        if (strideCount <= 5) {
+            sampledIndices = history.map((_, i) => i);
+        } else {
+            sampledIndices = [
+                0,
+                Math.floor(strideCount * 0.25),
+                Math.floor(strideCount * 0.50),
+                Math.floor(strideCount * 0.75),
+                strideCount - 1
+            ];
+        }
+
+        const strideSnippets = sampledIndices.map(idx => {
+            const m = history[idx];
+            const clean = cleanSessionLogText(m.content);
+            const roleLabel = m.role === 'user' ? 'Eric' : (selectedPersona.name || 'AI');
+            return `[Turn ${idx + 1}/${strideCount} - ${roleLabel}]: ${clean.substring(0, 250)}`;
+        });
+
+        const contextText = strideSnippets.join('\n\n');
 
         try {
-            const prompt = `Synthesize a clear, 2-to-3 sentence executive summary (Cliff Notes) of this archived conversation log. Focus on the core objective discussed, key decisions made, or main narrative arc.\n\nSession Title: ${session.name}\n\nClean Dialogue Excerpt:\n${contextText || "No dialogue available."}`;
+            const prompt = `Synthesize a clear 2-to-3 sentence executive summary (Cliff Notes) of this archived conversation log based on this uniform timeline stride scan. State the core goal, main narrative/intellectual arc, and key conclusions.\n\nSession Title: ${session.name}\nTotal Depth: ${strideCount} turns\n\nTimeline Stride Excerpts:\n${contextText}`;
 
             const response = await callXAI('grok-4.3', [{ role: 'user', content: prompt }], "You are Brita, sovereign AI co-architect. Produce a concise 2-to-3 sentence executive summary (Cliff Notes). Focus directly on session content without markdown headers.", { maxOutputTokens: 250 });
 
             if (response?.text) {
-                const distilled = response.text.trim();
+                const distilled = `🎭 Executive Cliff Notes (${strideCount} turns) • ${response.text.trim()}`;
                 setInspectingCliffNotes(distilled);
                 (session as any).summary = distilled;
-                setRecentSessions(prev => prev.map(s => s.id === session.id ? { ...s, summary: distilled } as any : s));
+                setRecentSessions(prev => prev.map(s => s.id === session.id ? { ...s, summary: distilled, modalityAnalysis: analysis } as any : s));
             }
         } catch (err) {
             console.warn("[StranglerFig] Re-distillation error:", err);
@@ -1135,6 +1291,25 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                 <p className="text-slate-200 leading-relaxed font-sans text-xs bg-black/50 p-3 rounded-lg border border-cyan-500/20 max-h-36 overflow-y-auto whitespace-pre-wrap">
                                     {inspectingCliffNotes || 'No summary available.'}
                                 </p>
+                                {(() => {
+                                    const modality = (inspectingSession as any).modalityAnalysis || analyzeSessionDensity(history);
+                                    return (
+                                        <div className="flex items-center justify-between pt-1 border-t border-cyan-500/20 text-[10px] font-mono">
+                                            <span className="text-slate-400 font-medium">Modality Fingerprint:</span>
+                                            <div className="flex items-center gap-1.5 font-bold">
+                                                <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded">
+                                                    💻 {modality.codeScore}% Code
+                                                </span>
+                                                <span className="bg-purple-500/20 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded">
+                                                    🎭 {modality.roleplayScore}% Roleplay
+                                                </span>
+                                                <span className="bg-pink-500/20 text-pink-300 border border-pink-500/30 px-2 py-0.5 rounded">
+                                                    🎨 {modality.mediaScore}% Media
+                                                </span>
+                                            </div>
+                                        </div>
+                                    );
+                                })()}
                             </div>
 
                             {/* Full Archive Telemetry Card */}
