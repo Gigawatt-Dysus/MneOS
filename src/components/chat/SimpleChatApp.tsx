@@ -23,6 +23,7 @@ import {
 } from '../../services/ai/generators/simulacrumGenerator';
 import { exportSimulationTranscript } from '../../services/ai/generators/transcriptExporter';
 import { GrokPromptBuilder } from '../../services/ai/GrokPromptBuilder';
+import { callXAI } from '../../services/ai/providers';
 import vaultMessageCache from '../../data/vaultMessageCache.json';
 
 export interface ContextBolus {
@@ -169,6 +170,61 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     // Session Pre-Flight Hydration Telemetry Inspector State
     const [inspectingSession, setInspectingSession] = useState<SimulacrumSessionMeta | null>(null);
     const [inspectingDepth, setInspectingDepth] = useState<number>(3); // Default 3 turns
+    const [inspectingCliffNotes, setInspectingCliffNotes] = useState<string | null>(null);
+    const [isDistillingCliffNotes, setIsDistillingCliffNotes] = useState<boolean>(false);
+
+    // [ZEN STRANGLER FIG] On-demand session Cliff Notes distillation
+    useEffect(() => {
+        if (!inspectingSession) {
+            setInspectingCliffNotes(null);
+            setIsDistillingCliffNotes(false);
+            return;
+        }
+
+        const existingSummary = (inspectingSession as any).summary || (inspectingSession as any).cliffNotes;
+        const history = sessionMessageCache[inspectingSession.id] || [];
+
+        if (existingSummary) {
+            setInspectingCliffNotes(existingSummary);
+            setIsDistillingCliffNotes(false);
+        } else {
+            const firstUserTurn = history.find(m => m.role === 'user');
+            const initialFallback = firstUserTurn?.content
+                ? `Initial Objective: "${firstUserTurn.content.substring(0, 180)}..."`
+                : `Extracted conversation session containing ${history.length || 0} turn(s).`;
+            
+            setInspectingCliffNotes(initialFallback);
+            setIsDistillingCliffNotes(true);
+
+            let isMounted = true;
+            (async () => {
+                try {
+                    const sample = history.length > 0 
+                        ? history.slice(0, 2).concat(history.slice(-2))
+                        : [];
+                    const contextText = sample.map(m => `${m.role.toUpperCase()}: ${m.content.substring(0, 300)}`).join('\n\n');
+                    const prompt = `Synthesize a concise 2-sentence executive summary (Cliff Notes) of this conversation archive. State the core goal and key conclusions.\n\nSession Title: ${inspectingSession.name}\n\nExcerpt:\n${contextText}`;
+
+                    const response = await callXAI('grok-4.3', [{ role: 'user', content: prompt }], "You are Brita, sovereign AI co-architect. Provide a concise, direct 2-sentence executive summary (Cliff Notes).", { maxOutputTokens: 200 });
+
+                    if (isMounted && response?.text) {
+                        const distilled = response.text.trim();
+                        setInspectingCliffNotes(distilled);
+                        (inspectingSession as any).summary = distilled;
+                        setRecentSessions(prev => prev.map(s => s.id === inspectingSession.id ? { ...s, summary: distilled } as any : s));
+                    }
+                } catch (err) {
+                    console.warn("[StranglerFig] On-demand Cliff Notes distillation fallback active:", err);
+                } finally {
+                    if (isMounted) setIsDistillingCliffNotes(false);
+                }
+            })();
+
+            return () => {
+                isMounted = false;
+            };
+        }
+    }, [inspectingSession?.id]);
 
     // API Telemetry & Circuit Breaker State (LOCKED TO GROK 4.3 PUBLISHED RATES)
     const [sessionCost, setSessionCost] = useState<number>(0);
@@ -977,6 +1033,24 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
+                            </div>
+
+                            {/* Strangler Fig Session Cliff Notes & Gist Card */}
+                            <div className="bg-cyan-950/40 border border-cyan-500/30 rounded-xl p-3.5 space-y-2 text-xs">
+                                <div className="flex items-center justify-between">
+                                    <span className="font-bold text-cyan-300 flex items-center gap-1.5 uppercase tracking-wider text-[10px]">
+                                        <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
+                                        Session Cliff Notes & Gist
+                                    </span>
+                                    {isDistillingCliffNotes && (
+                                        <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 animate-pulse">
+                                            ⚡ Brita Distilling...
+                                        </span>
+                                    )}
+                                </div>
+                                <p className="text-slate-200 leading-relaxed font-sans text-xs bg-black/40 p-2.5 rounded-lg border border-white/5 italic">
+                                    "{inspectingCliffNotes || 'No summary available.'}"
+                                </p>
                             </div>
 
                             {/* Full Archive Telemetry Card */}
