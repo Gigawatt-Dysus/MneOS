@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tag as TagIcon } from 'lucide-react';
 
 interface GlassAvatarProps {
@@ -26,28 +26,34 @@ export const GlassAvatar: React.FC<GlassAvatarProps> = ({
     onClick,
     children 
 }) => {
-    // Resolve props to support both your original API and the standard HTML props I used
+    const [imgError, setImgError] = useState(false);
     const finalImage = imageUrl || src;
     const finalAlt = altText || alt || "Avatar";
+
+    // Reset error state if image source changes
+    useEffect(() => {
+        setImgError(false);
+    }, [finalImage]);
 
     return (
         <div 
             onClick={onClick}
             className={`${size} shrink-0 relative group gigi-glass-avatar rounded-full overflow-hidden flex items-center justify-center ${className} ${onClick ? 'cursor-pointer' : ''}`}
         >
-            {finalImage ? (
+            {finalImage && !imgError ? (
                 <img 
                     src={finalImage} 
                     alt={finalAlt} 
                     loading="lazy"
+                    onError={() => setImgError(true)}
                     className="w-full h-full object-cover rounded-full" 
                 />
             ) : !hideFallback ? (
-                <span className="initials">
+                <span className="initials font-bold text-cyan-300">
                     {fallbackChar ? fallbackChar.charAt(0).toUpperCase() : <TagIcon size="50%" />}
                 </span>
             ) : null}
             {children}
         </div>
     );
-};
+};

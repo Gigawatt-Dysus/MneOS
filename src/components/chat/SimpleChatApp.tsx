@@ -37,18 +37,20 @@ export const getPersonaAvatarUrl = (persona: PersonTag | any, user?: User): stri
     if (!persona) return '/assets/Brita_Avatar.jpg';
     const nameLower = (persona.name || '').toLowerCase();
     
-    // Direct avatar properties on tag or metadata
+    // 1. Explicit MneOS Sovereign Entities (Prioritized over tag database properties)
+    if (nameLower.includes('brita')) return '/assets/Brita_Avatar.jpg';
+    if (nameLower.includes('ruth')) return '/assets/Ruth_Avatar.jpg';
+    if (nameLower.includes('zoe')) return 'https://ui-avatars.com/api/?name=Zoe&background=8B5CF6&color=fff&size=256';
+    if (nameLower.includes('athena')) return 'https://ui-avatars.com/api/?name=Athena&background=3B82F6&color=fff&size=256';
+
+    // 2. Direct avatar properties on tag or metadata
     if (persona.avatarUrl) return persona.avatarUrl;
     if (persona.metadata?.avatarUrl) return persona.metadata.avatarUrl;
     if (persona.mediaGallery && persona.mediaGallery.length > 0 && persona.mediaGallery[0]?.url) {
         return persona.mediaGallery[0].url;
     }
 
-    // Explicit MneOS Sovereign Entities
-    if (nameLower.includes('brita')) return '/assets/Brita_Avatar.jpg';
-    if (nameLower.includes('ruth')) return '/assets/Ruth_Avatar.jpg';
-
-    // Match against user AI Companions list if passed
+    // 3. Match against user AI Companions list if passed
     if (user?.aiCompanions) {
         const companionMatch = user.aiCompanions.find(c => 
             c.name.toLowerCase() === nameLower || nameLower.includes(c.name.toLowerCase())
@@ -56,11 +58,7 @@ export const getPersonaAvatarUrl = (persona: PersonTag | any, user?: User): stri
         if (companionMatch?.avatarUrl) return companionMatch.avatarUrl;
     }
 
-    // Default avatars for core companions
-    if (nameLower.includes('zoe')) return 'https://ui-avatars.com/api/?name=Zoe&background=8B5CF6&color=fff&size=256';
-    if (nameLower.includes('athena')) return 'https://ui-avatars.com/api/?name=Athena&background=3B82F6&color=fff&size=256';
-
-    // Dynamic clean fallback
+    // 4. Dynamic clean fallback
     return `https://ui-avatars.com/api/?name=${encodeURIComponent(persona.name || 'AI')}&background=06B6D4&color=fff&size=256`;
 };
 
