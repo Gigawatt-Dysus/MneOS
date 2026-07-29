@@ -281,6 +281,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     // Top-down Vault Filters, Sorting & 3-Chamber Partitioning
     const [sortOrder, setSortOrder] = useState<'date-desc' | 'date-asc' | 'alpha'>('date-desc');
     const [selectedChamber, setSelectedChamber] = useState<'all' | 'grok' | 'gemini' | 'erato'>('all');
+    const [minTurnFilter, setMinTurnFilter] = useState<boolean>(true); // Default: active (>5 turns quality filter)
     
     // Canvas Right-Hand Workspace State
     const [isCanvasOpen, setIsCanvasOpen] = useState<boolean>(false);
@@ -623,7 +624,7 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
         alert('Transcript exported to MneOS Archive!');
     };
 
-    // ZERO-TOKEN LOCAL SEARCH & 3-CHAMBER VAULT DEEP CRAWL
+    // ZERO-TOKEN LOCAL SEARCH & 3-CHAMBER VAULT DEEP CRAWL (WITH QUALITY TURN DEPTH FILTER)
     const sortedFilteredSessions = React.useMemo(() => {
         const queryLower = searchQuery.toLowerCase().trim();
         
@@ -637,11 +638,19 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                 return { session, isMatch: false, matchedSnippet: undefined };
             }
 
+            // Quality Turn Depth Evaluation: Exclude low-depth noise sessions (<= 5 turns) when quality filter is active
+            const cachedMsgs = sessionMessageCache[session.id];
+            const turnDepth = cachedMsgs?.length || (session as any).turns || (session as any).totalTurns || 0;
+
+            if (minTurnFilter && turnDepth > 0 && turnDepth <= 5) {
+                return { session, isMatch: false, matchedSnippet: undefined };
+            }
+
             const nameMatch = !queryLower || session.name.toLowerCase().includes(queryLower);
             
             let matchedSnippet: string | undefined = undefined;
-            if (queryLower && sessionMessageCache[session.id]) {
-                const hitMsg = sessionMessageCache[session.id].find(m => 
+            if (queryLower && cachedMsgs) {
+                const hitMsg = cachedMsgs.find(m => 
                     m.content.toLowerCase().includes(queryLower)
                 );
                 if (hitMsg) {
@@ -665,7 +674,7 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
         }
 
         return result;
-    }, [recentSessions, searchQuery, sortOrder, selectedChamber, sessionMessageCache]);
+    }, [recentSessions, searchQuery, sortOrder, selectedChamber, minTurnFilter, sessionMessageCache]);
 
     const filteredPersonas = availablePersonas.filter(p => 
         !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -838,6 +847,25 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                     A-Z
                                 </button>
                             </div>
+                        </div>
+
+                        {/* Quality Turn Depth Filter Toggle (>5 Turns) */}
+                        <div className="flex items-center justify-between text-[10px] bg-white/5 rounded-lg px-2 py-1 border border-white/5">
+                            <span className="text-slate-400 font-medium flex items-center gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                                Quality Filter
+                            </span>
+                            <button
+                                onClick={() => setMinTurnFilter(!minTurnFilter)}
+                                className={`px-2 py-0.5 rounded font-mono text-[9px] font-bold transition-all ${
+                                    minTurnFilter 
+                                        ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-[0_0_8px_rgba(6,182,212,0.2)]' 
+                                        : 'bg-white/5 text-slate-500 border border-white/10'
+                                }`}
+                                title={minTurnFilter ? "Quality filter ACTIVE: Hiding low-depth noise sessions (<= 5 turns)" : "Quality filter OFF: Showing all raw extracted logs"}
+                            >
+                                {minTurnFilter ? ">5 TURNS ONLY" : "SHOW ALL"}
+                            </button>
                         </div>
                     </div>
                 )}
