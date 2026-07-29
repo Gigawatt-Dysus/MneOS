@@ -155,8 +155,9 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const [lastTurnCost, setLastTurnCost] = useState<number>(0);
     const [lastTurnTokens, setLastTurnTokens] = useState<{ input: number, cached: number, output: number }>({ input: 0, cached: 0, output: 0 });
 
-    // Top-down Vault Filters & Sorting
+    // Top-down Vault Filters, Sorting & 3-Chamber Partitioning
     const [sortOrder, setSortOrder] = useState<'date-desc' | 'date-asc' | 'alpha'>('date-desc');
+    const [selectedChamber, setSelectedChamber] = useState<'all' | 'grok' | 'gemini' | 'erato'>('all');
     
     // Canvas Right-Hand Workspace State
     const [isCanvasOpen, setIsCanvasOpen] = useState<boolean>(false);
@@ -499,11 +500,20 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
         alert('Transcript exported to MneOS Archive!');
     };
 
-    // ZERO-TOKEN LOCAL SEARCH & DEEP CONTENT CRAWL
+    // ZERO-TOKEN LOCAL SEARCH & 3-CHAMBER VAULT DEEP CRAWL
     const sortedFilteredSessions = React.useMemo(() => {
         const queryLower = searchQuery.toLowerCase().trim();
         
         let result = recentSessions.map(session => {
+            const chamber = (session as any).chamber || (
+                session.id.includes('grok') ? 'grok' : 
+                session.id.includes('gemini') ? 'gemini' : 'erato'
+            );
+
+            if (selectedChamber !== 'all' && chamber !== selectedChamber) {
+                return { session, isMatch: false, matchedSnippet: undefined };
+            }
+
             const nameMatch = !queryLower || session.name.toLowerCase().includes(queryLower);
             
             let matchedSnippet: string | undefined = undefined;
@@ -532,7 +542,7 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
         }
 
         return result;
-    }, [recentSessions, searchQuery, sortOrder, sessionMessageCache]);
+    }, [recentSessions, searchQuery, sortOrder, selectedChamber, sessionMessageCache]);
 
     const filteredPersonas = availablePersonas.filter(p => 
         !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -637,6 +647,38 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                             )}
                         </div>
 
+                        {/* 3-Chamber Vault Partitioning Tabs */}
+                        <div className="flex items-center gap-1 bg-black/40 rounded-xl p-1 border border-white/10 w-full text-[10px] font-bold">
+                            <button
+                                onClick={() => setSelectedChamber('all')}
+                                className={`flex-1 py-1 rounded transition-all ${selectedChamber === 'all' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'}`}
+                                title="Show all sessions across all 3 chambers"
+                            >
+                                All
+                            </button>
+                            <button
+                                onClick={() => setSelectedChamber('grok')}
+                                className={`flex-1 py-1 rounded transition-all ${selectedChamber === 'grok' ? 'bg-emerald-600 text-white' : 'text-slate-400 hover:text-emerald-300'}`}
+                                title="Grok Web Archive Chamber"
+                            >
+                                🟢 Grok
+                            </button>
+                            <button
+                                onClick={() => setSelectedChamber('gemini')}
+                                className={`flex-1 py-1 rounded transition-all ${selectedChamber === 'gemini' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-blue-300'}`}
+                                title="Gemini Rescued Archive Chamber"
+                            >
+                                🔵 Gemini
+                            </button>
+                            <button
+                                onClick={() => setSelectedChamber('erato')}
+                                className={`flex-1 py-1 rounded transition-all ${selectedChamber === 'erato' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-purple-300'}`}
+                                title="Erato Sovereign Session Chamber"
+                            >
+                                🟣 Erato
+                            </button>
+                        </div>
+
                         {/* Top-Down Sort Bar */}
                         <div className="flex items-center justify-between gap-1 text-[10px]" title="Sort conversation history">
                             <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/5 w-full justify-between">
@@ -735,6 +777,11 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                             ) : (
                                 sortedFilteredSessions.map(({ session, matchedSnippet }) => {
                                     const isActive = session.id === sessionId;
+                                    const sChamber = (session as any).chamber || (
+                                        session.id.includes('grok') ? 'grok' : 
+                                        session.id.includes('gemini') ? 'gemini' : 'erato'
+                                    );
+
                                     return (
                                         <div
                                             key={session.id}
@@ -744,11 +791,26 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                                     ? 'bg-cyan-950/40 text-white font-medium border-cyan-500/30 shadow-md' 
                                                     : 'hover:bg-white/5 border-transparent text-slate-400 hover:text-slate-200'
                                             }`}
-                                            title="Click to inspect session, configure N-turn scalpel depth, or launch context"
+                                            title={`[${sChamber.toUpperCase()} CHAMBER] Click to inspect session, configure N-turn scalpel depth, or launch context`}
                                         >
                                             <div className="flex items-center justify-between w-full">
-                                                <div className="flex items-center gap-2 overflow-hidden">
+                                                <div className="flex items-center gap-1.5 overflow-hidden">
                                                     <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
+                                                    {sChamber === 'grok' && (
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 shrink-0" title="Source: Grok Web Archive">
+                                                            🟢 GROK
+                                                        </span>
+                                                    )}
+                                                    {sChamber === 'gemini' && (
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-500/30 shrink-0" title="Source: Gemini Rescued Archive">
+                                                            🔵 GEMINI
+                                                        </span>
+                                                    )}
+                                                    {sChamber === 'erato' && (
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-500/30 shrink-0" title="Source: Erato Sovereign Chat">
+                                                            🟣 ERATO
+                                                        </span>
+                                                    )}
                                                     <span className="truncate font-semibold">{session.name}</span>
                                                 </div>
 
