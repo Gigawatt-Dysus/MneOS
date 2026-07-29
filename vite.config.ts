@@ -62,11 +62,9 @@ export default defineConfig(({ mode }) => {
               if (id.includes('@xenova') || id.includes('transformers')) return 'vendor-ai';
               if (id.includes('three') || id.includes('@react-three')) return 'vendor-three';
               if (id.includes('firebase')) return 'vendor-firebase';
-              if (id.includes('@tiptap')) return 'vendor-tiptap';
+              if (id.includes('@tiptap') || id.includes('prosemirror')) return 'vendor-editor';
               if (id.includes('maplibre-gl')) return 'vendor-maps';
               if (id.includes('@aws-sdk')) return 'vendor-aws';
-              if (id.includes('lucide-react') || id.includes('@phosphor-icons')) return 'vendor-icons';
-              return 'vendor-core';
             }
           }
         }
