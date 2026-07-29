@@ -4,7 +4,7 @@ import {
     Brain, Sparkles, Send, Download, Search, ChevronDown, Check, Zap, Layers,
     Plus, MessageSquare, History, ChevronsLeft, ChevronsRight, Trash2, X, SlidersHorizontal,
     Code, Image as ImageIcon, FileText, ArrowUpDown, Filter, Eye, Copy, RefreshCw, Monitor,
-    DollarSign, AlertTriangle, ShieldCheck, Pill, ExternalLink, Bookmark
+    DollarSign, AlertTriangle, ShieldCheck, Pill, ExternalLink, Bookmark, Sliders, Scissors
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -145,7 +145,11 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     // Context Bolus Deck State
     const [activeBoluses, setActiveBoluses] = useState<ContextBolus[]>([]);
 
-    // API Telemetry & Circuit Breaker State
+    // Session Pre-Flight Hydration Telemetry Inspector State
+    const [inspectingSession, setInspectingSession] = useState<SimulacrumSessionMeta | null>(null);
+    const [inspectingDepth, setInspectingDepth] = useState<number>(3); // Default 3 turns
+
+    // API Telemetry & Circuit Breaker State (LOCKED TO GROK 4.3 PUBLISHED RATES)
     const [sessionCost, setSessionCost] = useState<number>(0);
     const [sessionCap, setSessionCap] = useState<number>(0.50); // $0.50 Safety Circuit Breaker
     const [lastTurnCost, setLastTurnCost] = useState<number>(0);
@@ -179,7 +183,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         localStorage.setItem('smneos_sidebar_expanded', JSON.stringify(isSidebarExpanded));
     }, [isSidebarExpanded]);
 
-    // Token telemetry listener
+    // Token telemetry listener (Grok 4.3 published pricing rates)
     useEffect(() => {
         const handleTokenBurn = (e: CustomEvent<number>) => {
             const burnedTokens = e.detail || 0;
@@ -187,6 +191,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
             const estimatedCached = Math.round(estimatedInput * 0.5);
             const estimatedOutput = Math.round(burnedTokens * 0.2);
 
+            // Grok 4.3 Rates: $1.25/1M Uncached, $0.20/1M Cached, $2.50/1M Output
             const uncachedInput = estimatedInput - estimatedCached;
             const costInput = (uncachedInput / 1000000) * 1.25;
             const costCached = (estimatedCached / 1000000) * 0.20;
@@ -217,22 +222,19 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const reloadSessions = React.useCallback(async () => {
         if (!user?.id) return;
         try {
-            // 1. Fetch persona-specific sessions
             const companionSessions = selectedPersona?.id 
                 ? await fetchSimulacrumSessions(user.id, selectedPersona.id)
                 : [];
 
-            // 2. Fetch all active sessions across all companions / tags
             const globalSessions = await fetchAllActiveSimulacrumSessions(user.id);
 
-            // 3. Merge & deduplicate
             const combined = [...companionSessions, ...globalSessions];
             const sessionMap = new Map<string, SimulacrumSessionMeta>();
             combined.forEach(s => {
                 if (!s.isArchived) sessionMap.set(s.id, s);
             });
 
-            // 4. Default extracted mock sessions for Erato & Gemini historical sessions if empty
+            // Default extracted mock sessions for Erato & Gemini historical sessions if empty
             if (sessionMap.size === 0) {
                 const defaultHistorical: SimulacrumSessionMeta[] = [
                     {
@@ -284,48 +286,83 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         setLastTurnCost(0);
     };
 
-    // Inject Context Bolus Pill into active chat
-    const handleInjectBolus = (session: SimulacrumSessionMeta, snippet?: string) => {
-        const bolusLabel = session.name;
-        const exists = activeBoluses.some(b => b.id === session.id);
-        
-        if (!exists) {
-            setActiveBoluses(prev => [
-                ...prev, 
-                { id: session.id, label: bolusLabel, type: 'session', contentSnippet: snippet }
-            ]);
-        }
+    // Open Inspector Modal for pre-flight telemetry
+    const handleOpenInspector = (e: React.MouseEvent, session: SimulacrumSessionMeta) => {
+        e.stopPropagation();
+        setInspectingSession(session);
+        const cachedTurns = sessionMessageCache[session.id]?.length || 20;
+        setInspectingDepth(Math.min(3, cachedTurns));
+    };
 
-        // Append tag mention to text input
-        const tagMention = `@session:"${bolusLabel}"`;
-        if (!input.includes(tagMention)) {
-            setInput(prev => prev ? `${prev} ${tagMention}` : tagMention);
+    // Inject N-Turn Laser Scalpel Context with MTX Index Link & Brita Directive
+    const handleInjectScalpelContext = (session: SimulacrumSessionMeta, depth: number) => {
+        const history = sessionMessageCache[session.id] || [];
+        const totalTurns = history.length || 20;
+        const sliced = history.slice(-depth);
+
+        const turnText = sliced.map(m => `[${m.role === 'user' ? 'Eric' : selectedPersona.name}]: ${m.content}`).join('\n');
+
+        const mtxDirectiveBlock = `[MTX SESSION INDEX REFERENCE]
+Session Title: "${session.name}"
+Session ID: ${session.id}
+Date Active: ${formatLifeOSDate(session.lastActive)}
+Total Session Depth: ${totalTurns} turns | Tail Depth Loaded: ${depth} turns
+
+[RECENT TAIL CONVERSATION]
+${turnText}
+
+[COMPANION DIRECTIVE FOR BRITA]
+Brita: You have been provided the last ${depth} turns of session "${session.name}" for immediate continuity. 
+The entire ${totalTurns}-turn transcript is NOT in your active prompt window to conserve context. 
+If you require specific facts, quotes, or details from earlier turns in session "${session.id}", 
+use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
+
+        const bolusLabel = `${session.name} (${depth} Turns + MTX Index)`;
+        setActiveBoluses(prev => [
+            ...prev,
+            { id: `${session.id}-scalpel-${depth}`, label: bolusLabel, type: 'session', contentSnippet: mtxDirectiveBlock }
+        ]);
+
+        const tagMention = `@session:"${session.name} [${depth}-Turn Scalpel]"`;
+        setInput(prev => prev ? `${prev} ${tagMention}` : tagMention);
+        setInspectingSession(null);
+    };
+
+    // Inject Full Session Context
+    const handleInjectFullSession = async (session: SimulacrumSessionMeta) => {
+        const pastMessages = sessionMessageCache[session.id] || await fetchSimulacrumHistory(user.id, selectedPersona.id, session.id);
+        if (messages.length === 0) {
+            setSessionId(session.id);
+            setMessages(pastMessages);
+        } else {
+            const fullText = pastMessages.map(m => `[${m.role === 'user' ? 'Eric' : selectedPersona.name}]: ${m.content}`).join('\n\n');
+            setActiveBoluses(prev => [
+                ...prev,
+                { id: `${session.id}-full`, label: `${session.name} (Full Session)`, type: 'session', contentSnippet: fullText }
+            ]);
+            setInput(prev => prev ? `${prev} @session:"${session.name} [Full]"` : `@session:"${session.name} [Full]"`);
         }
+        setInspectingSession(null);
     };
 
     // Remove Context Bolus Pill
     const handleRemoveBolus = (id: string, label: string) => {
         setActiveBoluses(prev => prev.filter(b => b.id !== id));
-        const tagMention = `@session:"${label}"`;
-        setInput(prev => prev.replace(tagMention, '').trim());
     };
 
-    // Handle Session Click (Context-aware: Launch if empty chat, Inject Bolus if chat is active!)
+    // Handle Session Click (Context-aware: Launch if empty chat, Inspector if active chat!)
     const handleSessionClick = (session: SimulacrumSessionMeta, snippet?: string) => {
         if (messages.length === 0) {
-            // Scenario A: No active conversation underway -> Launch session as starter context
             handleResumeSession(session);
         } else {
-            // Scenario B: Active conversation underway -> Inject Context Bolus Pill!
-            handleInjectBolus(session, snippet);
+            setInspectingSession(session);
         }
     };
 
-    // Handle Sending User Message (with Scenario B: 10-turn sliding context window + Bolus Hydration)
+    // Handle Sending User Message (Grok 4.3 Engine)
     const handleSend = async () => {
         if (!input.trim() || isGenerating || !selectedPersona) return;
         
-        // Circuit Breaker Guard
         if (sessionCost >= sessionCap) {
             alert(`🛑 Session Safety Cap Reached ($${sessionCap.toFixed(2)}). Click "+ $0.50 Budget" to extend this session safely.`);
             return;
@@ -337,10 +374,10 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         // Attach hydrated context boluses to payload if active
         if (activeBoluses.length > 0) {
             const bolusPayload = activeBoluses.map(b => 
-                `[HYDRATED MEMORY BOLUS: ${b.label}]\n${b.contentSnippet ? `Snippet: "${b.contentSnippet}"\n` : ''}`
+                `[HYDRATED MEMORY BOLUS: ${b.label}]\n${b.contentSnippet ? `${b.contentSnippet}\n` : ''}`
             ).join('\n');
             userText = `${userText}\n\n${bolusPayload}`;
-            setActiveBoluses([]); // Clear boluses after injection
+            setActiveBoluses([]); 
         }
 
         const userMsg: SimulacrumMessage = {
@@ -355,10 +392,8 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         setMessages(updatedHistory);
         setIsGenerating(true);
 
-        // Save User Msg
         await saveSimulacrumMessage(user.id, selectedPersona.id, userMsg);
         
-        // Save Session Meta
         const meta: SimulacrumSessionMeta = {
             id: sessionId,
             tagId: selectedPersona.id,
@@ -370,7 +405,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         };
         await saveSimulacrumSessionMeta(user.id, meta);
 
-        // [SCENARIO B FINANCIAL OPTIMIZATION]
         // Cap payload to last 10 turns to keep average input tokens ~4k per turn ($9.19/mo budget)
         const prunedHistory = updatedHistory.slice(-10);
 
@@ -398,8 +432,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
 
             setMessages(prev => [...prev, aiMsg]);
             await saveSimulacrumMessage(user.id, selectedPersona.id, aiMsg);
-
-            // Update session meta & refresh drawer list
             await saveSimulacrumSessionMeta(user.id, { ...meta, lastActive: Date.now() });
             reloadSessions();
 
@@ -474,7 +506,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         let result = recentSessions.map(session => {
             const nameMatch = !queryLower || session.name.toLowerCase().includes(queryLower);
             
-            // Crawl inside cached message content for zero-token hits
             let matchedSnippet: string | undefined = undefined;
             if (queryLower && sessionMessageCache[session.id]) {
                 const hitMsg = sessionMessageCache[session.id].find(m => 
@@ -511,7 +542,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const isCapTripped = sessionCost >= sessionCap;
 
     return (
-        <div className="flex h-screen w-full bg-[#090a0f] text-slate-100 font-sans overflow-hidden">
+        <div className="flex h-screen w-full bg-[#090a0f] text-slate-100 font-sans overflow-hidden relative">
             
             {/* ---------------------------------------------------- */}
             {/* LEFT SIDEBAR DRAWER (COLLAPSIBLE - SuperGrok / Gemini style) */}
@@ -713,11 +744,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                                     ? 'bg-cyan-950/40 text-white font-medium border-cyan-500/30 shadow-md' 
                                                     : 'hover:bg-white/5 border-transparent text-slate-400 hover:text-slate-200'
                                             }`}
-                                            title={
-                                                messages.length === 0 
-                                                    ? `Click to launch session "${session.name}" as starter context`
-                                                    : `Click to inject Context Bolus Pill @session:"${session.name}" into active chat`
-                                            }
+                                            title="Click to inspect session, configure N-turn scalpel depth, or launch context"
                                         >
                                             <div className="flex items-center justify-between w-full">
                                                 <div className="flex items-center gap-2 overflow-hidden">
@@ -726,18 +753,13 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                                 </div>
 
                                                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    {messages.length > 0 && (
-                                                        <button
-                                                            onClick={(e) => {
-                                                                e.stopPropagation();
-                                                                handleInjectBolus(session, matchedSnippet);
-                                                            }}
-                                                            className="p-1 hover:text-cyan-300 transition-colors"
-                                                            title="Inject Context Bolus Pill into active conversation"
-                                                        >
-                                                            <Pill className="w-3 h-3 text-cyan-400" />
-                                                        </button>
-                                                    )}
+                                                    <button
+                                                        onClick={(e) => handleOpenInspector(e, session)}
+                                                        className="p-1 hover:text-cyan-300 transition-colors"
+                                                        title="Open Pre-Flight Session Inspector & N-Turn Scalpel Control"
+                                                    >
+                                                        <Scissors className="w-3.5 h-3.5 text-cyan-400" />
+                                                    </button>
                                                     <button
                                                         onClick={(e) => handleDeleteSession(e, session)}
                                                         className="p-1 hover:text-red-400 transition-colors"
@@ -815,6 +837,143 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                     )}
                 </div>
             </aside>
+
+            {/* ---------------------------------------------------- */}
+            {/* GROK 4.3 PRE-FLIGHT SESSION INSPECTION MODAL */}
+            {/* ---------------------------------------------------- */}
+            {inspectingSession && (() => {
+                const history = sessionMessageCache[inspectingSession.id] || [];
+                const totalTurns = history.length || 20;
+                const clampedDepth = Math.min(inspectingDepth, totalTurns);
+                
+                // Estimated tokens: 500 tokens per turn + 250 tokens for MTX index card
+                const scalpelTokens = (clampedDepth * 500) + 250;
+                const fullTokens = totalTurns * 500;
+
+                // Financial calculations at Grok 4.3 rates ($1.25 / 1M uncached, $0.20 / 1M cached)
+                const scalpelCostUncached = (scalpelTokens / 1000000) * 1.25;
+                const scalpelCostCached = (scalpelTokens / 1000000) * 0.20;
+
+                const fullCostUncached = (fullTokens / 1000000) * 1.25;
+                const fullCostCached = (fullTokens / 1000000) * 0.20;
+
+                const contextPct = ((scalpelTokens / 128000) * 100).toFixed(2);
+
+                return (
+                    <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+                        <div className="bg-[#0e101c] border border-cyan-500/30 rounded-2xl max-w-xl w-full p-6 space-y-5 shadow-[0_0_40px_rgba(6,182,212,0.2)] animate-in fade-in zoom-in-95 duration-200">
+                            
+                            {/* Modal Header */}
+                            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+                                <div className="space-y-1">
+                                    <div className="flex items-center gap-2 text-xs font-bold text-cyan-400 uppercase tracking-widest">
+                                        <Scissors className="w-4 h-4" />
+                                        <span>Grok 4.3 Pre-Flight Session Inspector</span>
+                                    </div>
+                                    <h3 className="text-base font-bold text-slate-100">{inspectingSession.name}</h3>
+                                </div>
+                                <button
+                                    onClick={() => setInspectingSession(null)}
+                                    className="p-1 rounded-lg text-slate-400 hover:text-white hover:bg-white/10"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+
+                            {/* Full Archive Telemetry Card */}
+                            <div className="grid grid-cols-2 gap-3 bg-white/5 p-3 rounded-xl border border-white/5 text-xs">
+                                <div>
+                                    <span className="text-slate-400 block text-[10px] uppercase font-bold">Total Depth</span>
+                                    <span className="font-mono text-cyan-300 font-bold text-sm">{totalTurns} Turns</span>
+                                </div>
+                                <div>
+                                    <span className="text-slate-400 block text-[10px] uppercase font-bold">Full Archive Tokens</span>
+                                    <span className="font-mono text-cyan-300 font-bold text-sm">~{fullTokens.toLocaleString()} Tokens</span>
+                                </div>
+                                <div>
+                                    <span className="text-slate-400 block text-[10px] uppercase font-bold">Full Uncached Cost</span>
+                                    <span className="font-mono text-emerald-400 font-bold text-sm">${fullCostUncached.toFixed(4)} USD</span>
+                                </div>
+                                <div>
+                                    <span className="text-slate-400 block text-[10px] uppercase font-bold">Full Cached Cost</span>
+                                    <span className="font-mono text-emerald-400 font-bold text-sm">${fullCostCached.toFixed(4)} USD</span>
+                                </div>
+                            </div>
+
+                            {/* Interactive N-Turn Depth Slider */}
+                            <div className="space-y-3 bg-cyan-950/30 p-4 rounded-xl border border-cyan-500/20">
+                                <div className="flex items-center justify-between text-xs">
+                                    <span className="font-bold text-cyan-300 flex items-center gap-1.5">
+                                        <Sliders className="w-3.5 h-3.5" /> Laser Scalpel Depth ($N$ Turns):
+                                    </span>
+                                    <span className="font-mono font-bold text-white bg-cyan-600/40 px-2 py-0.5 rounded border border-cyan-500/30">
+                                        Last {clampedDepth} / {totalTurns} Turns
+                                    </span>
+                                </div>
+
+                                <input
+                                    type="range"
+                                    min={1}
+                                    max={totalTurns}
+                                    value={clampedDepth}
+                                    onChange={(e) => setInspectingDepth(parseInt(e.target.value, 10))}
+                                    className="w-full accent-cyan-400 cursor-pointer"
+                                />
+
+                                {/* Real-time Dynamic Telemetry readout for selection */}
+                                <div className="grid grid-cols-3 gap-2 pt-2 border-t border-cyan-500/20 text-[11px] font-mono">
+                                    <div className="bg-black/40 p-2 rounded border border-white/5">
+                                        <span className="text-slate-400 block text-[9px] uppercase">Payload</span>
+                                        <span className="text-cyan-200 font-bold">~{scalpelTokens} Tokens</span>
+                                    </div>
+                                    <div className="bg-black/40 p-2 rounded border border-white/5">
+                                        <span className="text-slate-400 block text-[9px] uppercase">Context Impact</span>
+                                        <span className="text-cyan-200 font-bold">{contextPct}%</span>
+                                    </div>
+                                    <div className="bg-black/40 p-2 rounded border border-white/5">
+                                        <span className="text-slate-400 block text-[9px] uppercase">Grok Cost</span>
+                                        <span className="text-emerald-300 font-bold">${scalpelCostUncached.toFixed(4)}</span>
+                                    </div>
+                                </div>
+
+                                {/* MTX Directive Status */}
+                                <div className="text-[10px] text-cyan-300/80 bg-black/60 p-2 rounded border border-cyan-500/20 font-mono">
+                                    🛡️ <strong>Brita MTX Protocol:</strong> Pre-flight block attaches an MTX Index Card instructing Brita to use Scout RAG to search turns 1-{Math.max(1, totalTurns - clampedDepth)} autonomously.
+                                </div>
+                            </div>
+
+                            {/* Action Buttons */}
+                            <div className="flex flex-col gap-2 pt-2">
+                                <button
+                                    onClick={() => handleInjectScalpelContext(inspectingSession, clampedDepth)}
+                                    className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gradient-to-r from-cyan-600 to-violet-600 hover:from-cyan-500 hover:to-violet-500 text-white font-bold text-xs shadow-[0_0_15px_rgba(6,182,212,0.3)] transition-all"
+                                >
+                                    <Scissors className="w-4 h-4" />
+                                    <span>Inject Laser Scalpel ({clampedDepth} Turns │ ~{scalpelTokens} Tokens │ ${scalpelCostUncached.toFixed(4)})</span>
+                                </button>
+
+                                <div className="grid grid-cols-2 gap-2">
+                                    <button
+                                        onClick={() => handleInjectFullSession(inspectingSession)}
+                                        className="flex items-center justify-center gap-1.5 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-semibold border border-white/10 transition-all"
+                                    >
+                                        <Download className="w-3.5 h-3.5" />
+                                        <span>Inject Full ({totalTurns} Turns)</span>
+                                    </button>
+
+                                    <button
+                                        onClick={() => setInspectingSession(null)}
+                                        className="py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white text-xs font-semibold border border-white/10 transition-all"
+                                    >
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                );
+            })()}
 
             {/* ---------------------------------------------------- */}
             {/* MAIN CONTENT AREA */}
@@ -895,7 +1054,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                             Conversation Matrix Ready with {selectedPersona.name}
                                         </h3>
                                         <p className="text-xs text-slate-400">
-                                            Type a message below or click any session in the sidebar drawer to launch it as starter context.
+                                            Type a message below or click any session in the sidebar drawer to inspect context depth and launch.
                                         </p>
                                     </div>
                                 </div>
@@ -1079,7 +1238,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                             </p>
                                         </div>
 
-                                        {/* Raw vs Sanitized Prompt Deck */}
                                         <div className="space-y-2">
                                             <div className="space-y-1">
                                                 <label className="text-[10px] font-bold uppercase text-slate-400">Brita's Raw Concept</label>
@@ -1103,7 +1261,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                             </div>
                                         </div>
 
-                                        {/* Model Selector & Action */}
                                         <div className="flex items-center justify-between gap-2 pt-2 border-t border-white/10">
                                             <select
                                                 value={selectedImageModel}
@@ -1127,7 +1284,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                             </button>
                                         </div>
 
-                                        {/* Render Viewport */}
                                         {renderedImageUrl && (
                                             <div className="space-y-2 pt-2 border-t border-white/10">
                                                 <span className="text-[10px] font-bold uppercase text-slate-400">Rendered Output</span>
@@ -1181,15 +1337,15 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                 {/* Input Footer with API Telemetry Strip & Context Bolus Deck */}
                 <footer className="sticky bottom-0 z-30 bg-[#0b0d17]/95 backdrop-blur-xl border-t border-white/10 p-4 md:p-6 space-y-3">
                     
-                    {/* Live Telemetry Meter Strip */}
+                    {/* Live Telemetry Meter Strip (Grok 4.3 Locked) */}
                     <div 
                         className="max-w-4xl mx-auto flex items-center justify-between text-[11px] font-mono px-3 py-1.5 rounded-xl bg-white/5 border border-white/5"
-                        title="Live API Telemetry & Cost Circuit Breaker — monitors token spend against safety cap"
+                        title="Live Grok 4.3 API Telemetry & Cost Circuit Breaker — monitors token spend against safety cap"
                     >
                         <div className="flex items-center gap-3">
                             <div 
                                 className="flex items-center gap-1 text-emerald-400 font-bold"
-                                title="Exact USD cost incurred in this chat session"
+                                title="Exact USD cost incurred in this chat session at Grok 4.3 published rates"
                             >
                                 <DollarSign className="w-3.5 h-3.5" />
                                 <span>Session Spend: ${sessionCost.toFixed(4)}</span>
@@ -1257,7 +1413,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-xs font-semibold text-cyan-200 shadow-[0_0_10px_rgba(6,182,212,0.2)] shrink-0 animate-in fade-in zoom-in-95 duration-200"
                                     title={bolus.contentSnippet ? `Snippet: ${bolus.contentSnippet}` : `Hydrated memory session: ${bolus.label}`}
                                 >
-                                    <span>@session:"{bolus.label}"</span>
+                                    <span>{bolus.label}</span>
                                     <button
                                         onClick={() => handleRemoveBolus(bolus.id, bolus.label)}
                                         className="p-0.5 hover:bg-cyan-500/20 rounded-full text-slate-400 hover:text-white transition-colors"
