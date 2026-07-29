@@ -240,7 +240,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                     {
                         id: 'erato-session-chamber-girl',
                         tagId: selectedPersona?.id || 'brita',
-                        name: 'Erato Session: Chamber Girl & Doctor Who Con',
+                        name: 'Erato Session: Chamber Girl',
                         lastActive: Date.now() - 86400000 * 2,
                         isArchived: false
                     },
