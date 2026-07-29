@@ -332,17 +332,28 @@ const App: React.FC = () => {
                     />
 
                     <SignedIn>
-                        {logic.user && !forceLoginPage ? (
-                            viewMode === 'chat' ? (
-                                <SimpleChatApp
-                                    user={logic.user}
-                                    tags={logic.tags}
-                                    onNavigateOS={() => {
-                                        setViewMode('os');
-                                        window.history.pushState({}, '', '/os');
-                                    }}
-                                />
-                            ) : (
+                        {viewMode === 'chat' ? (
+                            <SimpleChatApp
+                                user={logic.user || {
+                                    id: 'clerk-user-fallback',
+                                    email: 'user@mneos.ai',
+                                    displayName: 'Architect',
+                                    firstName: 'Eric',
+                                    lastName: 'Cornett',
+                                    gender: 'Male',
+                                    address: { street: '', city: '', state: '', zip: '' },
+                                    profilePictureUrl: '/assets/eric-headshot.png',
+                                    joinDate: new Date(),
+                                    aiCompanions: [],
+                                    mediaIds: []
+                                }}
+                                tags={logic.tags || []}
+                                onNavigateOS={() => {
+                                    setViewMode('os');
+                                    window.history.pushState({}, '', '/os');
+                                }}
+                            />
+                        ) : logic.user && !forceLoginPage ? (
                             <WindowManagerProvider>
                             <ChatSessionProvider user={logic.user}>
                             <WikiNavigationProvider
@@ -732,7 +743,6 @@ const App: React.FC = () => {
                             </WikiNavigationProvider>
                             </ChatSessionProvider>
                             </WindowManagerProvider>
-                            )
                         ) : (
                             <div className="flex-1 flex items-center justify-center bg-black/80 backdrop-blur-md">
                                 <SplashShield 
