@@ -152,6 +152,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         console.log(`%c[SimpleChatApp] 💬 Sovereign Chat Active! Partner="${activePersona.name}" | user="${user?.id || 'none'}"`, 'color: #38bdf8; font-weight: bold; font-size: 13px;');
     }, [activePersona, user]);
 
+    const chatEndRef = useRef<HTMLDivElement>(null);
     const [messages, setMessages] = useState<SimulacrumMessage[]>([]);
     const [input, setInput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
