@@ -178,12 +178,43 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         return saved !== null ? JSON.parse(saved) : true;
     });
 
-    const chatEndRef = useRef<HTMLDivElement>(null);
+    // Resizable Sidebar Width State (Min 220px, Max 650px)
+    const [sidebarWidth, setSidebarWidth] = useState<number>(() => {
+        const saved = localStorage.getItem('smneos_sidebar_width');
+        return saved ? parseInt(saved, 10) : 340;
+    });
+    const [isResizingSidebar, setIsResizingSidebar] = useState<boolean>(false);
 
-    // Save sidebar state preference
     useEffect(() => {
         localStorage.setItem('smneos_sidebar_expanded', JSON.stringify(isSidebarExpanded));
     }, [isSidebarExpanded]);
+
+    useEffect(() => {
+        localStorage.setItem('smneos_sidebar_width', sidebarWidth.toString());
+    }, [sidebarWidth]);
+
+    // Handle mouse drag to resize sidebar width
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isResizingSidebar) return;
+            const newWidth = Math.min(Math.max(e.clientX, 220), 650);
+            setSidebarWidth(newWidth);
+        };
+
+        const handleMouseUp = () => {
+            setIsResizingSidebar(false);
+        };
+
+        if (isResizingSidebar) {
+            window.addEventListener('mousemove', handleMouseMove);
+            window.addEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            window.removeEventListener('mousemove', handleMouseMove);
+            window.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isResizingSidebar]);
 
     // Token telemetry listener (Grok 4.3 published pricing rates)
     useEffect(() => {
@@ -528,11 +559,22 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
             {/* LEFT SIDEBAR DRAWER (COLLAPSIBLE - SuperGrok / Gemini style) */}
             {/* ---------------------------------------------------- */}
             <aside 
-                className={`relative flex flex-col bg-[#0d0f19] border-r border-white/10 transition-all duration-300 z-40 shrink-0 ${
-                    isSidebarExpanded ? 'w-72' : 'w-16 items-center'
-                }`}
-                title={isSidebarExpanded ? "Sovereign Chat Drawer (Expanded)" : "Sovereign Chat Drawer (Collapsed)"}
+                style={{ width: isSidebarExpanded ? `${sidebarWidth}px` : '64px' }}
+                className={`relative flex flex-col bg-[#0d0f19] border-r border-white/10 ${
+                    isResizingSidebar ? 'select-none' : 'transition-all duration-150'
+                } z-40 shrink-0 ${!isSidebarExpanded ? 'items-center' : ''}`}
+                title={isSidebarExpanded ? `Sovereign Chat Drawer (${sidebarWidth}px - Drag edge to resize)` : "Sovereign Chat Drawer (Collapsed)"}
             >
+                {/* Drag-to-Resize Handle */}
+                {isSidebarExpanded && (
+                    <div
+                        onMouseDown={(e) => { e.preventDefault(); setIsResizingSidebar(true); }}
+                        className="absolute top-0 right-0 w-2 h-full cursor-col-resize hover:bg-cyan-500/40 active:bg-cyan-400 transition-colors z-50 group flex items-center justify-center"
+                        title="Drag to resize sidebar width"
+                    >
+                        <div className="w-0.5 h-12 bg-white/15 group-hover:bg-cyan-300 rounded-full transition-colors" />
+                    </div>
+                )}
                 {/* 1. Sidebar Header */}
                 <div className="flex items-center justify-between p-3.5 border-b border-white/5 w-full">
                     {isSidebarExpanded ? (
@@ -761,30 +803,35 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                                     ? 'bg-cyan-950/40 text-white font-medium border-cyan-500/30 shadow-md' 
                                                     : 'hover:bg-white/5 border-transparent text-slate-400 hover:text-slate-200'
                                             }`}
-                                            title={`[${sChamber.toUpperCase()} CHAMBER] Click to inspect session, configure N-turn scalpel depth, or launch context`}
+                                            title={`${session.name}\n[Chamber: ${sChamber.toUpperCase()}] — Click to inspect or launch session`}
                                         >
-                                            <div className="flex items-center justify-between w-full">
-                                                <div className="flex items-center gap-1.5 overflow-hidden">
-                                                    <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
+                                            <div className="flex items-start justify-between w-full gap-2">
+                                                <div className="flex items-start gap-1.5 overflow-hidden flex-1 min-w-0">
+                                                    <MessageSquare className={`w-3.5 h-3.5 shrink-0 mt-0.5 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
                                                     {sChamber === 'grok' && (
-                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 shrink-0" title="Source: Grok Web Archive">
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-300 border border-emerald-500/30 shrink-0 mt-0.5" title="Source: Grok Web Archive">
                                                             🟢 GROK
                                                         </span>
                                                     )}
                                                     {sChamber === 'gemini' && (
-                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-500/30 shrink-0" title="Source: Gemini Rescued Archive">
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-blue-950/80 text-blue-300 border border-blue-500/30 shrink-0 mt-0.5" title="Source: Gemini Rescued Archive">
                                                             🔵 GEMINI
                                                         </span>
                                                     )}
                                                     {sChamber === 'erato' && (
-                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-500/30 shrink-0" title="Source: Erato Sovereign Chat">
+                                                        <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-purple-950/80 text-purple-300 border border-purple-500/30 shrink-0 mt-0.5" title="Source: Erato Sovereign Chat">
                                                             🟣 ERATO
                                                         </span>
                                                     )}
-                                                    <span className="truncate font-semibold">{session.name}</span>
+                                                    <span 
+                                                        className="font-semibold text-slate-200 line-clamp-2 hover:line-clamp-none break-words leading-snug flex-1"
+                                                        title={session.name}
+                                                    >
+                                                        {session.name}
+                                                    </span>
                                                 </div>
 
-                                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                                                     <button
                                                         onClick={(e) => handleOpenInspector(e, session)}
                                                         className="p-1 hover:text-cyan-300 transition-colors"

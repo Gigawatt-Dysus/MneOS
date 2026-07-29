@@ -54,12 +54,19 @@ export default defineConfig(({ mode }) => {
     // [ZEN OPTIMIZATION] Chunk Splitting
     // [ZEN FORCE UPDATE] Cache Invalidation Trigger
     build: {
-      chunkSizeWarningLimit: 3000, // Silences the warning by increasing the limit
+      chunkSizeWarningLimit: 3000,
       rollupOptions: {
         output: {
           manualChunks(id) {
             if (id.includes('node_modules')) {
-              return 'vendor'; // Puts all heavy libraries into a separate file
+              if (id.includes('@xenova') || id.includes('transformers')) return 'vendor-ai';
+              if (id.includes('three') || id.includes('@react-three')) return 'vendor-three';
+              if (id.includes('firebase')) return 'vendor-firebase';
+              if (id.includes('@tiptap')) return 'vendor-tiptap';
+              if (id.includes('maplibre-gl')) return 'vendor-maps';
+              if (id.includes('@aws-sdk')) return 'vendor-aws';
+              if (id.includes('lucide-react') || id.includes('@phosphor-icons')) return 'vendor-icons';
+              return 'vendor-core';
             }
           }
         }

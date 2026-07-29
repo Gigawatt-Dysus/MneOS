@@ -35,8 +35,7 @@ const CHAMBER_DIRS = {
     ],
     gemini: [
         path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_DYSUS2024'),
-        path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_ARTINAE'),
-        path.join(__dirname, '..', '_SESSION_EXPORTS', 'UTTER BULLSHIT', 'GEMINI_SESSIONS', 'RESCUED_ALL')
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_ARTINAE')
     ],
     erato: [
         path.join(__dirname, '..', '_SESSION_EXPORTS', 'ERATO_HISTORICAL_RAW')
@@ -165,6 +164,11 @@ async function runIngestion() {
         const db = client.db('LifeOS');
         const metaColl = db.collection('simulacrum_session_meta');
         const msgColl = db.collection('simulacrum_chat_messages');
+
+        console.log(`\n🧹 Purging contaminated/legacy vault entries (including UTTER BULLSHIT junk)...`);
+        const metaPurge = await metaColl.deleteMany({ id: { $regex: /^vault-/ } });
+        const msgPurge = await msgColl.deleteMany({ id: { $regex: /^vault-/ } });
+        console.log(`   Deleted ${metaPurge.deletedCount} vault meta docs and ${msgPurge.deletedCount} vault message docs.`);
 
         let totalSessionsProcessed = 0;
         let totalMessagesProcessed = 0;
