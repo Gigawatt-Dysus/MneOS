@@ -766,7 +766,7 @@ const App: React.FC = () => {
                     </SignedOut>
 
                     {/* [ZEN NEW] Splash Shield layer controlled by Sync Status */}
-                    {!logic.isInitialSyncComplete && logic.user && (
+                    {!logic.isInitialSyncComplete && logic.user && viewMode === 'os' && (
                         <SplashShield 
                             isVisible={true} 
                             eventsCount={logic.events.length}

@@ -1,0 +1,16 @@
+{
+    "short_name": "MneOS",
+    "name": "MneOS: Project GIGI",
+    "icons": [
+        {
+            "src": "favicon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#0f1219",
+    "background_color": "#0f1219"
+}
