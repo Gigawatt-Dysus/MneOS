@@ -13,46 +13,7 @@
 </head>
 
 <body style="background-color: #0f1219; color: white; margin: 0;" class="font-sans text-white">
-  <div id="root">
-    <div style="position: fixed; inset: 0; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; overflow: hidden; background-color: #000;">
-      <!-- Titaness Splash Image Replica -->
-      <div style="position: absolute; inset: 0; z-index: 0; background-image: url('/assets/Mnemosyne%20Avatars/MneOS%202-0__Splash_Screen__01.jpg'); background-size: cover; background-position: top; background-repeat: no-repeat; transform: scale(1.02); transform-origin: top;">
-        <!-- Gradient vignette -->
-        <div style="position: absolute; inset: 0; background: linear-gradient(to bottom, transparent, transparent, rgba(0,0,0,0.9));"></div>
-      </div>
-      
-      <!-- Console Content Replica -->
-      <div style="position: relative; z-index: 10; width: 100%; max-width: 42rem; padding-left: 1.5rem; padding-right: 1.5rem; padding-bottom: 3rem;">
-        <div style="font-family: monospace; text-align: center; color: rgba(16, 185, 129, 1);">
-          <style>
-            @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-            @keyframes pulseLine { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-          </style>
-          
-          <div style="height: 10rem; display: flex; flex-direction: column; justify-content: flex-end;">
-            <div style="animation: slideIn 0.7s ease-out forwards; text-align: center;">
-              <span style="color: #cffafe; font-weight: bold; letter-spacing: 0.1em; text-shadow: 0 0 8px rgba(0,255,255,0.8); font-size: 12px; animation: pulseLine 2s infinite;">
-                SPOOLING MATRIX. COMPILING DEPENDENCIES...
-              </span>
-            </div>
-          </div>
-          
-          <div style="display: flex; justify-content: center; gap: 1.5rem; padding-top: 1.5rem; margin-top: 1.5rem; border-top: 1px solid rgba(6, 182, 212, 0.2); font-size: 9px; color: rgba(165, 243, 252, 0.5); letter-spacing: 0.2em; text-transform: uppercase;">
-            <span>CPU: ACTIVE</span>
-            <span>NET: HYDRATING</span>
-            <span>PWR: OPTIMAL</span>
-            <span>SSL: SECURE</span>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Loading Bar -->
-      <div style="position: absolute; bottom: 0; left: 0; height: 4px; width: 100%; z-index: 10;">
-        <div style="height: 100%; width: 100%; background: linear-gradient(to right, transparent, rgba(34, 211, 238, 0.5), transparent); animation: pulseLine 2s infinite;"></div>
-      </div>
-    </div>
-  </div>
-
+  <div id="root"></div>
   <script type="module" src="/src/index.tsx"></script>
 </body>
 

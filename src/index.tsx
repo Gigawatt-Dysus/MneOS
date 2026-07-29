@@ -37,28 +37,18 @@ window.addEventListener('unhandledrejection', (event) => {
 });
 
 // Basic debug to confirm JS is running even if styles fail
-// console.log('%c[System] GIGI BOOT SEQUENCE INITIATED', 'background: #000; color: #00ff00; font-size: 14px; padding: 4px;');
+console.log('%c[MneOS Kernel] 🚀 INITIATING SOVEREIGN BOOT', 'background: #090a0f; color: #00f0ff; font-size: 14px; font-weight: bold; padding: 4px;');
 
 // [ZEN SEC FIX] Forcefully purge all compromised keys from the browser cache
 ['GIGI_SEC_GEMINI', 'GIGI_SEC_GOOGLE', 'google_api_key', 'gemini_api_key'].forEach(k => localStorage.removeItem(k));
 
-// console.log('%c[System] Env Check VITE_XAI_API_KEY:', 'color: cyan', import.meta.env.VITE_XAI_API_KEY ? 'READY' : 'MISSING');
-
-let container = document.getElementById('root');
+const container = document.getElementById('root');
 
 if (container) {
-  const newContainer = document.createElement('div');
-  newContainer.id = 'root';
-  
-  if (container.parentNode) {
-      container.parentNode.replaceChild(newContainer, container);
-      container = newContainer;
-  }
-
   const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || "pk_test_dG9nZXRoZXItbWFybGluLTk2LmNsZXJrLmFjY291bnRzLmRldiQ";
 
   if (!clerkPubKey) {
-    throw new Error("Missing Publishable Key");
+    throw new Error("Missing Clerk Publishable Key");
   }
 
   const root = ReactDOM.createRoot(container); 
@@ -93,5 +83,5 @@ if (container) {
     </React.StrictMode>
   );
 } else {
-  console.error("Failed to find the root element");
+  console.error("Critical Failure: Unable to locate #root DOM element");
 }
