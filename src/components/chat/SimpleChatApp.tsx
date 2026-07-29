@@ -201,7 +201,8 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                lower.includes('rescued session log') || 
                lower.includes('source engine') || 
                lower.includes('category: rescued') ||
-               lower.startsWith('initial objective: "# session id:');
+               lower.startsWith('initial objective:') ||
+               lower.startsWith('objective: "');
     };
 
     // Structural Modality & Density Fingerprinter
