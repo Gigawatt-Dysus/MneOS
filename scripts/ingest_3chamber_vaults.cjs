@@ -1,9 +1,9 @@
 /**
  * MneOS 3-Chamber Sovereign Vault Ingestion & Accessioning Pipeline
- * Reads 198+ historical session markdown files across 3 chambers:
- * 1. Grok Vault: _SESSION_EXPORTS/GROK_SESSIONS/DISTILLED/
- * 2. Gemini Vault: _SESSION_EXPORTS/GEMINI_SESSIONS/RESCUED_ALL_DYSUS2024/
- * 3. Erato Vault: _SESSION_EXPORTS/ERATO_HISTORICAL_RAW/
+ * Reads 290+ historical session markdown files across 3 chambers:
+ * 1. Grok Vault: _SESSION_EXPORTS/GROK_SESSIONS/DISTILLED/ (46 sessions)
+ * 2. Gemini Vault: RESCUED_ALL_DYSUS2024 (77) + RESCUED_ALL_ARTINAE (92) = 169 sessions
+ * 3. Erato Vault: _SESSION_EXPORTS/ERATO_HISTORICAL_RAW/ (75 sessions)
  * 
  * Upserts session metadata & chat turns into MongoDB Atlas collections:
  * - `LifeOS.simulacrum_session_meta`
@@ -29,10 +29,18 @@ if (fs.existsSync(envPath)) {
 const ATLAS_URI = process.env.ATLAS_CLOUD_URI || process.env.MONGODB_URI || "mongodb://localhost:27017/LifeOS";
 const ERIC_UID = '9MPVGVTxE8dXvkCrl1XrWHQzCl23';
 
-const CHAMBER_PATHS = {
-    grok: path.join(__dirname, '..', '_SESSION_EXPORTS', 'GROK_SESSIONS', 'DISTILLED'),
-    gemini: path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_DYSUS2024'),
-    erato: path.join(__dirname, '..', '_SESSION_EXPORTS', 'ERATO_HISTORICAL_RAW')
+const CHAMBER_DIRS = {
+    grok: [
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'GROK_SESSIONS', 'DISTILLED')
+    ],
+    gemini: [
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_DYSUS2024'),
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'GEMINI_SESSIONS', 'RESCUED_ALL_ARTINAE'),
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'UTTER BULLSHIT', 'GEMINI_SESSIONS', 'RESCUED_ALL')
+    ],
+    erato: [
+        path.join(__dirname, '..', '_SESSION_EXPORTS', 'ERATO_HISTORICAL_RAW')
+    ]
 };
 
 // Parse a markdown file into discrete turn messages
@@ -44,6 +52,7 @@ function parseMarkdownSession(filePath, chamber, filename) {
     let title = filename
         .replace(/\.md$/, '')
         .replace(/^DISTILLED_/, '')
+        .replace(/^RESCUED_ALL_DYSUS2024_/, '')
         .replace(/^ERATO_Session_/, 'Erato Session: ')
         .replace(/_\d{4}-\d{2}-\d{2}$/, '')
         .replace(/_/g, ' ')
@@ -160,43 +169,49 @@ async function runIngestion() {
         let totalSessionsProcessed = 0;
         let totalMessagesProcessed = 0;
 
-        for (const [chamber, dirPath] of Object.entries(CHAMBER_PATHS)) {
-            if (!fs.existsSync(dirPath)) {
-                console.warn(`\n⚠️ Directory not found for chamber [${chamber}]: ${dirPath}`);
-                continue;
-            }
+        for (const [chamber, dirList] of Object.entries(CHAMBER_DIRS)) {
+            console.log(`\n📦 Processing Chamber [${chamber.toUpperCase()}]...`);
+            let chamberSessionCount = 0;
 
-            const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.md'));
-            console.log(`\n📦 Processing Chamber [${chamber.toUpperCase()}]: ${files.length} files...`);
-
-            for (const file of files) {
-                const filePath = path.join(dirPath, file);
-                const { sessionMeta, messages } = parseMarkdownSession(filePath, chamber, file);
-
-                // Upsert session meta into MongoDB
-                await metaColl.updateOne(
-                    { id: sessionMeta.id },
-                    { $set: sessionMeta },
-                    { upsert: true }
-                );
-
-                // Bulk upsert messages
-                if (messages.length > 0) {
-                    const bulkOps = messages.map(m => ({
-                        updateOne: {
-                            filter: { id: m.id },
-                            update: { $set: m },
-                            upsert: true
-                        }
-                    }));
-                    await msgColl.bulkWrite(bulkOps);
+            for (const dirPath of dirList) {
+                if (!fs.existsSync(dirPath)) {
+                    console.warn(`  ⚠️ Directory not found: ${dirPath}`);
+                    continue;
                 }
 
-                totalSessionsProcessed++;
-                totalMessagesProcessed += messages.length;
+                const files = fs.readdirSync(dirPath).filter(f => f.endsWith('.md'));
+                console.log(`  📁 Folder: ${path.basename(dirPath)} (${files.length} files)`);
+
+                for (const file of files) {
+                    const filePath = path.join(dirPath, file);
+                    const { sessionMeta, messages } = parseMarkdownSession(filePath, chamber, file);
+
+                    // Upsert session meta into MongoDB
+                    await metaColl.updateOne(
+                        { id: sessionMeta.id },
+                        { $set: sessionMeta },
+                        { upsert: true }
+                    );
+
+                    // Bulk upsert messages
+                    if (messages.length > 0) {
+                        const bulkOps = messages.map(m => ({
+                            updateOne: {
+                                filter: { id: m.id },
+                                update: { $set: m },
+                                upsert: true
+                            }
+                        }));
+                        await msgColl.bulkWrite(bulkOps);
+                    }
+
+                    chamberSessionCount++;
+                    totalSessionsProcessed++;
+                    totalMessagesProcessed += messages.length;
+                }
             }
 
-            console.log(`  ✅ [${chamber.toUpperCase()}] Ingested ${files.length} sessions.`);
+            console.log(`  ✅ [${chamber.toUpperCase()}] Ingested total ${chamberSessionCount} sessions.`);
         }
 
         console.log(`\n================================================================`);
