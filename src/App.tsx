@@ -272,7 +272,7 @@ const App: React.FC = () => {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, [logic.setShowDevPatch]);
 
-    if (logic.authLoading) {
+    if (logic.authLoading && viewMode === 'os') {
         return <SplashShield isVisible={true} />;
     }
 
