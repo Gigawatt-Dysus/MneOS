@@ -4,7 +4,7 @@ import {
     Brain, Sparkles, Send, Download, Search, ChevronDown, Check, Zap, Layers,
     Plus, MessageSquare, History, ChevronsLeft, ChevronsRight, Trash2, X, SlidersHorizontal,
     Code, Image as ImageIcon, FileText, ArrowUpDown, Filter, Eye, Copy, RefreshCw, Monitor,
-    DollarSign, AlertTriangle, ShieldCheck
+    DollarSign, AlertTriangle, ShieldCheck, Pill, ExternalLink, Bookmark
 } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -16,12 +16,20 @@ import {
     SimulacrumSessionMeta, 
     fetchSimulacrumHistory, 
     fetchSimulacrumSessions, 
+    fetchAllActiveSimulacrumSessions,
     saveSimulacrumMessage, 
     saveSimulacrumSessionMeta, 
     generateSimulacrumResponse 
 } from '../../services/ai/generators/simulacrumGenerator';
 import { exportSimulationTranscript } from '../../services/ai/generators/transcriptExporter';
 import { GrokPromptBuilder } from '../../services/ai/GrokPromptBuilder';
+
+export interface ContextBolus {
+    id: string;
+    label: string;
+    type?: 'session' | 'tag' | 'memory';
+    contentSnippet?: string;
+}
 
 interface SimpleChatAppProps {
     user: User;
@@ -131,6 +139,12 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const [recentSessions, setRecentSessions] = useState<SimulacrumSessionMeta[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     
+    // In-Memory Chat Content Cache for Zero-Token Local Search & Snippet Matching
+    const [sessionMessageCache, setSessionMessageCache] = useState<Record<string, SimulacrumMessage[]>>({});
+    
+    // Context Bolus Deck State
+    const [activeBoluses, setActiveBoluses] = useState<ContextBolus[]>([]);
+
     // API Telemetry & Circuit Breaker State
     const [sessionCost, setSessionCost] = useState<number>(0);
     const [sessionCap, setSessionCap] = useState<number>(0.50); // $0.50 Safety Circuit Breaker
@@ -169,7 +183,6 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     useEffect(() => {
         const handleTokenBurn = (e: CustomEvent<number>) => {
             const burnedTokens = e.detail || 0;
-            // Approximate split: 80% input, 40% cached hit, 20% output
             const estimatedInput = Math.round(burnedTokens * 0.8);
             const estimatedCached = Math.round(estimatedInput * 0.5);
             const estimatedOutput = Math.round(burnedTokens * 0.2);
@@ -200,12 +213,62 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         scrollToBottom();
     }, [messages, isGenerating]);
 
-    // Load recent sessions for selected persona
-    const reloadSessions = React.useCallback(() => {
-        if (!user?.id || !selectedPersona?.id) return;
-        fetchSimulacrumSessions(user.id, selectedPersona.id).then(fetched => {
-            setRecentSessions(fetched.filter(s => !s.isArchived));
-        }).catch(console.error);
+    // Load ALL sessions (active companion + global extracted sessions)
+    const reloadSessions = React.useCallback(async () => {
+        if (!user?.id) return;
+        try {
+            // 1. Fetch persona-specific sessions
+            const companionSessions = selectedPersona?.id 
+                ? await fetchSimulacrumSessions(user.id, selectedPersona.id)
+                : [];
+
+            // 2. Fetch all active sessions across all companions / tags
+            const globalSessions = await fetchAllActiveSimulacrumSessions(user.id);
+
+            // 3. Merge & deduplicate
+            const combined = [...companionSessions, ...globalSessions];
+            const sessionMap = new Map<string, SimulacrumSessionMeta>();
+            combined.forEach(s => {
+                if (!s.isArchived) sessionMap.set(s.id, s);
+            });
+
+            // 4. Default extracted mock sessions for Erato & Gemini historical sessions if empty
+            if (sessionMap.size === 0) {
+                const defaultHistorical: SimulacrumSessionMeta[] = [
+                    {
+                        id: 'erato-session-chamber-girl',
+                        tagId: selectedPersona?.id || 'brita',
+                        name: 'Erato Session: Chamber Girl & Doctor Who Con',
+                        lastActive: Date.now() - 86400000 * 2,
+                        isArchived: false
+                    },
+                    {
+                        id: 'gemini-session-ruthie-notes',
+                        tagId: selectedPersona?.id || 'brita',
+                        name: 'Gemini Rescued: Sam Rosenbaum & Ruthie Evers Interaction',
+                        lastActive: Date.now() - 86400000 * 5,
+                        isArchived: false
+                    }
+                ];
+                defaultHistorical.forEach(s => sessionMap.set(s.id, s));
+            }
+
+            const mergedSessions = Array.from(sessionMap.values());
+            setRecentSessions(mergedSessions);
+
+            // Asynchronously pre-fetch message histories into local cache for sub-millisecond local search
+            mergedSessions.slice(0, 15).forEach(async s => {
+                if (!sessionMessageCache[s.id]) {
+                    const history = await fetchSimulacrumHistory(user.id, s.tagId || selectedPersona.id, s.id);
+                    if (history && history.length > 0) {
+                        setSessionMessageCache(prev => ({ ...prev, [s.id]: history }));
+                    }
+                }
+            });
+
+        } catch (error) {
+            console.error('[SimpleChatApp] Error reloading sessions:', error);
+        }
     }, [user?.id, selectedPersona?.id]);
 
     useEffect(() => {
@@ -216,11 +279,49 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const handleNewChat = () => {
         setSessionId(`smneos-session-${Date.now()}`);
         setMessages([]);
+        setActiveBoluses([]);
         setSessionCost(0);
         setLastTurnCost(0);
     };
 
-    // Handle Sending User Message (with Scenario B: 10-turn sliding context window)
+    // Inject Context Bolus Pill into active chat
+    const handleInjectBolus = (session: SimulacrumSessionMeta, snippet?: string) => {
+        const bolusLabel = session.name;
+        const exists = activeBoluses.some(b => b.id === session.id);
+        
+        if (!exists) {
+            setActiveBoluses(prev => [
+                ...prev, 
+                { id: session.id, label: bolusLabel, type: 'session', contentSnippet: snippet }
+            ]);
+        }
+
+        // Append tag mention to text input
+        const tagMention = `@session:"${bolusLabel}"`;
+        if (!input.includes(tagMention)) {
+            setInput(prev => prev ? `${prev} ${tagMention}` : tagMention);
+        }
+    };
+
+    // Remove Context Bolus Pill
+    const handleRemoveBolus = (id: string, label: string) => {
+        setActiveBoluses(prev => prev.filter(b => b.id !== id));
+        const tagMention = `@session:"${label}"`;
+        setInput(prev => prev.replace(tagMention, '').trim());
+    };
+
+    // Handle Session Click (Context-aware: Launch if empty chat, Inject Bolus if chat is active!)
+    const handleSessionClick = (session: SimulacrumSessionMeta, snippet?: string) => {
+        if (messages.length === 0) {
+            // Scenario A: No active conversation underway -> Launch session as starter context
+            handleResumeSession(session);
+        } else {
+            // Scenario B: Active conversation underway -> Inject Context Bolus Pill!
+            handleInjectBolus(session, snippet);
+        }
+    };
+
+    // Handle Sending User Message (with Scenario B: 10-turn sliding context window + Bolus Hydration)
     const handleSend = async () => {
         if (!input.trim() || isGenerating || !selectedPersona) return;
         
@@ -230,8 +331,17 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
             return;
         }
 
-        const userText = input.trim();
+        let userText = input.trim();
         setInput('');
+
+        // Attach hydrated context boluses to payload if active
+        if (activeBoluses.length > 0) {
+            const bolusPayload = activeBoluses.map(b => 
+                `[HYDRATED MEMORY BOLUS: ${b.label}]\n${b.contentSnippet ? `Snippet: "${b.contentSnippet}"\n` : ''}`
+            ).join('\n');
+            userText = `${userText}\n\n${bolusPayload}`;
+            setActiveBoluses([]); // Clear boluses after injection
+        }
 
         const userMsg: SimulacrumMessage = {
             id: `msg-${Date.now()}`,
@@ -321,6 +431,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         setSelectedPersona(persona);
         setSessionId(`smneos-session-${Date.now()}`);
         setMessages([]);
+        setActiveBoluses([]);
         setSessionCost(0);
         setLastTurnCost(0);
     };
@@ -356,22 +467,41 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         alert('Transcript exported to MneOS Archive!');
     };
 
-    // Filter & Sort sessions
+    // ZERO-TOKEN LOCAL SEARCH & DEEP CONTENT CRAWL
     const sortedFilteredSessions = React.useMemo(() => {
-        let result = recentSessions.filter(s => 
-            !searchQuery || s.name.toLowerCase().includes(searchQuery.toLowerCase())
-        );
+        const queryLower = searchQuery.toLowerCase().trim();
+        
+        let result = recentSessions.map(session => {
+            const nameMatch = !queryLower || session.name.toLowerCase().includes(queryLower);
+            
+            // Crawl inside cached message content for zero-token hits
+            let matchedSnippet: string | undefined = undefined;
+            if (queryLower && sessionMessageCache[session.id]) {
+                const hitMsg = sessionMessageCache[session.id].find(m => 
+                    m.content.toLowerCase().includes(queryLower)
+                );
+                if (hitMsg) {
+                    const idx = hitMsg.content.toLowerCase().indexOf(queryLower);
+                    const start = Math.max(0, idx - 40);
+                    const end = Math.min(hitMsg.content.length, idx + 80);
+                    matchedSnippet = `...${hitMsg.content.substring(start, end)}...`;
+                }
+            }
+
+            const isMatch = nameMatch || !!matchedSnippet;
+            return { session, isMatch, matchedSnippet };
+        }).filter(item => item.isMatch);
 
         if (sortOrder === 'date-desc') {
-            result.sort((a, b) => b.lastActive - a.lastActive);
+            result.sort((a, b) => b.session.lastActive - a.session.lastActive);
         } else if (sortOrder === 'date-asc') {
-            result.sort((a, b) => a.lastActive - b.lastActive);
+            result.sort((a, b) => a.session.lastActive - b.session.lastActive);
         } else if (sortOrder === 'alpha') {
-            result.sort((a, b) => a.name.localeCompare(b.name));
+            result.sort((a, b) => a.session.name.localeCompare(b.session.name));
         }
 
         return result;
-    }, [recentSessions, searchQuery, sortOrder]);
+    }, [recentSessions, searchQuery, sortOrder, sessionMessageCache]);
 
     const filteredPersonas = availablePersonas.filter(p => 
         !searchQuery || p.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -452,7 +582,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                     )}
                 </div>
 
-                {/* 3. Search Bar & Top-Down Sorting Controls */}
+                {/* 3. Search Bar & Zero-Token Local Crawl Controls */}
                 {isSidebarExpanded && (
                     <div className="px-3 pb-2 w-full space-y-2">
                         <div className="relative flex items-center w-full">
@@ -461,9 +591,9 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                 type="text"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Search conversations..."
+                                placeholder="Search sessions & deep text..."
                                 className="w-full bg-white/5 border border-white/10 rounded-xl pl-9 pr-7 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/40 transition-all"
-                                title="Filter active conversations or companions by keyword"
+                                title="Perform zero-token local full-text search across session titles and message contents"
                             />
                             {searchQuery && (
                                 <button 
@@ -560,42 +690,70 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                         })}
                     </div>
 
-                    {/* Recent Chat Sessions Section */}
+                    {/* Recent & Extracted Chat Sessions Section */}
                     {isSidebarExpanded ? (
                         <div className="space-y-1">
-                            <div className="px-2 pt-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between" title="Saved sessions for this companion">
-                                <span>Recent Chats ({sortedFilteredSessions.length})</span>
+                            <div className="px-2 pt-2 text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center justify-between" title="Extracted and live session history">
+                                <span>Recent & Extracted ({sortedFilteredSessions.length})</span>
                                 <History className="w-3 h-3 text-slate-500" />
                             </div>
                             {sortedFilteredSessions.length === 0 ? (
                                 <div className="px-3 py-2 text-[11px] text-slate-600 italic">
-                                    No conversations found
+                                    No conversations found matching query
                                 </div>
                             ) : (
-                                sortedFilteredSessions.map(session => {
+                                sortedFilteredSessions.map(({ session, matchedSnippet }) => {
                                     const isActive = session.id === sessionId;
                                     return (
                                         <div
                                             key={session.id}
-                                            onClick={() => handleResumeSession(session)}
-                                            className={`group w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs cursor-pointer transition-all ${
+                                            onClick={() => handleSessionClick(session, matchedSnippet)}
+                                            className={`group w-full flex flex-col p-2.5 rounded-xl text-xs cursor-pointer transition-all border ${
                                                 isActive 
-                                                    ? 'bg-white/10 text-white font-medium border border-white/10 shadow-md' 
-                                                    : 'hover:bg-white/5 text-slate-400 hover:text-slate-200'
+                                                    ? 'bg-cyan-950/40 text-white font-medium border-cyan-500/30 shadow-md' 
+                                                    : 'hover:bg-white/5 border-transparent text-slate-400 hover:text-slate-200'
                                             }`}
-                                            title={`Resume conversation: "${session.name}"`}
+                                            title={
+                                                messages.length === 0 
+                                                    ? `Click to launch session "${session.name}" as starter context`
+                                                    : `Click to inject Context Bolus Pill @session:"${session.name}" into active chat`
+                                            }
                                         >
-                                            <div className="flex items-center gap-2 overflow-hidden">
-                                                <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
-                                                <span className="truncate">{session.name}</span>
+                                            <div className="flex items-center justify-between w-full">
+                                                <div className="flex items-center gap-2 overflow-hidden">
+                                                    <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-cyan-400' : 'text-slate-500'}`} />
+                                                    <span className="truncate font-semibold">{session.name}</span>
+                                                </div>
+
+                                                <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    {messages.length > 0 && (
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                handleInjectBolus(session, matchedSnippet);
+                                                            }}
+                                                            className="p-1 hover:text-cyan-300 transition-colors"
+                                                            title="Inject Context Bolus Pill into active conversation"
+                                                        >
+                                                            <Pill className="w-3 h-3 text-cyan-400" />
+                                                        </button>
+                                                    )}
+                                                    <button
+                                                        onClick={(e) => handleDeleteSession(e, session)}
+                                                        className="p-1 hover:text-red-400 transition-colors"
+                                                        title="Permanently archive this session"
+                                                    >
+                                                        <Trash2 className="w-3 h-3" />
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <button
-                                                onClick={(e) => handleDeleteSession(e, session)}
-                                                className="opacity-0 group-hover:opacity-100 p-1 hover:text-red-400 transition-opacity"
-                                                title="Permanently archive and remove this session"
-                                            >
-                                                <Trash2 className="w-3 h-3" />
-                                            </button>
+
+                                            {/* Deep Match Snippet Preview */}
+                                            {matchedSnippet && (
+                                                <div className="mt-1 text-[10px] text-cyan-300/80 bg-cyan-950/30 p-1.5 rounded border border-cyan-500/20 font-mono truncate">
+                                                    🔍 {matchedSnippet}
+                                                </div>
+                                            )}
                                         </div>
                                     );
                                 })
@@ -737,7 +895,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                                             Conversation Matrix Ready with {selectedPersona.name}
                                         </h3>
                                         <p className="text-xs text-slate-400">
-                                            Type a message below to start a sovereign chat session powered by Grok 4.3 and MneOS RAG memory.
+                                            Type a message below or click any session in the sidebar drawer to launch it as starter context.
                                         </p>
                                     </div>
                                 </div>
@@ -1020,7 +1178,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                     )}
                 </div>
 
-                {/* Input Footer with API Telemetry Strip */}
+                {/* Input Footer with API Telemetry Strip & Context Bolus Deck */}
                 <footer className="sticky bottom-0 z-30 bg-[#0b0d17]/95 backdrop-blur-xl border-t border-white/10 p-4 md:p-6 space-y-3">
                     
                     {/* Live Telemetry Meter Strip */}
@@ -1087,6 +1245,32 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                         </div>
                     )}
 
+                    {/* CONTEXT BOLUS PILLS DECK (ACTIVE INJECTED MEMORIES) */}
+                    {activeBoluses.length > 0 && (
+                        <div className="max-w-4xl mx-auto flex items-center gap-2 overflow-x-auto custom-scrollbar py-1">
+                            <span className="text-[10px] font-bold text-cyan-400 uppercase tracking-widest flex items-center gap-1 shrink-0">
+                                <Pill className="w-3 h-3 text-cyan-400" /> Active Boluses ({activeBoluses.length}):
+                            </span>
+                            {activeBoluses.map(bolus => (
+                                <div 
+                                    key={bolus.id}
+                                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-500/40 text-xs font-semibold text-cyan-200 shadow-[0_0_10px_rgba(6,182,212,0.2)] shrink-0 animate-in fade-in zoom-in-95 duration-200"
+                                    title={bolus.contentSnippet ? `Snippet: ${bolus.contentSnippet}` : `Hydrated memory session: ${bolus.label}`}
+                                >
+                                    <span>@session:"{bolus.label}"</span>
+                                    <button
+                                        onClick={() => handleRemoveBolus(bolus.id, bolus.label)}
+                                        className="p-0.5 hover:bg-cyan-500/20 rounded-full text-slate-400 hover:text-white transition-colors"
+                                        title="Remove this Context Bolus Pill"
+                                    >
+                                        <X className="w-3 h-3" />
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    {/* Input Bar */}
                     <div className="max-w-4xl mx-auto flex items-center gap-3">
                         <input
                             type="text"
@@ -1096,7 +1280,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                             placeholder={isCapTripped ? "Session cap reached — extend budget to send..." : `Message ${selectedPersona.name}...`}
                             disabled={isGenerating || isCapTripped}
                             className="flex-1 bg-white/5 border border-white/10 rounded-2xl px-5 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500/50 focus:bg-black/40 transition-all disabled:opacity-40"
-                            title={`Type your message to ${selectedPersona.name}. Use @tag for inline context hydration.`}
+                            title={`Type your message to ${selectedPersona.name}. Use @session:"name" for inline context hydration.`}
                         />
 
                         <button
