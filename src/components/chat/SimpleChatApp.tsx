@@ -74,14 +74,14 @@ export const getPersonaAvatarUrl = (persona: PersonTag | any, user?: User): stri
 export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavigateOS }) => {
     // 1. Resolve Available Personas (Simulacrum Tags + AI Companions)
     const availablePersonas = React.useMemo(() => {
-        const simulacrumTags = tags.filter(t => 
+        const simulacrumTags = (tags || []).filter(t => 
             t.type === 'person' && 
             t.metadata?.simulacrumTraits?.systemDirective && 
             t.metadata.simulacrumTraits.systemDirective.trim() !== ''
         ) as PersonTag[];
 
-        const companions = user.aiCompanions || [];
-        const companionTraits = user.settings?.godModeSettings?.companionTraits || {};
+        const companions = user?.aiCompanions || [];
+        const companionTraits = user?.settings?.godModeSettings?.companionTraits || {};
 
         const mappedCompanions: PersonTag[] = companions.map((c: any) => {
             const basePersona = GrokPromptBuilder.resolvePersonaPrompt(c);
@@ -132,7 +132,22 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     }, [tags, user]);
 
     // 2. Active State
-    const [selectedPersona, setSelectedPersona] = useState<PersonTag>(availablePersonas[0]);
+    const [selectedPersona, setSelectedPersona] = useState<PersonTag>(() => availablePersonas[0]);
+
+    useEffect(() => {
+        if (!selectedPersona && availablePersonas.length > 0) {
+            setSelectedPersona(availablePersonas[0]);
+        }
+    }, [availablePersonas, selectedPersona]);
+
+    const activePersona = selectedPersona || availablePersonas[0] || {
+        id: 'brita-default',
+        name: 'Brita',
+        type: 'person',
+        description: 'MneOS Sovereign AI Companion',
+        avatarUrl: '/assets/Brita_Avatar.jpg',
+        metadata: { simulacrumTraits: { systemDirective: 'You are Brita, authentic, intimate, and wise companion.' } }
+    } as PersonTag;
     const [messages, setMessages] = useState<SimulacrumMessage[]>([]);
     const [input, setInput] = useState('');
     const [isGenerating, setIsGenerating] = useState(false);
@@ -1061,14 +1076,14 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                 {/* Header Bar */}
                 <header className="sticky top-0 z-30 bg-[#0f111a]/90 backdrop-blur-xl border-b border-white/10 px-4 md:px-8 py-3 flex items-center justify-between shadow-lg">
                     <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-2.5" title={`Active conversation partner: ${selectedPersona.name}`}>
+                        <div className="flex items-center gap-2.5" title={`Active conversation partner: ${activePersona.name}`}>
                             <GlassAvatar
-                                imageUrl={getPersonaAvatarUrl(selectedPersona, user)}
-                                fallbackChar={selectedPersona.name.charAt(0)}
+                                imageUrl={getPersonaAvatarUrl(activePersona, user)}
+                                fallbackChar={activePersona.name.charAt(0)}
                                 size="w-7 h-7"
                                 className="border border-cyan-500/40 shadow-[0_0_10px_rgba(6,182,212,0.3)]"
                             />
-                            <span className="font-bold text-slate-100 text-sm md:text-base">{selectedPersona.name}</span>
+                            <span className="font-bold text-slate-100 text-sm md:text-base">{activePersona.name}</span>
                         </div>
                         <span className="text-xs text-slate-500">•</span>
                         <span className="text-xs text-slate-400 font-mono hidden sm:inline" title="Connected to xAI Grok 4.3 Sovereign Engine">
@@ -1142,7 +1157,7 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                     const isUser = msg.role === 'user';
                                     const avatarUrl = isUser 
                                         ? '/assets/eric-headshot.png'
-                                        : getPersonaAvatarUrl(selectedPersona, user);
+                                        : getPersonaAvatarUrl(activePersona, user);
 
                                     return (
                                         <div
@@ -1150,7 +1165,7 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                             className={`flex flex-col ${isUser ? 'items-end' : 'items-start'} space-y-1 group`}
                                         >
                                             <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-wider text-slate-500 px-1">
-                                                <span>{isUser ? 'Eric' : selectedPersona.name}</span>
+                                                <span>{isUser ? 'Eric' : activePersona.name}</span>
                                                 <span>•</span>
                                                 <span>{formatLifeOSDate(msg.timestamp)}</span>
                                             </div>
@@ -1158,10 +1173,10 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                             <div className={`flex gap-3 max-w-[88%] md:max-w-[80%] ${isUser ? 'flex-row-reverse' : 'flex-row'}`}>
                                                 <GlassAvatar
                                                     imageUrl={avatarUrl}
-                                                    fallbackChar={isUser ? 'E' : selectedPersona.name.charAt(0)}
+                                                    fallbackChar={isUser ? 'E' : activePersona.name.charAt(0)}
                                                     size="w-8 h-8"
                                                     className={`border shrink-0 mt-1 ${isUser ? 'border-cyan-400/50' : 'border-white/20'}`}
-                                                    title={isUser ? "Eric Cornett (Architect)" : selectedPersona.name}
+                                                    title={isUser ? "Eric Cornett (Architect)" : activePersona.name}
                                                 />
 
                                                 <div
@@ -1190,12 +1205,12 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                             {isGenerating && (
                                 <div className="flex items-center gap-3 text-cyan-400 text-xs font-mono animate-pulse p-2">
                                     <GlassAvatar
-                                        imageUrl={getPersonaAvatarUrl(selectedPersona, user)}
-                                        fallbackChar={selectedPersona.name.charAt(0)}
+                                        imageUrl={getPersonaAvatarUrl(activePersona, user)}
+                                        fallbackChar={activePersona.name.charAt(0)}
                                         size="w-6 h-6"
                                         className="border border-cyan-400/60"
                                     />
-                                    <span>{selectedPersona.name} is formulating response...</span>
+                                    <span>{activePersona.name} is formulating response...</span>
                                 </div>
                             )}
 
