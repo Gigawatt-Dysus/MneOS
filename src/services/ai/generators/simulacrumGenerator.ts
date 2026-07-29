@@ -143,15 +143,23 @@ export const saveSimulacrumMessage = async (userId: string, tagId: string, messa
     }
 };
 
+import localVaultManifest from '../../../data/vaultSessionManifest.json';
+
 export const fetchAllActiveSimulacrumSessions = async (userId: string): Promise<SimulacrumSessionMeta[]> => {
     try {
         const metaRef = collection(db, 'simulacrum_session_meta');
         const q = query(metaRef, orderBy('lastActive', 'desc'));
         const snap = await getDocs(q);
-        return snap.docs.map(doc => doc.data() as SimulacrumSessionMeta).filter(s => !s.isArchived);
+        const remoteSessions = snap.docs.map(doc => doc.data() as SimulacrumSessionMeta).filter(s => !s.isArchived);
+
+        const map = new Map<string, SimulacrumSessionMeta>();
+        (localVaultManifest as SimulacrumSessionMeta[]).forEach(s => map.set(s.id, s));
+        remoteSessions.forEach(s => map.set(s.id, s));
+
+        return Array.from(map.values()).sort((a, b) => b.lastActive - a.lastActive);
     } catch (e) {
         console.error("Failed to fetch all active simulacrum sessions:", e);
-        return [];
+        return localVaultManifest as SimulacrumSessionMeta[];
     }
 };
 

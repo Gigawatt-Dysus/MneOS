@@ -23,6 +23,7 @@ import {
 } from '../../services/ai/generators/simulacrumGenerator';
 import { exportSimulationTranscript } from '../../services/ai/generators/transcriptExporter';
 import { GrokPromptBuilder } from '../../services/ai/GrokPromptBuilder';
+import vaultMessageCache from '../../data/vaultMessageCache.json';
 
 export interface ContextBolus {
     id: string;
@@ -140,7 +141,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const [searchQuery, setSearchQuery] = useState('');
     
     // In-Memory Chat Content Cache for Zero-Token Local Search & Snippet Matching
-    const [sessionMessageCache, setSessionMessageCache] = useState<Record<string, SimulacrumMessage[]>>({});
+    const [sessionMessageCache, setSessionMessageCache] = useState<Record<string, SimulacrumMessage[]>>(vaultMessageCache as any);
     
     // Context Bolus Deck State
     const [activeBoluses, setActiveBoluses] = useState<ContextBolus[]>([]);
@@ -219,7 +220,7 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
         scrollToBottom();
     }, [messages, isGenerating]);
 
-    // Load ALL sessions (active companion + global extracted sessions)
+    // Load ALL sessions (active companion + global extracted 3-chamber vault sessions)
     const reloadSessions = React.useCallback(async () => {
         if (!user?.id) return;
         try {
@@ -235,39 +236,8 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
                 if (!s.isArchived) sessionMap.set(s.id, s);
             });
 
-            // Default extracted mock sessions for Erato & Gemini historical sessions if empty
-            if (sessionMap.size === 0) {
-                const defaultHistorical: SimulacrumSessionMeta[] = [
-                    {
-                        id: 'erato-session-chamber-girl',
-                        tagId: selectedPersona?.id || 'brita',
-                        name: 'Erato Session: Chamber Girl',
-                        lastActive: Date.now() - 86400000 * 2,
-                        isArchived: false
-                    },
-                    {
-                        id: 'gemini-session-ruthie-notes',
-                        tagId: selectedPersona?.id || 'brita',
-                        name: 'Gemini Rescued: Sam Rosenbaum & Ruthie Evers Interaction',
-                        lastActive: Date.now() - 86400000 * 5,
-                        isArchived: false
-                    }
-                ];
-                defaultHistorical.forEach(s => sessionMap.set(s.id, s));
-            }
-
             const mergedSessions = Array.from(sessionMap.values());
             setRecentSessions(mergedSessions);
-
-            // Asynchronously pre-fetch message histories into local cache for sub-millisecond local search
-            mergedSessions.slice(0, 15).forEach(async s => {
-                if (!sessionMessageCache[s.id]) {
-                    const history = await fetchSimulacrumHistory(user.id, s.tagId || selectedPersona.id, s.id);
-                    if (history && history.length > 0) {
-                        setSessionMessageCache(prev => ({ ...prev, [s.id]: history }));
-                    }
-                }
-            });
 
         } catch (error) {
             console.error('[SimpleChatApp] Error reloading sessions:', error);
