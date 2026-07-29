@@ -52,10 +52,27 @@ const syncAttemptedForUser = new Set<string>();
 export const SecretsManager = {
     // ... (previous methods preserved above) ...
     get: (key: SecretKey): string | undefined => {
-        // [ZEN V32] xAI: Check environment variable first, then fallback
+        // [ZEN V32] xAI: Bulletproof Environment & Local Storage Lookup
         if (key === 'xai') {
-            const xaiEnv = import.meta.env.VITE_XAI_API_KEY as string;
-            if (xaiEnv) return xaiEnv;
+            const rawEnv = (import.meta.env.VITE_XAI_API_KEY as string) || (import.meta.env.XAI_API_KEY as string);
+            const envVal = rawEnv ? rawEnv.replace(/^["']|["']$/g, '').trim() : '';
+            if (envVal) return envVal;
+
+            const candidates = [
+                localStorage.getItem('GIGI_SEC_XAI'),
+                localStorage.getItem('GIGI_SEC_MODEL_XAI'),
+                localStorage.getItem('xai_api_key'),
+                localStorage.getItem('xai'),
+                localStorage.getItem('XAI_API_KEY')
+            ];
+
+            for (const c of candidates) {
+                if (c && c !== 'undefined' && c !== 'null' && c.trim().length > 0) {
+                    return c.replace(/^["']|["']$/g, '').trim();
+                }
+            }
+
+            return undefined;
         }
 
         // 1. Standard "GIGI_SEC_" Lookup (The Modern Standard)
