@@ -111,11 +111,24 @@ const App: React.FC = () => {
         return () => window.removeEventListener('gigi-hard-reset', handleHardReset);
     }, [logic]);
 
-    // [ZEN FEATURE] Biodata Extract Intercept
+    // [ZEN FEATURE] Biodata Extract Intercept & Sovereign Route Partitioning
     const path = window.location.pathname;
-    const hostname = window.location.hostname;
-    const isDefaultChat = path === '/chat' || path.startsWith('/chat/') || (hostname.includes('gigiwatt') && path === '/');
+    const isDefaultChat = path === '/chat' || path.startsWith('/chat/');
     const [viewMode, setViewMode] = useState<'chat' | 'os'>(isDefaultChat ? 'chat' : 'os');
+
+    // [ZEN] Sync ViewMode with Browser URL History (popstate listener)
+    useEffect(() => {
+        const handlePopState = () => {
+            const currentPath = window.location.pathname;
+            if (currentPath === '/chat' || currentPath.startsWith('/chat/')) {
+                setViewMode('chat');
+            } else {
+                setViewMode('os');
+            }
+        };
+        window.addEventListener('popstate', handlePopState);
+        return () => window.removeEventListener('popstate', handlePopState);
+    }, []);
 
     if (path.startsWith('/u/')) {
         const publicUserId = path.split('/u/')[1]?.split('/')[0] || path.split('/u')[1]?.split('/')[0];
