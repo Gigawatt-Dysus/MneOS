@@ -173,6 +173,68 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
     const [inspectingCliffNotes, setInspectingCliffNotes] = useState<string | null>(null);
     const [isDistillingCliffNotes, setIsDistillingCliffNotes] = useState<boolean>(false);
 
+    // Helper to sanitize header noise from harvested log turns
+    const cleanSessionLogText = (rawText: string): string => {
+        if (!rawText) return '';
+        return rawText
+            .replace(/^#\s*Session\s*ID:.*$/gm, '')
+            .replace(/^#\s*GEMINI\s*Rescued.*$/gm, '')
+            .replace(/^#\s*GROK\s*Session.*$/gm, '')
+            .replace(/^#\s*Category:.*$/gm, '')
+            .replace(/^#\s*Date:.*$/gm, '')
+            .replace(/^\*\s*\*\*Source\s*Engine\*\*:.*$/gm, '')
+            .replace(/^\*\s*\*\*Category\*\*:.*$/gm, '')
+            .replace(/^\*\s*\*\*Turns\s*in\s*Session\*\*:.*$/gm, '')
+            .replace(/^\*\s*\*\*User\*\*:.*$/gm, '')
+            .replace(/^\*\s*\*\*AI\s*Persona\*\*:.*$/gm, '')
+            .replace(/^---\s*$/gm, '')
+            .replace(/^##\s*💬\s*Session\s*Dialogue.*$/gm, '')
+            .replace(/\*\*(Eric|Brita|User|Assistant|Human):\*\*/g, '')
+            .replace(/\n{3,}/g, '\n\n')
+            .trim();
+    };
+
+    const isJunkSummary = (str?: string): boolean => {
+        if (!str) return true;
+        const lower = str.toLowerCase();
+        return lower.includes('session id:') || 
+               lower.includes('rescued session log') || 
+               lower.includes('source engine') || 
+               lower.includes('category: rescued') ||
+               lower.startsWith('initial objective: "# session id:');
+    };
+
+    const handleForceRedistillCliffNotes = async (session: SimulacrumSessionMeta) => {
+        if (!session) return;
+        setIsDistillingCliffNotes(true);
+        const history = sessionMessageCache[session.id] || [];
+
+        // Filter out header turns and clean content
+        const cleanedSample = history
+            .map(m => cleanSessionLogText(m.content))
+            .filter(text => text.length > 20)
+            .slice(0, 4);
+
+        const contextText = cleanedSample.join('\n\n---\n\n').substring(0, 1800);
+
+        try {
+            const prompt = `Synthesize a clear, 2-to-3 sentence executive summary (Cliff Notes) of this archived conversation log. Focus on the core objective discussed, key decisions made, or main narrative arc.\n\nSession Title: ${session.name}\n\nClean Dialogue Excerpt:\n${contextText || "No dialogue available."}`;
+
+            const response = await callXAI('grok-4.3', [{ role: 'user', content: prompt }], "You are Brita, sovereign AI co-architect. Produce a concise 2-to-3 sentence executive summary (Cliff Notes). Focus directly on session content without markdown headers.", { maxOutputTokens: 250 });
+
+            if (response?.text) {
+                const distilled = response.text.trim();
+                setInspectingCliffNotes(distilled);
+                (session as any).summary = distilled;
+                setRecentSessions(prev => prev.map(s => s.id === session.id ? { ...s, summary: distilled } as any : s));
+            }
+        } catch (err) {
+            console.warn("[StranglerFig] Re-distillation error:", err);
+        } finally {
+            setIsDistillingCliffNotes(false);
+        }
+    };
+
     // [ZEN STRANGLER FIG] On-demand session Cliff Notes distillation
     useEffect(() => {
         if (!inspectingSession) {
@@ -181,48 +243,32 @@ export const SimpleChatApp: React.FC<SimpleChatAppProps> = ({ user, tags, onNavi
             return;
         }
 
-        const existingSummary = (inspectingSession as any).summary || (inspectingSession as any).cliffNotes;
+        const rawSummary = (inspectingSession as any).summary || (inspectingSession as any).cliffNotes;
         const history = sessionMessageCache[inspectingSession.id] || [];
 
-        if (existingSummary) {
-            setInspectingCliffNotes(existingSummary);
+        // Check if existing summary is valid and NOT a junk metadata header
+        if (rawSummary && !isJunkSummary(rawSummary)) {
+            setInspectingCliffNotes(rawSummary);
             setIsDistillingCliffNotes(false);
         } else {
-            const firstUserTurn = history.find(m => m.role === 'user');
-            const initialFallback = firstUserTurn?.content
-                ? `Initial Objective: "${firstUserTurn.content.substring(0, 180)}..."`
-                : `Extracted conversation session containing ${history.length || 0} turn(s).`;
-            
-            setInspectingCliffNotes(initialFallback);
-            setIsDistillingCliffNotes(true);
-
-            let isMounted = true;
-            (async () => {
-                try {
-                    const sample = history.length > 0 
-                        ? history.slice(0, 2).concat(history.slice(-2))
-                        : [];
-                    const contextText = sample.map(m => `${m.role.toUpperCase()}: ${m.content.substring(0, 300)}`).join('\n\n');
-                    const prompt = `Synthesize a concise 2-sentence executive summary (Cliff Notes) of this conversation archive. State the core goal and key conclusions.\n\nSession Title: ${inspectingSession.name}\n\nExcerpt:\n${contextText}`;
-
-                    const response = await callXAI('grok-4.3', [{ role: 'user', content: prompt }], "You are Brita, sovereign AI co-architect. Provide a concise, direct 2-sentence executive summary (Cliff Notes).", { maxOutputTokens: 200 });
-
-                    if (isMounted && response?.text) {
-                        const distilled = response.text.trim();
-                        setInspectingCliffNotes(distilled);
-                        (inspectingSession as any).summary = distilled;
-                        setRecentSessions(prev => prev.map(s => s.id === inspectingSession.id ? { ...s, summary: distilled } as any : s));
-                    }
-                } catch (err) {
-                    console.warn("[StranglerFig] On-demand Cliff Notes distillation fallback active:", err);
-                } finally {
-                    if (isMounted) setIsDistillingCliffNotes(false);
+            // Find first meaningful user prompt text
+            let firstCleanPrompt = '';
+            for (const m of history) {
+                const cleaned = cleanSessionLogText(m.content);
+                if (cleaned.length > 20) {
+                    firstCleanPrompt = cleaned.substring(0, 220);
+                    break;
                 }
-            })();
+            }
 
-            return () => {
-                isMounted = false;
-            };
+            const initialFallback = firstCleanPrompt
+                ? `Objective: "${firstCleanPrompt}..."`
+                : `Conversation archive containing ${history.length || 0} turn(s).`;
+
+            setInspectingCliffNotes(initialFallback);
+            
+            // Trigger automatic clean distillation
+            handleForceRedistillCliffNotes(inspectingSession);
         }
     }, [inspectingSession?.id]);
 
@@ -1042,14 +1088,24 @@ use your MTX / Scout RAG Search tool autonomously to query the exact turns.`;
                                         <Sparkles className="w-3.5 h-3.5 text-cyan-400 animate-pulse" />
                                         Session Cliff Notes & Gist
                                     </span>
-                                    {isDistillingCliffNotes && (
-                                        <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 animate-pulse">
-                                            ⚡ Brita Distilling...
-                                        </span>
-                                    )}
+                                    <div className="flex items-center gap-2">
+                                        {isDistillingCliffNotes ? (
+                                            <span className="text-[9px] font-mono text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30 animate-pulse">
+                                                ⚡ Brita Distilling...
+                                            </span>
+                                        ) : (
+                                            <button
+                                                onClick={() => handleForceRedistillCliffNotes(inspectingSession)}
+                                                className="text-[9px] font-mono text-cyan-300 hover:text-white bg-cyan-500/20 hover:bg-cyan-500/40 px-2 py-0.5 rounded border border-cyan-500/40 transition-colors flex items-center gap-1"
+                                                title="Re-distill this session summary using Grok 4.3"
+                                            >
+                                                <RefreshCw className="w-2.5 h-2.5" /> Re-Distill
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
-                                <p className="text-slate-200 leading-relaxed font-sans text-xs bg-black/40 p-2.5 rounded-lg border border-white/5 italic">
-                                    "{inspectingCliffNotes || 'No summary available.'}"
+                                <p className="text-slate-200 leading-relaxed font-sans text-xs bg-black/50 p-3 rounded-lg border border-cyan-500/20 max-h-36 overflow-y-auto whitespace-pre-wrap">
+                                    {inspectingCliffNotes || 'No summary available.'}
                                 </p>
                             </div>
 
